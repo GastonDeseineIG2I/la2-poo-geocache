@@ -12,6 +12,7 @@ public class CacheEntity
     private Integer longitude;
     private String description;
     private String nature;
+    private String typeCache;
     private String statut;
     private Integer lieuId;
     private int proprietaireId;
@@ -74,6 +75,18 @@ public class CacheEntity
     public void setNature(String nature)
     {
         this.nature = nature;
+    }
+
+    @Basic
+    @Column(name = "type_cache", nullable = false, length = 25)
+    public String getTypeCache()
+    {
+        return typeCache;
+    }
+
+    public void setTypeCache(String typeCache)
+    {
+        this.typeCache = typeCache;
     }
 
     @Basic

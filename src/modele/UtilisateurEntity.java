@@ -72,6 +72,13 @@ public class UtilisateurEntity
                 Objects.equals(avatar, that.avatar);
     }
 
+    public String toString(){
+        return  " | Id : " + this.id + "\n" +
+                " | Pseudo : " + this.pseudo + "\n" +
+                " | Description : " + this.description + "\n" +
+                " | Avatar : " + this.avatar + "\n";
+    }
+
     @Override
     public int hashCode()
     {

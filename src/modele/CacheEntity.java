@@ -162,7 +162,6 @@ public class CacheEntity
                 " | Statut : " + this.statut + "\n" +
                 " | Type cache : " + this.typeCache + "\n" +
                 " | Code secret : " + this.codeSecret + "\n" ;
-
     }
 
     @Override

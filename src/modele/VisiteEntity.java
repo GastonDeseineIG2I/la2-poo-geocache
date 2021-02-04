@@ -101,6 +101,13 @@ public class VisiteEntity
                 Objects.equals(statut, that.statut);
     }
 
+    public String toString(){
+        return  " | Id : " + this.id + "\n" +
+                " | Date visite : " + this.dateVisite + "\n" +
+                " | Commentaire : " + this.commentaire + "\n" +
+                " | Statut : " + this.statut + "\n" ;
+    }
+
     @Override
     public int hashCode()
     {

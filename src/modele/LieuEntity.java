@@ -44,6 +44,11 @@ public class LieuEntity
                 Objects.equals(libelle, that.libelle);
     }
 
+    public String toString(){
+        return  " | Id : " + this.id + "\n" +
+                " | Libelle : " + this.libelle + "\n";
+    }
+
     @Override
     public int hashCode()
     {

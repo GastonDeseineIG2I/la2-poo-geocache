@@ -3,7 +3,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import repository.CacheRepository;
+import repository.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,58 +36,6 @@ public class Main
     public static void main(final String[] args) throws Exception
     {
         menu();
-        /*final Session session = getSession();
-        try
-        {
-            System.out.println("Select utilisateurs");
-            session.beginTransaction();
-
-
-            Query q = session.createQuery("from UtilisateurEntity");
-
-            for (Object o : q.list())
-            {
-                UtilisateurEntity utilisateur = (UtilisateurEntity) o;
-                System.out.println("  " + utilisateur.getPseudo());
-            }
-
-            System.out.println("ajout utilisateur");
-
-            UtilisateurEntity user = new UtilisateurEntity();
-            user.setPseudo("test");
-            user.setDescription("");
-            user.setAvatar("default.png");
-
-            session.persist(user);
-            session.flush();
-
-            System.out.println("Select utilisateurs");
-
-            q = session.createQuery("from UtilisateurEntity");
-
-            for (Object o : q.list())
-            {
-                UtilisateurEntity utilisateur = (UtilisateurEntity) o;
-                System.out.println("  " + utilisateur.getPseudo());
-            }
-
-*//*
-            System.out.println("querying all the managed entities...");
-            final Metamodel metamodel = session.getSessionFactory().getMetamodel();
-            for (EntityType<?> entityType : metamodel.getEntities())
-            {
-                final String entityName = entityType.getName();
-                final Query query = session.createQuery("from " + entityName);
-                System.out.println("executing: " + query.getQueryString());
-                for (Object o : query.list())
-                {
-                    System.out.println("  " + o);
-                }
-            }*//*
-        } finally
-        {
-            session.close();
-        }*/
     }
 
 
@@ -111,16 +59,16 @@ public class Main
             switch (Integer.parseInt(res))
             {
                 case 1:
-                    menu1();
+                    menu("cache");
                     break;
                 case 2:
-                    System.out.println(2);
+                    menu("utilisateur");
                     break;
                 case 3:
-                    System.out.println(3);
+                    menu("lieu");
                     break;
                 case 4:
-                    System.out.println(4);
+                    menu("visite");
                     break;
                 case 5:
                     terminate = true;
@@ -131,46 +79,66 @@ public class Main
     }
 
 
-    public static void menu1() throws IOException
+    public static void menu(String typeMenu) throws IOException
     {
-        System.out.println("-----------------------------------------");
-        System.out.println("1 - Ajouter une cache");
-        System.out.println("2 - Modifier une cache");
-        System.out.println("3 - Supprimer une cache");
-        System.out.println("4 - Rechercher une cache");
-        System.out.println("5 - Retour au menu précédent");
+        RepositoryInterface repository;
+        String menuString;
 
+        switch (typeMenu){
+            case "cache":
+                menuString = "une cache";
+                repository = new CacheRepository(getSession());
+                break;
+            case "utilisateur":
+                menuString = "un utilisateur";
+                repository = new UtilisateurRepository(getSession());
+                break;
+            case "lieu":
+                menuString = "un lieu";
+                repository = new LieuRepository(getSession());
+                break;
+            case "visite":
+                menuString = "une visite";
+                repository = new VisiteRepository(getSession());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + typeMenu);
+        }
+
+        System.out.println("-----------------------------------------");
+        System.out.println("1 - Ajouter " + menuString);
+        System.out.println("2 - Modifier " + menuString);
+        System.out.println("3 - Supprimer " + menuString);
+        System.out.println("4 - Rechercher " + menuString);
+        System.out.println("5 - Retour au menu précédent");
 
 
         String res = reader.readLine();
 
         System.out.println("-----------------------------------------");
 
-        CacheRepository cacheRepository = new CacheRepository(getSession());
 
         switch (Integer.parseInt(res)){
             case 1:
-                System.out.println(11);
+                System.out.println(1);
                 break;
             case 2:
-                System.out.println(12);
+                System.out.println(2);
                 break;
             case 3:
-                System.out.println(13);
+                System.out.println(3);
                 break;
             case 4:
-                System.out.println("Entrez l'identifiant de la cache recherchée : ");
+                System.out.println("Entrez l'identifiant recherché : ");
                 String id = reader.readLine();
-                CacheEntity cache = cacheRepository.findCacheById(Integer.parseInt(id));
-
-                System.out.println(cache != null?cache.toString():"Cache non trouvée.");
+                Object object = repository.findById(Integer.parseInt(id));
+                System.out.println(object != null?object.toString():"Resultat non trouvé.");
                 break;
             case 5:
                 return;
         }
         System.out.println("Appuyer sur ENTER pour continuer.");
         reader.readLine();
-
 
     }
 }

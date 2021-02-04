@@ -2,12 +2,10 @@ package repository;
 
 import modele.CacheEntity;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import java.util.List;
 
-public class CacheRepository
+public class CacheRepository implements RepositoryInterface
 {
 
     private Session session;
@@ -16,7 +14,7 @@ public class CacheRepository
         this.session = session;
     }
 
-    public CacheEntity findCacheById(int id)
+    public CacheEntity findById(int id)
     {
         Query q = this.session.createQuery("from CacheEntity where id = :id");
         q.setParameter("id",id);

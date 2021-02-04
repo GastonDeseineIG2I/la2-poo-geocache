@@ -43,7 +43,7 @@ Cf. : cahier des charges.
 
 #### Modèle UML :
 
-#### <img src="C:\Users\gasto\Downloads\LA2-GeoCache-UML.png" alt="LA2-GeoCache-UML" style="zoom: 33%;" />
+#### <img src="./LA2-GeoCache-UML.png" alt="LA2-GeoCache-UML" style="zoom: 33%;" />
 
 #### SQL DDL
 

@@ -53,7 +53,7 @@ public class Main
             System.out.println("ajout utilisateur");
 
             UtilisateurEntity user = new UtilisateurEntity();
-            user.setPseudo("");
+            user.setPseudo("test");
             user.setDescription("");
             user.setAvatar("default.png");
 

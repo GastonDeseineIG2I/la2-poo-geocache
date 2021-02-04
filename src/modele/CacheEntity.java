@@ -13,6 +13,7 @@ public class CacheEntity
     private String description;
     private String nature;
     private String typeCache;
+    private String codeSecret;
     private String statut;
     private Integer lieuId;
     private int proprietaireId;
@@ -78,6 +79,18 @@ public class CacheEntity
     }
 
     @Basic
+    @Column(name = "code_secret", nullable = false, length = 50)
+    public String getCodeSecret()
+    {
+        return codeSecret;
+    }
+
+    public void setCodeSecret(String codeSecret)
+    {
+        this.codeSecret = codeSecret;
+    }
+
+    @Basic
     @Column(name = "type_cache", nullable = false, length = 25)
     public String getTypeCache()
     {
@@ -139,6 +152,17 @@ public class CacheEntity
                 Objects.equals(nature, that.nature) &&
                 Objects.equals(statut, that.statut) &&
                 Objects.equals(lieuId, that.lieuId);
+    }
+
+    public String toString(){
+        return  " | Id : " + this.id + "\n" +
+                " | GPS : " + this.latitude + " ; " + this.longitude + "\n" +
+                " | Description : " + this.description + "\n" +
+                " | Nature : " + this.nature + "\n" +
+                " | Statut : " + this.statut + "\n" +
+                " | Type cache : " + this.typeCache + "\n" +
+                " | Code secret : " + this.codeSecret + "\n" ;
+
     }
 
     @Override

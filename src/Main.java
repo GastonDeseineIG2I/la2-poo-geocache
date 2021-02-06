@@ -123,7 +123,24 @@ public class Main
                 System.out.println(1);
                 break;
             case 2:
-                System.out.println(2);
+                // On récupere l'identifiant de lieux pour afficher les informations au testeur
+                System.out.println("Entrez l'identifiant du lieux à modifier : ");
+                id = reader.readLine();
+                object = repository.findById(Integer.parseInt(id));
+                System.out.println(object != null?object.toString():"Resultat non trouvé.");
+
+                // On declare un libellé que nous recupérons sur la ligne de commande
+                String libelle="";
+                System.out.println("Entrez le nouveau libellé de lieux");
+
+                //On vérifie que l'entrée n'est pas vide
+                do
+                    libelle = reader.readLine();
+                while(("".equals(libelle)) || (libelle.length()>100));
+
+                //On effectue les changements en base
+                LieuRepository repoLieu = new LieuRepository(getSession());
+                repoLieu.updateLieu(Integer.parseInt(id),libelle);
                 break;
             case 3:
                 System.out.println("Entrez l'identifiant à supprimer : ");

@@ -29,4 +29,7 @@ public class VisiteRepository implements RepositoryInterface
         session.delete(visite);
         tx.commit();
     }
+
+
+
 }

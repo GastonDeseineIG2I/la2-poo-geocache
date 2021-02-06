@@ -1,7 +1,6 @@
 package repository;
 
 import modele.LieuEntity;
-import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -24,12 +23,25 @@ public class LieuRepository implements RepositoryInterface
 
     }
 
+    // Permet de supprimer un lieu avec son id
     public void deleteById(int id)
     {
         Transaction tx = session.beginTransaction();
         LieuEntity lieu = session.load(LieuEntity.class, id);
         session.delete(lieu);
         tx.commit();
+    }
+
+
+    // Permet de mettre a jour le libellé d'un lieu
+    public void updateLieu(int id, String nomlieu)
+    {
+        Transaction tx = session.beginTransaction();
+        LieuEntity lieu = session.load(LieuEntity.class, id);
+        lieu.setLibelle(nomlieu);
+        session.update(lieu);
+        tx.commit();
+
     }
 
 }

@@ -116,8 +116,8 @@ public class Main
         String res = reader.readLine();
 
         System.out.println("-----------------------------------------");
-
-
+        String id;
+        Object object ;
         switch (Integer.parseInt(res)){
             case 1:
                 System.out.println(1);
@@ -126,12 +126,15 @@ public class Main
                 System.out.println(2);
                 break;
             case 3:
-                System.out.println(3);
+                System.out.println("Entrez l'identifiant à supprimer : ");
+                id = reader.readLine();
+                repository.deleteById(Integer.parseInt(id));
+
                 break;
             case 4:
                 System.out.println("Entrez l'identifiant recherché : ");
-                String id = reader.readLine();
-                Object object = repository.findById(Integer.parseInt(id));
+                id = reader.readLine();
+                object = repository.findById(Integer.parseInt(id));
                 System.out.println(object != null?object.toString():"Resultat non trouvé.");
                 break;
             case 5:

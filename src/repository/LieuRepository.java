@@ -1,7 +1,9 @@
 package repository;
 
 import modele.LieuEntity;
+import modele.UtilisateurEntity;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class LieuRepository implements RepositoryInterface
@@ -20,6 +22,14 @@ public class LieuRepository implements RepositoryInterface
 
         return (LieuEntity) q.uniqueResult();
 
+    }
+
+    public void deleteById(int id)
+    {
+        Transaction tx = session.beginTransaction();
+        LieuEntity lieu = session.load(LieuEntity.class, id);
+        session.delete(lieu);
+        tx.commit();
     }
 
 }

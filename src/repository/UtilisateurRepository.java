@@ -2,6 +2,7 @@ package repository;
 
 import modele.UtilisateurEntity;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class UtilisateurRepository implements RepositoryInterface
@@ -22,4 +23,11 @@ public class UtilisateurRepository implements RepositoryInterface
 
     }
 
+    public void deleteById(int id)
+    {
+        Transaction tx = session.beginTransaction();
+        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
+        session.delete(utilisateur);
+        tx.commit();
+    }
 }

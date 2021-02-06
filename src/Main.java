@@ -8,6 +8,9 @@ import repository.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main
 {
@@ -133,53 +136,17 @@ public class Main
 
                        break;
                    case "un lieu":
-                       // On récupere l'identifiant de lieux pour afficher les informations au testeur
-                       System.out.println("Entrez l'identifiant du lieux à modifier : ");
-                       id = reader.readLine();
-                       object = repository.findById(Integer.parseInt(id));
-                       System.out.println(object != null?object.toString():"Resultat non trouvé.");
-
-                       // On declare un libellé que nous recupérons sur la ligne de commande
-                       String libelle="";
-                       System.out.println("Entrez le nouveau libellé de lieux");
-
-                       //On vérifie que l'entrée n'est pas vide
-                       do
-                           libelle = reader.readLine();
-                       while(("".equals(libelle)) || (libelle.length()>100));
-
-                       //On effectue les changements en base
-                       LieuRepository repoLieu = new LieuRepository(getSession());
-                       repoLieu.updateLieu(Integer.parseInt(id),libelle);
+                       updateLieu(repository);
                        break;
 
                    case "un utilisateur":
                        // On récupere l'identifiant de l'utilisateur
-                       System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
-                       id = reader.readLine();
-                       object = repository.findById(Integer.parseInt(id));
-                       System.out.println(object != null?object.toString():"Resultat non trouvé.");
-                        if (object != null){
-                            System.out.println("Si une valeur est inchangée tapez sur entree");
-                            System.out.println("Entrez le nouveau pseudo ");
-                            String pseudo;
-                            do
-                                pseudo = reader.readLine();
-                            while (pseudo.length()>50);
-                            System.out.println("Entrez la nouvelle description ");
-                            String descripton = reader.readLine();
-
-                            String avatar;
-                            System.out.println("Entrez le nouveau nom de l'image ");
-                            System.out.println("Ne pas oblier .png a la fin");
-                            do
-                                avatar = reader.readLine();
-                            while (avatar.length()>255);
-                            UtilisateurRepository utilisateurRepo=new UtilisateurRepository(getSession());
-                            utilisateurRepo.updateUtilisateur(Integer.parseInt(id),pseudo,descripton,avatar);
-                        }
+                       updateUtilisateur(repository);
                        break;
                    case "une visite":
+                       updateVisite(repository);
+
+
                        break;
 
                }
@@ -201,6 +168,125 @@ public class Main
         }
         System.out.println("Appuyer sur ENTER pour continuer.");
         reader.readLine();
+
+    }
+
+    private static void updateUtilisateur(RepositoryInterface repository) throws IOException {
+        System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
+         String id = reader.readLine();
+        Object object = repository.findById(Integer.parseInt(id));
+        System.out.println(object != null?object.toString():"Resultat non trouvé.");
+        if (object != null){
+            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Entrez le nouveau pseudo ");
+            String pseudo;
+            do
+                pseudo = reader.readLine();
+            while (pseudo.length()>50);
+            System.out.println("Entrez la nouvelle description ");
+            String descripton = reader.readLine();
+
+            String avatar;
+            System.out.println("Entrez le nouveau nom de l'image ");
+            System.out.println("Ne pas oblier .png a la fin");
+            do
+                avatar = reader.readLine();
+            while (avatar.length()>255);
+            UtilisateurRepository utilisateurRepo=new UtilisateurRepository(getSession());
+            utilisateurRepo.updateUtilisateur(Integer.parseInt(id),pseudo,descripton,avatar);
+        }
+    }
+
+
+    private static void updateLieu(RepositoryInterface repository) throws IOException {
+        // On récupere l'identifiant de lieux pour afficher les informations au testeur
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Entrez l'identifiant du lieux à modifier : ");
+        String id = reader.readLine();
+        Object object = repository.findById(Integer.parseInt(id));
+        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
+        if (object != null) {
+            // On declare un libellé que nous recupérons sur la ligne de commande
+            String libelle = "";
+            System.out.println("Entrez le nouveau libellé de lieux");
+
+            //On vérifie que l'entrée n'est pas vide
+            do
+                libelle = reader.readLine();
+            while (("".equals(libelle)) || (libelle.length() > 100));
+
+            //On effectue les changements en base
+            LieuRepository repoLieu = new LieuRepository(getSession());
+            repoLieu.updateLieu(Integer.parseInt(id), libelle);
+        }
+    }
+
+    private static void updateVisite(RepositoryInterface repository) throws IOException {
+    System.out.println("Entrez l'identifiant de la visite à modifier : ");
+    String idVisite = reader.readLine();
+     Object object = repository.findById(Integer.parseInt(idVisite));
+    System.out.println(object != null?object.toString():"Resultat non trouvé.");
+
+    if (object != null) {
+        System.out.println("Si une valeur est inchangée tapez sur entree");
+        System.out.println("Entrez la nouvelle date et heure de visite");
+        System.out.println("Format : YYYY-MM-DD hh:mm:ss");
+        // A faire : Controle de la date
+        String dateVisite;
+        dateVisite = reader.readLine();
+
+
+        System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
+        String utilisateurId;
+        do {
+            utilisateurId = reader.readLine();
+            //On regarde si on a un utilisateur que existe
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
+            object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
+            System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
+        }while(object == null);
+
+
+
+
+        System.out.println("Entrez l'id de la cache'");
+        String cacheId;
+        do {
+            cacheId = reader.readLine();
+            //On regarde si on a un utilisateur que existe
+            CacheRepository repoCache = new CacheRepository(getSession());
+            object = repoCache.findById(Integer.parseInt(cacheId));
+            System.out.println(object != null ? object.toString() : "Cache non trouvé.");
+        }while(object == null);
+
+
+        String commentaire;
+        System.out.println("Entrez un commentaire'");
+        commentaire = reader.readLine();
+
+        String statut;
+        System.out.println("Entrez un statut '");
+        System.out.println("Tapez 1 pour En cours'");
+        System.out.println("Tapez 2 pour Terminée'");
+        do
+            statut = reader.readLine();
+        while((Integer.parseInt(statut)) > 2 ||  (Integer.parseInt(statut)<1));
+
+        if (Integer.parseInt(statut)==1){
+            statut = "En cours";
+        }else{
+            statut = "Terminée";
+        }
+
+
+          //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
+
+          //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
+
+        VisiteRepository visiteRepo=new VisiteRepository(getSession());
+        // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
+         visiteRepo.updateVisite(Integer.parseInt(idVisite), dateVisite,utilisateurId,cacheId,commentaire,statut);
+        }
 
     }
 }

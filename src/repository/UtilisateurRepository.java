@@ -33,19 +33,19 @@ public class UtilisateurRepository implements RepositoryInterface
     }
 
     public void updateUtilisateur(int id,String pseudo, String descripton, String avatar) {
-        Transaction tx = session.beginTransaction();
-        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
-        if (!"".equals(pseudo) )
-        {
-            utilisateur.setPseudo(pseudo);
-        }
-        if (!"".equals(descripton)){
-            utilisateur.setDescription(descripton);
-        }
-        if (!"".equals(avatar)){
-            utilisateur.setAvatar(avatar);
-        }
-        session.update(utilisateur);
-        tx.commit();
+    Transaction tx = session.beginTransaction();
+    UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
+    if (!"".equals(pseudo) )
+    {
+        utilisateur.setPseudo(pseudo);
     }
+    if (!"".equals(descripton)){
+        utilisateur.setDescription(descripton);
+    }
+    if (!"".equals(avatar)){
+        utilisateur.setAvatar(avatar);
+    }
+    session.update(utilisateur);
+    tx.commit();
+}
 }

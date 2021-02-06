@@ -123,25 +123,61 @@ public class Main
                 System.out.println(1);
                 break;
             case 2:
-                // On récupere l'identifiant de lieux pour afficher les informations au testeur
-                System.out.println("Entrez l'identifiant du lieux à modifier : ");
-                id = reader.readLine();
-                object = repository.findById(Integer.parseInt(id));
-                System.out.println(object != null?object.toString():"Resultat non trouvé.");
+               switch (menuString){
+                   case "une cache":
+                       break;
+                   case "un lieu":
+                       // On récupere l'identifiant de lieux pour afficher les informations au testeur
+                       System.out.println("Entrez l'identifiant du lieux à modifier : ");
+                       id = reader.readLine();
+                       object = repository.findById(Integer.parseInt(id));
+                       System.out.println(object != null?object.toString():"Resultat non trouvé.");
 
-                // On declare un libellé que nous recupérons sur la ligne de commande
-                String libelle="";
-                System.out.println("Entrez le nouveau libellé de lieux");
+                       // On declare un libellé que nous recupérons sur la ligne de commande
+                       String libelle="";
+                       System.out.println("Entrez le nouveau libellé de lieux");
 
-                //On vérifie que l'entrée n'est pas vide
-                do
-                    libelle = reader.readLine();
-                while(("".equals(libelle)) || (libelle.length()>100));
+                       //On vérifie que l'entrée n'est pas vide
+                       do
+                           libelle = reader.readLine();
+                       while(("".equals(libelle)) || (libelle.length()>100));
 
-                //On effectue les changements en base
-                LieuRepository repoLieu = new LieuRepository(getSession());
-                repoLieu.updateLieu(Integer.parseInt(id),libelle);
-                break;
+                       //On effectue les changements en base
+                       LieuRepository repoLieu = new LieuRepository(getSession());
+                       repoLieu.updateLieu(Integer.parseInt(id),libelle);
+                       break;
+
+                   case "un utilisateur":
+                       // On récupere l'identifiant de l'utilisateur
+                       System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
+                       id = reader.readLine();
+                       object = repository.findById(Integer.parseInt(id));
+                       System.out.println(object != null?object.toString():"Resultat non trouvé.");
+                        if (object != null){
+                            System.out.println("Si une valeur est inchangée tapez sur entree");
+                            System.out.println("Entrez le nouveau pseudo ");
+                            String pseudo;
+                            do
+                                pseudo = reader.readLine();
+                            while (pseudo.length()>50);
+                            System.out.println("Entrez la nouvelle description ");
+                            String descripton = reader.readLine();
+
+                            String avatar;
+                            System.out.println("Entrez le nouveau nom de l'image ");
+                            System.out.println("Ne pas oblier .png a la fin");
+                            do
+                                avatar = reader.readLine();
+                            while (avatar.length()>255);
+                            UtilisateurRepository utilisateurRepo=new UtilisateurRepository(getSession());
+                            utilisateurRepo.updateUtilisateur(Integer.parseInt(id),pseudo,descripton,avatar);
+                        }
+                       break;
+                   case "une visite":
+                       break;
+
+               }
+               break;
             case 3:
                 System.out.println("Entrez l'identifiant à supprimer : ");
                 id = reader.readLine();

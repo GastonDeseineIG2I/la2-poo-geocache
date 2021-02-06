@@ -38,6 +38,7 @@ public class VisiteRepository implements RepositoryInterface
         VisiteEntity utilisateur = session.load(VisiteEntity.class, id);
        /* if (!"".equals(dateVisite) )
         {
+
             //utilisateur.setDateVisite(dateVisite);
         }*/
         if (!"".equals(utilisateurId)){

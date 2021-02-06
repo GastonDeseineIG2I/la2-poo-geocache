@@ -51,8 +51,11 @@ public class Main
             System.out.println("3 - Gestion des lieux");
             System.out.println("4 - Gestion des visites");
             System.out.println("5 - Quitter");
+            String res;
+            do
+                 res = reader.readLine();
+            while((Integer.parseInt(res)) > 5 || (Integer.parseInt(res)<0));
 
-            String res = reader.readLine();
 
             System.out.println("-----------------------------------------");
 
@@ -111,9 +114,11 @@ public class Main
         System.out.println("3 - Supprimer " + menuString);
         System.out.println("4 - Rechercher " + menuString);
         System.out.println("5 - Retour au menu précédent");
+        String res ;
+        do
+            res = reader.readLine();
+        while((Integer.parseInt(res)) > 5 ||  (Integer.parseInt(res)<0));
 
-
-        String res = reader.readLine();
 
         System.out.println("-----------------------------------------");
         String id;
@@ -125,6 +130,7 @@ public class Main
             case 2:
                switch (menuString){
                    case "une cache":
+
                        break;
                    case "un lieu":
                        // On récupere l'identifiant de lieux pour afficher les informations au testeur
@@ -185,7 +191,7 @@ public class Main
 
                 break;
             case 4:
-                System.out.println("Entrez l'identifiant recherché : ");
+                System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
                 object = repository.findById(Integer.parseInt(id));
                 System.out.println(object != null?object.toString():"Resultat non trouvé.");

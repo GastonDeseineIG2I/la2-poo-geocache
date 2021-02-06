@@ -35,25 +35,24 @@ public class VisiteRepository implements RepositoryInterface
 
     public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
         Transaction tx = session.beginTransaction();
-        VisiteEntity utilisateur = session.load(VisiteEntity.class, id);
-       /* if (!"".equals(dateVisite) )
+        VisiteEntity visite = session.load(VisiteEntity.class, id);
+        if (!"".equals(dateVisite) )
         {
-
-            //utilisateur.setDateVisite(dateVisite);
-        }*/
+            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+        }
         if (!"".equals(utilisateurId)){
-            utilisateur.setUtilisateurId(Integer.parseInt(utilisateurId));
+            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
         }
         if (!"".equals(cacheId)){
-            utilisateur.setCacheId(Integer.parseInt(cacheId));
+            visite.setCacheId(Integer.parseInt(cacheId));
         }
         if (!"".equals(commentaire)){
-            utilisateur.setCommentaire(commentaire);
+            visite.setCommentaire(commentaire);
         }
         if (!"".equals(statut)){
-            utilisateur.setStatut(statut);
+            visite.setStatut(statut.toUpperCase());
         }
-        session.update(utilisateur);
+        session.update(visite);
         tx.commit();
     }
 

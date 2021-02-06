@@ -3,6 +3,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.criteria.internal.expression.function.UpperFunction;
 import repository.*;
 
 import java.io.BufferedReader;
@@ -223,6 +224,7 @@ public class Main
 
     private static void updateVisite(RepositoryInterface repository) throws IOException {
     System.out.println("Entrez l'identifiant de la visite à modifier : ");
+    // A FAIRE : redemander si l'identifiant de visite n'est pas bon
     String idVisite = reader.readLine();
      Object object = repository.findById(Integer.parseInt(idVisite));
     System.out.println(object != null?object.toString():"Resultat non trouvé.");
@@ -265,22 +267,15 @@ public class Main
         commentaire = reader.readLine();
 
         String statut;
-        System.out.println("Entrez un statut '");
-        System.out.println("Tapez 1 pour En cours'");
-        System.out.println("Tapez 2 pour Terminée'");
-        do
-            statut = reader.readLine();
-        while((Integer.parseInt(statut)) > 2 ||  (Integer.parseInt(statut)<1));
+        System.out.println("Entrez un statut : En cours / Terminee'");
 
-        if (Integer.parseInt(statut)==1){
-            statut = "En cours";
-        }else{
-            statut = "Terminée";
-        }
+        do {
+            statut = reader.readLine();
+        // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
+        }while(!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
 
 
           //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
-
           //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
 
         VisiteRepository visiteRepo=new VisiteRepository(getSession());

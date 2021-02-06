@@ -58,6 +58,7 @@ public class Main
             String res;
             do
                  res = reader.readLine();
+            //TODO crash si String
             while((Integer.parseInt(res)) > 5 || (Integer.parseInt(res)<0));
 
 

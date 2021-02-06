@@ -37,6 +37,7 @@ public class UtilisateurRepository implements RepositoryInterface
     UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
     if (!"".equals(pseudo) )
     {
+        //TODO verifier l'unicité
         utilisateur.setPseudo(pseudo);
     }
     if (!"".equals(descripton)){

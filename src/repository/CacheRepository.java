@@ -1,9 +1,14 @@
 package repository;
 
 import modele.CacheEntity;
+import modele.UtilisateurEntity;
+import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 
 
 public class CacheRepository implements RepositoryInterface
@@ -33,4 +38,27 @@ public class CacheRepository implements RepositoryInterface
         tx.commit();
     }
 
+    public void updateCache(int id, DecimalFormat latitude, DecimalFormat longitude, String description, String nature,
+                            String typeCache,String statut, String codeSecret,int lieuId, int proprietaireId) {
+        Transaction tx = session.beginTransaction();
+        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
+        if (!"".equals(dateVisite) )
+        {
+            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+        }
+        if (!"".equals(utilisateurId)){
+            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+        }
+        if (!"".equals(cacheId)){
+            visite.setCacheId(Integer.parseInt(cacheId));
+        }
+        if (!"".equals(commentaire)){
+            visite.setCommentaire(commentaire);
+        }
+        if (!"".equals(statut)){
+            visite.setStatut(statut.toUpperCase());
+        }
+        session.update(utilisateur);
+        tx.commit();
+    }
 }

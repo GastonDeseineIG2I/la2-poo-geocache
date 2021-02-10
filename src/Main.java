@@ -1,12 +1,17 @@
+import modele.CacheEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.criteria.internal.expression.function.UpperFunction;
 import repository.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main
 {
@@ -51,13 +56,10 @@ public class Main
             System.out.println("4 - Gestion des visites");
             System.out.println("5 - Quitter");
             String res;
-            int choice;
             do
-            {
-                res = reader.readLine();
-
-                choice = isNumeric(res);
-            }while(choice > 5 || choice < 0);
+                 res = reader.readLine();
+            //TODO crash si String
+            while((Integer.parseInt(res)) > 5 || (Integer.parseInt(res)<0));
 
 
             System.out.println("-----------------------------------------");
@@ -118,13 +120,9 @@ public class Main
         System.out.println("4 - Rechercher " + menuString);
         System.out.println("5 - Retour au menu précédent");
         String res ;
-        int choice;
         do
-        {
             res = reader.readLine();
-
-            choice = isNumeric(res);
-        }while(choice > 5 || choice < 0);
+        while((Integer.parseInt(res)) > 5 ||  (Integer.parseInt(res)<0));
 
 
         System.out.println("-----------------------------------------");
@@ -173,19 +171,6 @@ public class Main
         System.out.println("Appuyer sur ENTER pour continuer.");
         reader.readLine();
 
-    }
-
-    public static int isNumeric(String res){
-        int numeric;
-        try
-        {
-            numeric = Integer.parseInt(res);
-        } catch (NumberFormatException nfe)
-        {
-            numeric = -1;
-        }
-
-        return numeric;
     }
 
     private static void updateUtilisateur(RepositoryInterface repository) throws IOException {

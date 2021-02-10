@@ -1,3 +1,4 @@
+import modele.CacheEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,6 +8,7 @@ import repository.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Main
 {
@@ -112,11 +114,12 @@ public class Main
         }
 
         System.out.println("-----------------------------------------");
-        System.out.println("1 - Ajouter " + menuString);
-        System.out.println("2 - Modifier " + menuString);
-        System.out.println("3 - Supprimer " + menuString);
-        System.out.println("4 - Rechercher " + menuString);
-        System.out.println("5 - Retour au menu précédent");
+        System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ?"x":"s"));
+        System.out.println("2 - Ajouter " + menuString);
+        System.out.println("3 - Modifier " + menuString);
+        System.out.println("4 - Supprimer " + menuString);
+        System.out.println("5 - Rechercher " + menuString);
+        System.out.println("6 - Retour au menu précédent");
         String res ;
         int choice;
         do
@@ -124,17 +127,25 @@ public class Main
             res = reader.readLine();
 
             choice = isNumeric(res);
-        }while(choice > 5 || choice < 0);
+        }while(choice > 6 || choice < 0);
 
 
         System.out.println("-----------------------------------------");
         String id;
         Object object ;
+        List<?> objectList;
         switch (Integer.parseInt(res)){
             case 1:
-                System.out.println(1);
+                objectList = repository.getAll();
+                for (Object objectfromlist:objectList)
+                {
+                    System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                }
                 break;
             case 2:
+                System.out.println("ajouter");
+                break;
+            case 3:
                switch (menuString){
                    case "une cache":
 
@@ -155,19 +166,19 @@ public class Main
 
                }
                break;
-            case 3:
+            case 4:
                 System.out.println("Entrez l'identifiant à supprimer : ");
                 id = reader.readLine();
                 repository.deleteById(Integer.parseInt(id));
 
                 break;
-            case 4:
+            case 5:
                 System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
                 object = repository.findById(Integer.parseInt(id));
                 System.out.println(object != null?object.toString():"Resultat non trouvé.");
                 break;
-            case 5:
+            case 6:
                 return;
         }
         System.out.println("Appuyer sur ENTER pour continuer.");

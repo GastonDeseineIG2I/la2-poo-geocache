@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.List;
+
 public class UtilisateurRepository implements RepositoryInterface
 {
 
@@ -31,6 +33,12 @@ public class UtilisateurRepository implements RepositoryInterface
         tx.commit();
     }
 
+    public List<UtilisateurEntity> getAll()
+    {
+        List<UtilisateurEntity> lieux = session.createQuery("from UtilisateurEntity").list();
+        return lieux;
+    }
+
     public void updateUtilisateur(int id,String pseudo, String descripton, String avatar) {
     Transaction tx = session.beginTransaction();
     UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
@@ -48,4 +56,26 @@ public class UtilisateurRepository implements RepositoryInterface
     session.update(utilisateur);
     tx.commit();
 }
+
+    public void createUtilisateur(String pseudo, String descripton, String avatar) {
+        Transaction tx = session.beginTransaction();
+        UtilisateurEntity utilisateur = new UtilisateurEntity();
+        if (!"".equals(pseudo) )
+        {
+            //TODO verifier l'unicité
+            utilisateur.setPseudo(pseudo);
+        }
+        if (!"".equals(descripton)){
+            utilisateur.setDescription(descripton);
+        }else{
+            utilisateur.setDescription("");
+        }
+        if (!"".equals(avatar)){
+            utilisateur.setAvatar(avatar);
+        }else{
+            utilisateur.setAvatar("default.png");
+        }
+        session.persist(utilisateur);
+        tx.commit();
+    }
 }

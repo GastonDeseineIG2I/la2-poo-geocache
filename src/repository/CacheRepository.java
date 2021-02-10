@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.List;
+
 
 public class CacheRepository implements RepositoryInterface
 {
@@ -31,6 +33,12 @@ public class CacheRepository implements RepositoryInterface
         CacheEntity cache = session.load(CacheEntity.class, id);
         session.delete(cache);
         tx.commit();
+    }
+
+    public List<CacheEntity> getAll()
+    {
+        List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();
+        return lieux;
     }
 
 }

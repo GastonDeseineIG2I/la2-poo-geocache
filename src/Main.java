@@ -128,7 +128,7 @@ public class Main {
             case 2:
                 switch (menuString) {
                     case "une cache":
-
+                        updateCache(repository);
                         break;
                     case "un lieu":
                         updateLieu(repository);
@@ -344,10 +344,6 @@ public class Main {
                 object = repoCache.findById(Integer.parseInt(lieuId));
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
-
-
-            System.out.println("Entrez un statut : En cours / Terminee'");
-
 
             CacheRepository cacheRepo = new CacheRepository(getSession());
             // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);

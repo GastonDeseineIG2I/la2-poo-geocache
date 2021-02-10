@@ -73,6 +73,45 @@ public class CacheRepository implements RepositoryInterface
         tx.commit();
     }
 
+
+    public void createCache(String latitude, String longitude, String description, String nature,
+                            String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
+        Transaction tx = session.beginTransaction();
+        CacheEntity cache = new CacheEntity();
+        if (!"".equals(latitude) )
+        {
+            BigDecimal lat = new BigDecimal(latitude);
+            cache.setLatitude(lat);
+        }
+        if (!"".equals(longitude)){
+            BigDecimal lon = new BigDecimal(longitude);
+            cache.setLongitude(lon);
+        }
+        if (!"".equals(description)){
+            cache.setDescription(description);
+        }
+        if (!"".equals(nature)){
+            cache.setNature(nature.toUpperCase());
+        }
+        if (!"".equals(typeCache)){
+            cache.setTypeCache(typeCache.toUpperCase());
+        }
+        if (!"".equals(codeSecret)){
+            cache.setNature(codeSecret);
+        }
+        if (!"".equals(lieuId)){
+            cache.setLieuId(Integer.parseInt(lieuId));
+        }
+        if (!"".equals(proprietaireId)){
+            cache.setProprietaireId(Integer.parseInt(proprietaireId));
+        }
+        if (!"".equals(statut)){
+            cache.setStatut(statut.toUpperCase());
+        }
+        session.update(cache);
+        tx.commit();
+    }
+
     public List<CacheEntity> getAll()
     {
         List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();

@@ -216,8 +216,9 @@ public class Main {
             do
                 avatar = reader.readLine();
             while (avatar.length() > 255);
-            UtilisateurRepository utilisateurRepo = new UtilisateurRepository(getSession());
-            utilisateurRepo.updateUtilisateur(Integer.parseInt(id), pseudo, descripton, avatar);
+
+
+            ((UtilisateurRepository)repository).updateUtilisateur(Integer.parseInt(id), pseudo, descripton, avatar);
         }
     }
 
@@ -240,8 +241,7 @@ public class Main {
             while (("".equals(libelle)) || (libelle.length() > 100));
 
             //On effectue les changements en base
-            LieuRepository repoLieu = new LieuRepository(getSession());
-            repoLieu.updateLieu(Integer.parseInt(id), libelle);
+            ((LieuRepository)repository).updateLieu(Integer.parseInt(id), libelle);
         }
     }
 
@@ -299,9 +299,8 @@ public class Main {
             //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
             //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
 
-            VisiteRepository visiteRepo = new VisiteRepository(getSession());
-            // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
-            visiteRepo.updateVisite(Integer.parseInt(idVisite), dateVisite, utilisateurId, cacheId, commentaire, statut);
+
+            ((VisiteRepository)repository).updateVisite(Integer.parseInt(idVisite), dateVisite, utilisateurId, cacheId, commentaire, statut);
         }
 
     }
@@ -374,9 +373,8 @@ public class Main {
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
 
-            CacheRepository cacheRepo = new CacheRepository(getSession());
-            // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
-            cacheRepo.updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
+
+            ((CacheRepository)repository).updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
         }
     }
 }

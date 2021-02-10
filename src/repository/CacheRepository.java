@@ -1,15 +1,11 @@
 package repository;
 
 import modele.CacheEntity;
-import modele.UtilisateurEntity;
-import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
+import java.util.List;
 
 
 public class CacheRepository implements RepositoryInterface
@@ -76,4 +72,11 @@ public class CacheRepository implements RepositoryInterface
         session.update(cache);
         tx.commit();
     }
+
+    public List<CacheEntity> getAll()
+    {
+        List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();
+        return lieux;
+    }
+
 }

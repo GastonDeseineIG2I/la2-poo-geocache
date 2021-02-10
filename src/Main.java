@@ -1,5 +1,6 @@
 import modele.CacheEntity;
 import modele.VisiteEntity;
+import modele.CacheEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,7 @@ import repository.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,10 +53,13 @@ public class Main {
             System.out.println("4 - Gestion des visites");
             System.out.println("5 - Quitter");
             String res;
+            int choice;
             do
+            {
                 res = reader.readLine();
-                //TODO crash si String
-            while ((Integer.parseInt(res)) > 5 || (Integer.parseInt(res) < 0));
+
+                choice = isNumeric(res);
+            }while(choice > 5 || choice < 0);
 
 
             System.out.println("-----------------------------------------");
@@ -107,25 +112,38 @@ public class Main {
         }
 
         System.out.println("-----------------------------------------");
-        System.out.println("1 - Ajouter " + menuString);
-        System.out.println("2 - Modifier " + menuString);
-        System.out.println("3 - Supprimer " + menuString);
-        System.out.println("4 - Rechercher " + menuString);
-        System.out.println("5 - Retour au menu précédent");
-        String res;
+        System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ?"x":"s"));
+        System.out.println("2 - Ajouter " + menuString);
+        System.out.println("3 - Modifier " + menuString);
+        System.out.println("4 - Supprimer " + menuString);
+        System.out.println("5 - Rechercher " + menuString);
+        System.out.println("6 - Retour au menu précédent");
+        String res ;
+        int choice;
         do
+        {
             res = reader.readLine();
-        while ((Integer.parseInt(res)) > 5 || (Integer.parseInt(res) < 0));
+
+            choice = isNumeric(res);
+        }while(choice > 6 || choice < 0);
 
 
         System.out.println("-----------------------------------------");
         String id;
-        Object object;
-        switch (Integer.parseInt(res)) {
+        Object object ;
+        List<?> objectList;
+        switch (Integer.parseInt(res)){
             case 1:
-                System.out.println(1);
+                objectList = repository.getAll();
+                for (Object objectfromlist:objectList)
+                {
+                    System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                }
                 break;
             case 2:
+                System.out.println("ajouter");
+                break;
+            case 3:
                 switch (menuString) {
                     case "une cache":
                         updateCache(repository);
@@ -146,24 +164,37 @@ public class Main {
 
                 }
                 break;
-            case 3:
+            case 4:
                 System.out.println("Entrez l'identifiant à supprimer : ");
                 id = reader.readLine();
                 repository.deleteById(Integer.parseInt(id));
 
                 break;
-            case 4:
+            case 5:
                 System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
                 object = repository.findById(Integer.parseInt(id));
                 System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
                 break;
-            case 5:
+            case 6:
                 return;
         }
         System.out.println("Appuyer sur ENTER pour continuer.");
         reader.readLine();
 
+    }
+
+    public static int isNumeric(String res){
+        int numeric;
+        try
+        {
+            numeric = Integer.parseInt(res);
+        } catch (NumberFormatException nfe)
+        {
+            numeric = -1;
+        }
+
+        return numeric;
     }
 
     private static void updateUtilisateur(RepositoryInterface repository) throws IOException {

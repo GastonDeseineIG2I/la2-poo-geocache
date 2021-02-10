@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class VisiteRepository implements RepositoryInterface
 {
@@ -31,6 +32,12 @@ public class VisiteRepository implements RepositoryInterface
         tx.commit();
     }
 
+    public List<VisiteEntity> getAll()
+    {
+        List<VisiteEntity> visites = session.createQuery("from VisiteEntity").list();
+        return visites;
+    }
+
     public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = session.load(VisiteEntity.class, id);
@@ -51,6 +58,26 @@ public class VisiteRepository implements RepositoryInterface
             visite.setStatut(statut.toUpperCase());
         }
         session.update(visite);
+        tx.commit();
+    }
+
+    public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
+        Transaction tx = session.beginTransaction();
+        VisiteEntity visite = new VisiteEntity();
+
+        visite.setDateVisite(Timestamp.valueOf(dateVisite));
+
+        if (!"".equals(utilisateurId)){
+            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+        }
+        visite.setCacheId(Integer.parseInt(cacheId));
+
+        if (!"".equals(commentaire)){
+            visite.setCommentaire(commentaire);
+        }
+        visite.setStatut(statut.toUpperCase());
+
+        session.persist(visite);
         tx.commit();
     }
 

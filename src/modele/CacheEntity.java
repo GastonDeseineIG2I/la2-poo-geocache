@@ -1,6 +1,7 @@
 package modele;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -8,8 +9,8 @@ import java.util.Objects;
 public class CacheEntity
 {
     private int id;
-    private Integer latitude;
-    private Integer longitude;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private String description;
     private String nature;
     private String typeCache;
@@ -31,25 +32,25 @@ public class CacheEntity
     }
 
     @Basic
-    @Column(name = "latitude", nullable = true, precision = 0)
-    public Integer getLatitude()
+    @Column(name = "latitude", nullable = true, precision = 12, scale = 10)
+    public BigDecimal getLatitude()
     {
         return latitude;
     }
 
-    public void setLatitude(Integer latitude)
+    public void setLatitude(BigDecimal latitude)
     {
         this.latitude = latitude;
     }
 
     @Basic
-    @Column(name = "longitude", nullable = true, precision = 0)
-    public Integer getLongitude()
+    @Column(name = "longitude", nullable = true, precision = 13, scale = 10)
+    public BigDecimal getLongitude()
     {
         return longitude;
     }
 
-    public void setLongitude(Integer longitude)
+    public void setLongitude(BigDecimal longitude)
     {
         this.longitude = longitude;
     }

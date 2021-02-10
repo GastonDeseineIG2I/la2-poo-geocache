@@ -139,27 +139,35 @@ public class Main {
                 }
                 break;
             case 2:
-                System.out.println("ajouter");
+                switch (typeMenu) {
+                    case "cache":
+                        break;
+                    case "lieu":
+                        createLieu(repository);
+                        break;
+                    case "utilisateur":
+                        createUtilisateur(repository);
+                        break;
+                    case "visite":
+                        break;
+                }
                 break;
             case 3:
-                switch (menuString) {
-                    case "une cache":
+                switch (typeMenu) {
+                    case "cache":
                         updateCache(repository);
                         break;
-                    case "un lieu":
+                    case "lieu":
                         updateLieu(repository);
                         break;
 
-                    case "un utilisateur":
+                    case "utilisateur":
                         // On récupere l'identifiant de l'utilisateur
                         updateUtilisateur(repository);
                         break;
-                    case "une visite":
+                    case "visite":
                         updateVisite(repository);
-
-
                         break;
-
                 }
                 break;
             case 4:
@@ -222,6 +230,31 @@ public class Main {
         }
     }
 
+    private static void createUtilisateur(RepositoryInterface repository) throws IOException {
+        System.out.println("Entrez le  pseudo ");
+        String pseudo;
+
+        do
+            pseudo = reader.readLine();
+        //TODO tester si le pseudo est unique
+        while (pseudo.length() > 50);
+
+        System.out.println("Entrez la description ");
+        String descripton = reader.readLine();
+
+        String avatar;
+        System.out.println("Entrez le nom de l'image ");
+        System.out.println("Ne pas oblier .png a la fin");
+        do
+            avatar = reader.readLine();
+        while (avatar.length() > 255);
+
+
+        ((UtilisateurRepository)repository).createUtilisateur(pseudo, descripton, avatar);
+        System.out.println("L'utilisateur a bien été ajouté ");
+
+    }
+
 
     private static void updateLieu(RepositoryInterface repository) throws IOException {
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
@@ -243,6 +276,25 @@ public class Main {
             //On effectue les changements en base
             ((LieuRepository)repository).updateLieu(Integer.parseInt(id), libelle);
         }
+    }
+
+    private static void createLieu(RepositoryInterface repository) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        // On declare un libellé que nous recupérons sur la ligne de commande
+        String libelle = "";
+        System.out.println("Entrez le libellé du nouveau lieu");
+
+        //On vérifie que l'entrée n'est pas vide
+        do
+            libelle = reader.readLine();
+        while (("".equals(libelle)) || (libelle.length() > 100));
+
+        //On effectue les changements en base
+        ((LieuRepository)repository).createLieu(libelle);
+
+        System.out.println("Le lieu a été créé");
+
     }
 
     private static void updateVisite(RepositoryInterface repository) throws IOException {

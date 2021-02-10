@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 
@@ -38,27 +39,41 @@ public class CacheRepository implements RepositoryInterface
         tx.commit();
     }
 
-    public void updateCache(int id, DecimalFormat latitude, DecimalFormat longitude, String description, String nature,
-                            String typeCache,String statut, String codeSecret,int lieuId, int proprietaireId) {
+    public void updateCache(int id, String latitude, String longitude, String description, String nature,
+                            String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
         Transaction tx = session.beginTransaction();
-        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
-        if (!"".equals(dateVisite) )
+        CacheEntity cache = session.load(CacheEntity.class, id);
+        if (!"".equals(latitude) )
         {
-            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+            BigDecimal lat = new BigDecimal(latitude);
+            cache.setLatitude(lat);
         }
-        if (!"".equals(utilisateurId)){
-            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+        if (!"".equals(longitude)){
+            BigDecimal lon = new BigDecimal(longitude);
+            cache.setLongitude(lon);
         }
-        if (!"".equals(cacheId)){
-            visite.setCacheId(Integer.parseInt(cacheId));
+        if (!"".equals(description)){
+            cache.setDescription(description);
         }
-        if (!"".equals(commentaire)){
-            visite.setCommentaire(commentaire);
+        if (!"".equals(nature)){
+            cache.setNature(nature.toUpperCase());
+        }
+        if (!"".equals(typeCache)){
+            cache.setNature(typeCache.toUpperCase());
+        }
+        if (!"".equals(typeCache)){
+            cache.setNature(codeSecret);
+        }
+        if (!"".equals(lieuId)){
+            cache.setLieuId(Integer.parseInt(lieuId));
+        }
+        if (!"".equals(proprietaireId)){
+            cache.setProprietaireId(Integer.parseInt(proprietaireId));
         }
         if (!"".equals(statut)){
-            visite.setStatut(statut.toUpperCase());
+            cache.setStatut(statut.toUpperCase());
         }
-        session.update(utilisateur);
+        session.update(cache);
         tx.commit();
     }
 }

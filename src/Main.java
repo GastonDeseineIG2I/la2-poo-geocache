@@ -1,8 +1,11 @@
 import modele.CacheEntity;
+import modele.VisiteEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.query.criteria.internal.expression.function.UpperFunction;
 import repository.*;
 
@@ -13,41 +16,33 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Main
-{
+public class Main {
     private static final SessionFactory ourSessionFactory;
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    static
-    {
-        try
-        {
+    static {
+        try {
             Configuration configuration = new Configuration();
             configuration.configure();
 
             ourSessionFactory = configuration.buildSessionFactory();
-        } catch (Throwable ex)
-        {
+        } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    public static Session getSession() throws HibernateException
-    {
+    public static Session getSession() throws HibernateException {
         return ourSessionFactory.openSession();
     }
 
-    public static void main(final String[] args) throws Exception
-    {
+    public static void main(final String[] args) throws Exception {
         menu();
     }
 
 
-    public static void menu() throws IOException
-    {
+    public static void menu() throws IOException {
         boolean terminate = false;
-        while(!terminate)
-        {
+        while (!terminate) {
             System.out.println("Selectionnez en entrant le numéro du menu");
             System.out.println("-----------------------------------------");
             System.out.println("1 - Gestion des caches");
@@ -57,15 +52,14 @@ public class Main
             System.out.println("5 - Quitter");
             String res;
             do
-                 res = reader.readLine();
-            //TODO crash si String
-            while((Integer.parseInt(res)) > 5 || (Integer.parseInt(res)<0));
+                res = reader.readLine();
+                //TODO crash si String
+            while ((Integer.parseInt(res)) > 5 || (Integer.parseInt(res) < 0));
 
 
             System.out.println("-----------------------------------------");
 
-            switch (Integer.parseInt(res))
-            {
+            switch (Integer.parseInt(res)) {
                 case 1:
                     menu("cache");
                     break;
@@ -87,12 +81,11 @@ public class Main
     }
 
 
-    public static void menu(String typeMenu) throws IOException
-    {
+    public static void menu(String typeMenu) throws IOException {
         RepositoryInterface repository;
         String menuString;
 
-        switch (typeMenu){
+        switch (typeMenu) {
             case "cache":
                 menuString = "une cache";
                 repository = new CacheRepository(getSession());
@@ -119,40 +112,40 @@ public class Main
         System.out.println("3 - Supprimer " + menuString);
         System.out.println("4 - Rechercher " + menuString);
         System.out.println("5 - Retour au menu précédent");
-        String res ;
+        String res;
         do
             res = reader.readLine();
-        while((Integer.parseInt(res)) > 5 ||  (Integer.parseInt(res)<0));
+        while ((Integer.parseInt(res)) > 5 || (Integer.parseInt(res) < 0));
 
 
         System.out.println("-----------------------------------------");
         String id;
-        Object object ;
-        switch (Integer.parseInt(res)){
+        Object object;
+        switch (Integer.parseInt(res)) {
             case 1:
                 System.out.println(1);
                 break;
             case 2:
-               switch (menuString){
-                   case "une cache":
+                switch (menuString) {
+                    case "une cache":
 
-                       break;
-                   case "un lieu":
-                       updateLieu(repository);
-                       break;
+                        break;
+                    case "un lieu":
+                        updateLieu(repository);
+                        break;
 
-                   case "un utilisateur":
-                       // On récupere l'identifiant de l'utilisateur
-                       updateUtilisateur(repository);
-                       break;
-                   case "une visite":
-                       updateVisite(repository);
+                    case "un utilisateur":
+                        // On récupere l'identifiant de l'utilisateur
+                        updateUtilisateur(repository);
+                        break;
+                    case "une visite":
+                        updateVisite(repository);
 
 
-                       break;
+                        break;
 
-               }
-               break;
+                }
+                break;
             case 3:
                 System.out.println("Entrez l'identifiant à supprimer : ");
                 id = reader.readLine();
@@ -163,7 +156,7 @@ public class Main
                 System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
                 object = repository.findById(Integer.parseInt(id));
-                System.out.println(object != null?object.toString():"Resultat non trouvé.");
+                System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
                 break;
             case 5:
                 return;
@@ -175,16 +168,16 @@ public class Main
 
     private static void updateUtilisateur(RepositoryInterface repository) throws IOException {
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
-         String id = reader.readLine();
+        String id = reader.readLine();
         Object object = repository.findById(Integer.parseInt(id));
-        System.out.println(object != null?object.toString():"Resultat non trouvé.");
-        if (object != null){
+        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
+        if (object != null) {
             System.out.println("Si une valeur est inchangée tapez sur entree");
             System.out.println("Entrez le nouveau pseudo ");
             String pseudo;
             do
                 pseudo = reader.readLine();
-            while (pseudo.length()>50);
+            while (pseudo.length() > 50);
             System.out.println("Entrez la nouvelle description ");
             String descripton = reader.readLine();
 
@@ -193,9 +186,9 @@ public class Main
             System.out.println("Ne pas oblier .png a la fin");
             do
                 avatar = reader.readLine();
-            while (avatar.length()>255);
-            UtilisateurRepository utilisateurRepo=new UtilisateurRepository(getSession());
-            utilisateurRepo.updateUtilisateur(Integer.parseInt(id),pseudo,descripton,avatar);
+            while (avatar.length() > 255);
+            UtilisateurRepository utilisateurRepo = new UtilisateurRepository(getSession());
+            utilisateurRepo.updateUtilisateur(Integer.parseInt(id), pseudo, descripton, avatar);
         }
     }
 
@@ -224,65 +217,141 @@ public class Main
     }
 
     private static void updateVisite(RepositoryInterface repository) throws IOException {
-    System.out.println("Entrez l'identifiant de la visite à modifier : ");
-    // A FAIRE : redemander si l'identifiant de visite n'est pas bon
-    String idVisite = reader.readLine();
-     Object object = repository.findById(Integer.parseInt(idVisite));
-    System.out.println(object != null?object.toString():"Resultat non trouvé.");
+        System.out.println("Entrez l'identifiant de la visite à modifier : ");
+        // A FAIRE : redemander si l'identifiant de visite n'est pas bon
+        String idVisite = reader.readLine();
+        Object object = repository.findById(Integer.parseInt(idVisite));
+        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
-    if (object != null) {
-        System.out.println("Si une valeur est inchangée tapez sur entree");
-        System.out.println("Entrez la nouvelle date et heure de visite");
-        System.out.println("Format : YYYY-MM-DD hh:mm:ss");
-        // A faire : Controle de la date
-        String dateVisite;
-        dateVisite = reader.readLine();
-
-
-        System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
-        String utilisateurId;
-        do {
-            utilisateurId = reader.readLine();
-            //On regarde si on a un utilisateur que existe
-            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
-            object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
-            System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
-        }while(object == null);
+        if (object != null) {
+            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Entrez la nouvelle date et heure de visite");
+            System.out.println("Format : YYYY-MM-DD hh:mm:ss");
+            // A faire : Controle de la date
+            String dateVisite;
+            dateVisite = reader.readLine();
 
 
+            System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
+            String utilisateurId;
+            do {
+                utilisateurId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
+                object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
+                System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
+            } while (object == null);
 
 
-        System.out.println("Entrez l'id de la cache'");
-        String cacheId;
-        do {
-            cacheId = reader.readLine();
-            //On regarde si on a un utilisateur que existe
-            CacheRepository repoCache = new CacheRepository(getSession());
-            object = repoCache.findById(Integer.parseInt(cacheId));
-            System.out.println(object != null ? object.toString() : "Cache non trouvé.");
-        }while(object == null);
+            System.out.println("Entrez l'id de la cache'");
+            String cacheId;
+            do {
+                cacheId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                CacheRepository repoCache = new CacheRepository(getSession());
+                object = repoCache.findById(Integer.parseInt(cacheId));
+                System.out.println(object != null ? object.toString() : "Cache non trouvé.");
+            } while (object == null);
 
 
-        String commentaire;
-        System.out.println("Entrez un commentaire'");
-        commentaire = reader.readLine();
+            String commentaire;
+            System.out.println("Entrez un commentaire'");
+            commentaire = reader.readLine();
 
-        String statut;
-        System.out.println("Entrez un statut : En cours / Terminee'");
+            String statut;
+            System.out.println("Entrez un statut : En cours / Terminee'");
 
-        do {
-            statut = reader.readLine();
-        // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
-        }while(!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
+            do {
+                statut = reader.readLine();
+                // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
+            } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
 
 
-          //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
-          //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
+            //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
+            //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
 
-        VisiteRepository visiteRepo=new VisiteRepository(getSession());
-        // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
-         visiteRepo.updateVisite(Integer.parseInt(idVisite), dateVisite,utilisateurId,cacheId,commentaire,statut);
+            VisiteRepository visiteRepo = new VisiteRepository(getSession());
+            // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
+            visiteRepo.updateVisite(Integer.parseInt(idVisite), dateVisite, utilisateurId, cacheId, commentaire, statut);
         }
 
+    }
+
+
+    private static void updateCache(RepositoryInterface repository) throws IOException {
+        System.out.println("Entrez l'identifiant de la cache à modifier : ");
+        String idCache = reader.readLine();
+        Object object = repository.findById(Integer.parseInt(idCache));
+        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
+
+        if (object != null) {
+            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Entrez la latitude");
+            String latitude;
+            latitude = reader.readLine();
+
+            System.out.println("Entrez la longitude");
+            String longitude;
+            longitude = reader.readLine();
+
+            System.out.println("Entrez la description");
+            String description;
+            description = reader.readLine();
+
+            System.out.println("Entrez la nature PHYSIQUE / VIRTUELLE");
+            String nature;
+            do{
+            nature = reader.readLine();
+            } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) && (!"".equals(nature.toUpperCase())));
+
+
+        System.out.println("Entrez le type de cache");
+            System.out.println("TRADITIONNELLE / JEU DE PISTE / OBJET");
+            String typeCache;
+            do
+                    typeCache = reader.readLine();
+            while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())) && (!"".equals(typeCache.toUpperCase())));
+
+
+
+            System.out.println("Entrez le code secret");
+            String codeSecret;
+            codeSecret = reader.readLine();
+
+            System.out.println("Entrez le statut de la cache");
+            System.out.println("ACTIVE / INACTIVE");
+            String statut;
+            do {
+                statut = reader.readLine();
+            } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())) && (!"".equals(statut.toUpperCase())));
+
+
+            System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
+            String proprietaireId;
+            do {
+                proprietaireId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
+                object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
+                System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
+            } while (object == null);
+
+            System.out.println("Obligatoire : Entrez l'id du lieu de la cache'");
+            String lieuId;
+            do {
+                lieuId = reader.readLine();
+                LieuRepository repoCache = new LieuRepository(getSession());
+                object = repoCache.findById(Integer.parseInt(lieuId));
+                System.out.println(object != null ? object.toString() : "lieu non trouvé.");
+            } while (object == null);
+
+
+            System.out.println("Entrez un statut : En cours / Terminee'");
+
+
+            CacheRepository cacheRepo = new CacheRepository(getSession());
+            // visiteRepo.updateVisite(Integer.parseInt(idVisite), dateHeureVisite,utilisateurId,cacheId,commentaire,statut);
+            cacheRepo.updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
+        }
     }
 }

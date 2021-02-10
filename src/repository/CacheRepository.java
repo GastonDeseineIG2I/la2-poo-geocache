@@ -55,9 +55,9 @@ public class CacheRepository implements RepositoryInterface
             cache.setNature(nature.toUpperCase());
         }
         if (!"".equals(typeCache)){
-            cache.setNature(typeCache.toUpperCase());
+            cache.setTypeCache(typeCache.toUpperCase());
         }
-        if (!"".equals(typeCache)){
+        if (!"".equals(codeSecret)){
             cache.setNature(codeSecret);
         }
         if (!"".equals(lieuId)){

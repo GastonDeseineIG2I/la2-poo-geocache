@@ -131,11 +131,9 @@ public class Main {
         System.out.println("-----------------------------------------");
         String id;
         Object object ;
-        List<?> objectList;
         switch (Integer.parseInt(res)){
             case 1:
-                objectList = repository.getAll();
-                for (Object objectfromlist:objectList)
+                for (Object objectfromlist:repository.getAll())
                 {
                     System.out.println(objectfromlist != null?objectfromlist.toString():"");
                 }

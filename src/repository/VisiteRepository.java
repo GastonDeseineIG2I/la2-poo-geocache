@@ -1,13 +1,11 @@
 package repository;
 
-import modele.UtilisateurEntity;
 import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 public class VisiteRepository implements RepositoryInterface
 {

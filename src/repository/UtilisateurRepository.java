@@ -1,6 +1,5 @@
 package repository;
 
-import modele.LieuEntity;
 import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

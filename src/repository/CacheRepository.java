@@ -1,7 +1,6 @@
 package repository;
 
 import modele.CacheEntity;
-import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

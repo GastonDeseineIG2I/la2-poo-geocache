@@ -127,4 +127,22 @@ public class CacheRepository implements RepositoryInterface
     }
 
 
+    //List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache join UtilisateurEntity as utilisateur " +
+      //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
+
+    public List<CacheEntity> getCacheByProprietaire(int id){
+
+        List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaireId =:id ")
+                .setParameter("id",id)
+                .list();
+        return cacheUtilisateur;
+    }
+
+    public List<CacheEntity> getCacheByLieu(int id){
+
+        List<CacheEntity> cacheLieux = session.createQuery("from CacheEntity as cache where cache.lieuId =:id ")
+                .setParameter("id",id)
+                .list();
+        return cacheLieux;
+    }
 }

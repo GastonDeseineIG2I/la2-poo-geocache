@@ -161,7 +161,7 @@ public class Menu
             case 99:
                 return;
             default:
-                casSpecifique(typeMenu,Integer.parseInt(res));
+                casSpecifique(typeMenu,Integer.parseInt(res), repository);
                 break;
         }
         System.out.println("Appuyer sur ENTER pour continuer.");
@@ -173,7 +173,8 @@ public class Menu
     public static void menuSpecifique(String typeMenu, String menuString){
         switch (typeMenu) {
             case "cache":
-                System.out.println("6 - Specifique " + menuString);
+                System.out.println("6 - Activer " + menuString);
+                System.out.println("7 - Desactiver " + menuString);
                 break;
             case "utilisateur":
                 System.out.println("6 - Specifique " + menuString);
@@ -190,11 +191,34 @@ public class Menu
     }
 
 
-    private static void casSpecifique(String typeMenu, int cas){
+    private static void casSpecifique(String typeMenu, int cas, RepositoryInterface repository) throws IOException
+    {
+        int id;
+        Object object;
         switch (typeMenu) {
             case "cache":
                 switch (cas){
+                    case 6:
+                        System.out.println("Entrez l'identifiant à activer : ");
+                        id = Main.isNumeric(reader.readLine());
+                        object = repository.findById(id);
+                        if(object != null){
+                            ((CacheRepository)repository).activeCache(id);
+                            System.out.println(object.toString());
+                            System.out.println("La cache a été activée.");
+                        }
+                    break;
+                    case 7:
+                        System.out.println("Entrez l'identifiant à desactiver : ");
+                        id = Main.isNumeric(reader.readLine());
+                        object = repository.findById(id);
+                        if(object != null){
+                            ((CacheRepository)repository).desactiveCache(id);
+                            System.out.println(object.toString());
+                            System.out.println("La cache a été desactivée.");
+                        }
 
+                    break;
                 }
                 break;
             case "utilisateur":

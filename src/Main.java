@@ -532,7 +532,5 @@ public class Main {
             } while (object == null);
 
             ((CacheRepository)repository).createCache(latitude, longitude, description, nature, typeCache, codeSecret, lieuId, proprietaireId);
-
-
     }
 }

@@ -1,4 +1,5 @@
 import modele.CacheEntity;
+import modele.LieuEntity;
 import modele.VisiteEntity;
 import repository.*;
 
@@ -307,7 +308,7 @@ public class Menu
             object = repoLieux.findById(Integer.parseInt(id));
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
-        for (Object objectfromlist:(repository).getCacheByLieu(Integer.parseInt(id)))
+        for (Object objectfromlist:((LieuEntity)object).getCaches())
         {
             System.out.println(objectfromlist != null?objectfromlist.toString():"");
         }

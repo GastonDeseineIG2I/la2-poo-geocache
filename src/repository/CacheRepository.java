@@ -75,7 +75,7 @@ public class CacheRepository implements RepositoryInterface
 
 
     public void createCache(String latitude, String longitude, String description, String nature,
-                            String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
+                            String typeCache, String codeSecret,String lieuId, String proprietaireId) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = new CacheEntity();
 
@@ -99,7 +99,7 @@ public class CacheRepository implements RepositoryInterface
         cache.setTypeCache(typeCache.toUpperCase());
         cache.setCodeSecret(codeSecret);
         cache.setProprietaireId(Integer.parseInt(proprietaireId));
-        cache.setStatut(statut.toUpperCase());
+        cache.setStatut("INACTIVE");
         session.persist(cache);
         tx.commit();
     }

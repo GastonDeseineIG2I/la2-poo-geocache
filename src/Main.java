@@ -508,10 +508,6 @@ public class Main {
 
             System.out.println("Obligatoire : Entrez le statut de la cache");
             System.out.println("ACTIVE / INACTIVE");
-            String statut;
-            do {
-                statut = reader.readLine();
-            } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())));
 
 
             System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
@@ -535,7 +531,7 @@ public class Main {
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
 
-            ((CacheRepository)repository).createCache(latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
+            ((CacheRepository)repository).createCache(latitude, longitude, description, nature, typeCache, codeSecret, lieuId, proprietaireId);
 
 
     }

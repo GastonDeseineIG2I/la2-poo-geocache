@@ -177,6 +177,8 @@ public class Menu
             case "cache":
                 System.out.println("6 - Activer " + menuString);
                 System.out.println("7 - Desactiver " + menuString);
+                System.out.println("8 - Liste les caches d'un utilisateur " );
+                System.out.println("9 - Liste les caches d'un lieu " );
                 break;
             case "utilisateur":
                 System.out.println("6 - Specifique " + menuString);
@@ -186,6 +188,7 @@ public class Menu
                 break;
             case "visite":
                 System.out.println("6 - Valider " + menuString);
+                System.out.println("7 - Recherche de visite en fonction d'une date");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
@@ -225,6 +228,12 @@ public class Menu
                         }
 
                     break;
+                    case 8:
+                        listeCacheProprietaire(((CacheRepository)repository));
+                        break;
+                    case 9:
+                        listeCacheLieu(((CacheRepository)repository));
+                        break;
                 }
                 break;
             case "utilisateur":
@@ -263,11 +272,62 @@ public class Menu
                             System.out.println("Cette visite n'existe pas.");
                         }
                         break;
+                    case 7:
+                        listeVisiteParDate(((VisiteRepository)repository));
                 }
                 break;
             default:
                 return;
         }
+    }
+
+    private static void listeVisiteParDate(VisiteRepository repository) throws IOException {
+        System.out.println("Entrez la date de visite :");
+        System.out.println("Format YYYY-MM-dd:");
+        String dateVisite ;
+        Object object;
+        dateVisite = reader.readLine();
+
+
+        for (Object objectfromlist:(repository).getVisiteByDate(dateVisite))
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
+
+    }
+
+
+    private static void listeCacheLieu(CacheRepository repository) throws IOException {
+        System.out.println("Entre l'identifiant du lieu pour afficher ses caches");
+        String id ;
+        Object object;
+        do {
+            id = reader.readLine();
+            LieuRepository repoLieux = new LieuRepository(Main.getSession());
+            object = repoLieux.findById(Integer.parseInt(id));
+            System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
+        } while (object == null);
+        for (Object objectfromlist:(repository).getCacheByLieu(Integer.parseInt(id)))
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
+
+    }
+    private static void listeCacheProprietaire(CacheRepository repository) throws IOException {
+        System.out.println("Entre l'identifiant de l'utilisateur pour afficher ses caches");
+        String id ;
+        Object object;
+        do {
+            id = reader.readLine();
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+            object = repoUtilisateur.findById(Integer.parseInt(id));
+            System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
+        } while (object == null);
+        for (Object objectfromlist:(repository).getCacheByProprietaire(Integer.parseInt(id)))
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
+
     }
 
 
@@ -488,7 +548,6 @@ public class Menu
         } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
         ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
     }
-
     private static void createLieu(RepositoryInterface repository) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

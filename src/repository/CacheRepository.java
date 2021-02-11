@@ -58,7 +58,7 @@ public class CacheRepository implements RepositoryInterface
             cache.setTypeCache(typeCache.toUpperCase());
         }
         if (!"".equals(codeSecret)){
-            cache.setNature(codeSecret);
+            cache.setCodeSecret(codeSecret);
         }
         if (!"".equals(lieuId)){
             cache.setLieuId(Integer.parseInt(lieuId));
@@ -78,6 +78,7 @@ public class CacheRepository implements RepositoryInterface
                             String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = new CacheEntity();
+
         if (!"".equals(latitude) )
         {
             BigDecimal lat = new BigDecimal(latitude);
@@ -90,25 +91,16 @@ public class CacheRepository implements RepositoryInterface
         if (!"".equals(description)){
             cache.setDescription(description);
         }
-        if (!"".equals(nature)){
-            cache.setNature(nature.toUpperCase());
-        }
-        if (!"".equals(typeCache)){
-            cache.setTypeCache(typeCache.toUpperCase());
-        }
-        if (!"".equals(codeSecret)){
-            cache.setNature(codeSecret);
-        }
         if (!"".equals(lieuId)){
             cache.setLieuId(Integer.parseInt(lieuId));
         }
-        if (!"".equals(proprietaireId)){
-            cache.setProprietaireId(Integer.parseInt(proprietaireId));
-        }
-        if (!"".equals(statut)){
-            cache.setStatut(statut.toUpperCase());
-        }
-        session.update(cache);
+        // Ne peuvent pas être nul
+        cache.setNature(nature.toUpperCase());
+        cache.setTypeCache(typeCache.toUpperCase());
+        cache.setCodeSecret(codeSecret);
+        cache.setProprietaireId(Integer.parseInt(proprietaireId));
+        cache.setStatut(statut.toUpperCase());
+        session.persist(cache);
         tx.commit();
     }
 

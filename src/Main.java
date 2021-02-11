@@ -141,6 +141,7 @@ public class Main {
             case 2:
                 switch (typeMenu) {
                     case "cache":
+                        createCache(repository);
                         break;
                     case "lieu":
                         createLieu(repository);
@@ -167,7 +168,10 @@ public class Main {
                         break;
                     case "visite":
                         updateVisite(repository);
+
+
                         break;
+
                 }
                 break;
             case 4:
@@ -229,33 +233,77 @@ public class Main {
             ((UtilisateurRepository)repository).updateUtilisateur(Integer.parseInt(id), pseudo, descripton, avatar);
         }
     }
+    private static void updateCache(RepositoryInterface repository) throws IOException {
+        System.out.println("Entrez l'identifiant de la cache à modifier : ");
+        String idCache = reader.readLine();
+        Object object = repository.findById(Integer.parseInt(idCache));
+        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
-    private static void createUtilisateur(RepositoryInterface repository) throws IOException {
-        System.out.println("Entrez le  pseudo ");
-        String pseudo;
+        if (object != null) {
+            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Entrez la latitude");
+            String latitude;
+            latitude = reader.readLine();
 
-        do
-            pseudo = reader.readLine();
-        //TODO tester si le pseudo est unique
-        while (pseudo.length() > 50);
+            System.out.println("Entrez la longitude");
+            String longitude;
+            longitude = reader.readLine();
 
-        System.out.println("Entrez la description ");
-        String descripton = reader.readLine();
+            System.out.println("Entrez la description");
+            String description;
+            description = reader.readLine();
 
-        String avatar;
-        System.out.println("Entrez le nom de l'image ");
-        System.out.println("Ne pas oblier .png a la fin");
-        do
-            avatar = reader.readLine();
-        while (avatar.length() > 255);
+            System.out.println("Entrez la nature PHYSIQUE / VIRTUELLE");
+            String nature;
+            do{
+                nature = reader.readLine();
+            } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) && (!"".equals(nature.toUpperCase())));
 
 
-        ((UtilisateurRepository)repository).createUtilisateur(pseudo, descripton, avatar);
-        System.out.println("L'utilisateur a bien été ajouté ");
+            System.out.println("Entrez le type de cache");
+            System.out.println("TRADITIONNELLE / JEU DE PISTE / OBJET");
+            String typeCache;
+            do
+                typeCache = reader.readLine();
+            while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())) && (!"".equals(typeCache.toUpperCase())));
 
+
+
+            System.out.println("Entrez le code secret");
+            String codeSecret;
+            codeSecret = reader.readLine();
+
+            System.out.println("Entrez le statut de la cache");
+            System.out.println("ACTIVE / INACTIVE");
+            String statut;
+            do {
+                statut = reader.readLine();
+            } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())) && (!"".equals(statut.toUpperCase())));
+
+
+            System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
+            String proprietaireId;
+            do {
+                proprietaireId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
+                object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
+                System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
+            } while (object == null);
+
+            System.out.println("Obligatoire : Entrez l'id du lieu de la cache'");
+            String lieuId;
+            do {
+                lieuId = reader.readLine();
+                LieuRepository repoCache = new LieuRepository(getSession());
+                object = repoCache.findById(Integer.parseInt(lieuId));
+                System.out.println(object != null ? object.toString() : "lieu non trouvé.");
+            } while (object == null);
+
+
+            ((CacheRepository)repository).updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
+        }
     }
-
-
     private static void updateLieu(RepositoryInterface repository) throws IOException {
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -277,26 +325,6 @@ public class Main {
             ((LieuRepository)repository).updateLieu(Integer.parseInt(id), libelle);
         }
     }
-
-    private static void createLieu(RepositoryInterface repository) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        // On declare un libellé que nous recupérons sur la ligne de commande
-        String libelle = "";
-        System.out.println("Entrez le libellé du nouveau lieu");
-
-        //On vérifie que l'entrée n'est pas vide
-        do
-            libelle = reader.readLine();
-        while (("".equals(libelle)) || (libelle.length() > 100));
-
-        //On effectue les changements en base
-        ((LieuRepository)repository).createLieu(libelle);
-
-        System.out.println("Le lieu a été créé");
-
-    }
-
     private static void updateVisite(RepositoryInterface repository) throws IOException {
         System.out.println("Entrez l'identifiant de la visite à modifier : ");
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
@@ -358,57 +386,101 @@ public class Main {
     }
 
 
-    private static void updateCache(RepositoryInterface repository) throws IOException {
-        System.out.println("Entrez l'identifiant de la cache à modifier : ");
-        String idCache = reader.readLine();
-        Object object = repository.findById(Integer.parseInt(idCache));
-        System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
-        if (object != null) {
+    private static void createLieu(RepositoryInterface repository) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        // On declare un libellé que nous recupérons sur la ligne de commande
+        String libelle = "";
+        System.out.println("Entrez le libellé du nouveau lieu");
+
+        //On vérifie que l'entrée n'est pas vide
+        do
+            libelle = reader.readLine();
+        while (("".equals(libelle)) || (libelle.length() > 100));
+
+        //On effectue les changements en base
+        ((LieuRepository)repository).createLieu(libelle);
+
+        System.out.println("Le lieu a été créé");
+
+    }
+    private static void createUtilisateur(RepositoryInterface repository) throws IOException {
+        System.out.println("Entrez le  pseudo ");
+        String pseudo;
+
+        do
+            pseudo = reader.readLine();
+            //TODO tester si le pseudo est unique
+        while (pseudo.length() > 50);
+
+        System.out.println("Entrez la description ");
+        String descripton = reader.readLine();
+
+        String avatar;
+        System.out.println("Entrez le nom de l'image ");
+        System.out.println("Ne pas oblier .png a la fin");
+        do
+            avatar = reader.readLine();
+        while (avatar.length() > 255);
+
+
+        ((UtilisateurRepository)repository).createUtilisateur(pseudo, descripton, avatar);
+        System.out.println("L'utilisateur a bien été ajouté ");
+
+    }
+
+
+
+
+    private static void createCache (RepositoryInterface repository) throws  IOException{
+
             System.out.println("Si une valeur est inchangée tapez sur entree");
-            System.out.println("Entrez la latitude");
+            System.out.println("Optionnel : Entrez la latitude");
             String latitude;
             latitude = reader.readLine();
 
-            System.out.println("Entrez la longitude");
+            System.out.println("Optionnel : Entrez la longitude");
             String longitude;
             longitude = reader.readLine();
 
-            System.out.println("Entrez la description");
+            System.out.println("Optionnel : Entrez la description");
             String description;
             description = reader.readLine();
 
-            System.out.println("Entrez la nature PHYSIQUE / VIRTUELLE");
+            System.out.println("Obligatoire : Entrez la nature PHYSIQUE / VIRTUELLE");
             String nature;
             do{
-            nature = reader.readLine();
-            } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) && (!"".equals(nature.toUpperCase())));
+                nature = reader.readLine();
+            } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) );
 
 
-        System.out.println("Entrez le type de cache");
+            System.out.println("Obligatoire : Entrez le type de cache");
             System.out.println("TRADITIONNELLE / JEU DE PISTE / OBJET");
             String typeCache;
             do
-                    typeCache = reader.readLine();
-            while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())) && (!"".equals(typeCache.toUpperCase())));
+                typeCache = reader.readLine();
+            while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())));
 
 
 
-            System.out.println("Entrez le code secret");
+            System.out.println("Obligatoire : Entrez le code secret");
             String codeSecret;
             codeSecret = reader.readLine();
 
-            System.out.println("Entrez le statut de la cache");
+            System.out.println("Obligatoire : Entrez le statut de la cache");
             System.out.println("ACTIVE / INACTIVE");
             String statut;
             do {
                 statut = reader.readLine();
-            } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())) && (!"".equals(statut.toUpperCase())));
+            } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())));
 
 
             System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
             String proprietaireId;
+            Object object;
             do {
+
                 proprietaireId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
@@ -425,8 +497,10 @@ public class Main {
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
 
+            ((CacheRepository)repository).createCache(latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
 
-            ((CacheRepository)repository).updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
-        }
+
     }
+
+
 }

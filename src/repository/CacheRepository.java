@@ -1,6 +1,8 @@
 package repository;
 
 import modele.CacheEntity;
+import modele.LieuEntity;
+import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -61,10 +63,12 @@ public class CacheRepository implements RepositoryInterface
             cache.setCodeSecret(codeSecret);
         }
         if (!"".equals(lieuId)){
-            cache.setLieuId(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository(session).findById(Integer.parseInt(lieuId));
+            cache.setLieu(lieu);
         }
         if (!"".equals(proprietaireId)){
-            cache.setProprietaireId(Integer.parseInt(proprietaireId));
+            UtilisateurEntity proprietaire = new UtilisateurRepository(session).findById(Integer.parseInt(proprietaireId));
+            cache.setProprietaire(proprietaire);
         }
         if (!"".equals(statut)){
             cache.setStatut(statut.toUpperCase());
@@ -92,13 +96,15 @@ public class CacheRepository implements RepositoryInterface
             cache.setDescription(description);
         }
         if (!"".equals(lieuId)){
-            cache.setLieuId(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository(session).findById(Integer.parseInt(lieuId));
+            cache.setLieu(lieu);
         }
         // Ne peuvent pas être nul
         cache.setNature(nature.toUpperCase());
         cache.setTypeCache(typeCache.toUpperCase());
         cache.setCodeSecret(codeSecret);
-        cache.setProprietaireId(Integer.parseInt(proprietaireId));
+        UtilisateurEntity proprietaire = new UtilisateurRepository(session).findById(Integer.parseInt(proprietaireId));
+        cache.setProprietaire(proprietaire);
         cache.setStatut("INACTIVE");
         session.persist(cache);
         tx.commit();

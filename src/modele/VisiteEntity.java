@@ -3,6 +3,7 @@ package modele;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "visite", schema = "la2-geocache", catalog = "")
@@ -10,10 +11,10 @@ public class VisiteEntity
 {
     private int id;
     private Timestamp dateVisite;
-    private int utilisateurId;
-    private int cacheId;
     private String commentaire;
     private String statut;
+    private UtilisateurEntity utilisateur;
+    private CacheEntity cache;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -39,28 +40,28 @@ public class VisiteEntity
         this.dateVisite = dateVisite;
     }
 
-    @Basic
-    @Column(name = "utilisateur_id", nullable = false)
-    public int getUtilisateurId()
+    @ManyToOne
+    @JoinColumn(name = "utilisateur_id", nullable = false)
+    public UtilisateurEntity getUtilisateur()
     {
-        return utilisateurId;
+        return utilisateur;
     }
 
-    public void setUtilisateurId(int utilisateurId)
+    public void setUtilisateur(UtilisateurEntity utilisateur)
     {
-        this.utilisateurId = utilisateurId;
+        this.utilisateur = utilisateur;
     }
 
-    @Basic
-    @Column(name = "cache_id", nullable = false)
-    public int getCacheId()
+    @ManyToOne
+    @JoinColumn(name = "cache_id", nullable = false)
+    public CacheEntity getCache()
     {
-        return cacheId;
+        return cache;
     }
 
-    public void setCacheId(int cacheId)
+    public void setCache(CacheEntity cache)
     {
-        this.cacheId = cacheId;
+        this.cache = cache;
     }
 
     @Basic
@@ -87,6 +88,7 @@ public class VisiteEntity
         this.statut = statut;
     }
 
+
     @Override
     public boolean equals(Object o)
     {
@@ -94,8 +96,8 @@ public class VisiteEntity
         if (o == null || getClass() != o.getClass()) return false;
         VisiteEntity that = (VisiteEntity) o;
         return id == that.id &&
-                utilisateurId == that.utilisateurId &&
-                cacheId == that.cacheId &&
+                utilisateur.getId() == that.utilisateur.getId() &&
+                cache.getId() == that.cache.getId() &&
                 Objects.equals(dateVisite, that.dateVisite) &&
                 Objects.equals(commentaire, that.commentaire) &&
                 Objects.equals(statut, that.statut);
@@ -111,6 +113,6 @@ public class VisiteEntity
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, dateVisite, utilisateurId, cacheId, commentaire, statut);
+        return Objects.hash(id, dateVisite, utilisateur.getId(), cache.getId(), commentaire, statut);
     }
 }

@@ -250,7 +250,7 @@ public class Menu
                             {
                                 System.out.println(" Obligatoire : Code secret de la cache");
                                 code = reader.readLine();
-                            }while(!((VisiteRepository)repository).compareCodeSecret(((VisiteEntity)object).getCacheId(), code));
+                            }while(!((VisiteRepository)repository).compareCodeSecret(((VisiteEntity)object).getCache().getId(), code));
 
                             String commentaire;
                             System.out.println(" Optionnel : Entrez un commentaire");

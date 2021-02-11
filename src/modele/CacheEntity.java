@@ -3,6 +3,7 @@ package modele;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "cache", schema = "la2-geocache", catalog = "")
@@ -16,8 +17,9 @@ public class CacheEntity
     private String typeCache;
     private String codeSecret;
     private String statut;
-    private Integer lieuId;
-    private int proprietaireId;
+    private LieuEntity lieu;
+    private UtilisateurEntity proprietaire;
+    private Set<VisiteEntity> visites;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -115,29 +117,40 @@ public class CacheEntity
         this.statut = statut;
     }
 
-    @Basic
-    @Column(name = "lieu_id", nullable = true)
-    public Integer getLieuId()
+    @ManyToOne
+    @JoinColumn(name = "lieu_id", nullable = true)
+    public LieuEntity getLieu()
     {
-        return lieuId;
+        return lieu;
     }
 
-    public void setLieuId(Integer lieuId)
+    public void setLieu(LieuEntity lieu)
     {
-        this.lieuId = lieuId;
+        this.lieu = lieu;
     }
 
-    @Basic
-    @Column(name = "proprietaire_id", nullable = false)
-    public int getProprietaireId()
+    @ManyToOne
+    @JoinColumn(name = "proprietaire_id", nullable = false)
+    public UtilisateurEntity getProprietaire()
     {
-        return proprietaireId;
+        return proprietaire;
     }
 
-    public void setProprietaireId(int proprietaireId)
+    public void setProprietaire(UtilisateurEntity proprietaire)
     {
-        this.proprietaireId = proprietaireId;
+        this.proprietaire = proprietaire;
     }
+
+
+
+
+    @OneToMany(mappedBy="cache")
+    public Set<VisiteEntity> getVisites() {return visites; }
+
+    public void setVisites(Set<VisiteEntity> visites){this.visites = visites ;}
+
+    public void addVisite(VisiteEntity visite){this.visites.add(visite) ;}
+    public void removeVisite(VisiteEntity visite){this.visites.remove(visite) ;}
 
     @Override
     public boolean equals(Object o)
@@ -146,19 +159,21 @@ public class CacheEntity
         if (o == null || getClass() != o.getClass()) return false;
         CacheEntity that = (CacheEntity) o;
         return id == that.id &&
-                proprietaireId == that.proprietaireId &&
+                proprietaire.getId() == that.proprietaire.getId() &&
                 Objects.equals(latitude, that.latitude) &&
                 Objects.equals(longitude, that.longitude) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(nature, that.nature) &&
                 Objects.equals(statut, that.statut) &&
-                Objects.equals(lieuId, that.lieuId);
+                Objects.equals(lieu.getId(), that.lieu.getId());
     }
 
     public String toString(){
         return  " | Id : " + this.id + "\n" +
                 " | GPS : " + this.latitude + " ; " + this.longitude + "\n" +
                 " | Description : " + this.description + "\n" +
+                " | Lieu : " + this.lieu.getLibelle() + "\n" +
+                " | Proprietaire : " + this.proprietaire.getPseudo() + "\n" +
                 " | Nature : " + this.nature + "\n" +
                 " | Statut : " + this.statut + "\n" +
                 " | Type cache : " + this.typeCache + "\n" +
@@ -168,6 +183,6 @@ public class CacheEntity
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, latitude, longitude, description, nature, statut, lieuId, proprietaireId);
+        return Objects.hash(id, latitude, longitude, description, nature, statut);
     }
 }

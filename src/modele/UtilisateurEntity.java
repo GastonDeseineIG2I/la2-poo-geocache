@@ -2,6 +2,7 @@ package modele;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "utilisateur", schema = "la2-geocache", catalog = "")
@@ -11,6 +12,8 @@ public class UtilisateurEntity
     private String pseudo;
     private String description;
     private String avatar;
+    private Set<CacheEntity> caches;
+    private Set<VisiteEntity> visites;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -59,6 +62,23 @@ public class UtilisateurEntity
     {
         this.avatar = avatar;
     }
+
+    @OneToMany(mappedBy="proprietaire")
+    public Set<CacheEntity> getCaches() {return caches; }
+
+    public void setCaches(Set<CacheEntity> caches){this.caches = caches ;}
+
+    public void addCaches(CacheEntity cache){this.caches.add(cache) ;}
+    public void removeCaches(CacheEntity cache){this.caches.remove(cache) ;}
+
+
+    @OneToMany(mappedBy="utilisateur")
+    public Set<VisiteEntity> getVisites() {return visites; }
+
+    public void setVisites(Set<VisiteEntity> visites){this.visites = visites ;}
+
+    public void addVisite(VisiteEntity visite){this.visites.add(visite) ;}
+    public void removeVisite(VisiteEntity visite){this.visites.remove(visite) ;}
 
     @Override
     public boolean equals(Object o)

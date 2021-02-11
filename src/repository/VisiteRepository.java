@@ -1,6 +1,8 @@
 package repository;
 
 import modele.CacheEntity;
+import modele.LieuEntity;
+import modele.UtilisateurEntity;
 import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -48,10 +50,12 @@ public class VisiteRepository implements RepositoryInterface
             visite.setDateVisite(Timestamp.valueOf(dateVisite));
         }
         if (!"".equals(utilisateurId)){
-            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+            UtilisateurEntity utilisateur = new UtilisateurRepository(session).findById(Integer.parseInt(utilisateurId));
+            visite.setUtilisateur(utilisateur);
         }
         if (!"".equals(cacheId)){
-            visite.setCacheId(Integer.parseInt(cacheId));
+            CacheEntity cache = new CacheRepository(session).findById(Integer.parseInt(cacheId));
+            visite.setCache(cache);
         }
         if (!"".equals(commentaire)){
             visite.setCommentaire(commentaire);
@@ -76,9 +80,12 @@ public class VisiteRepository implements RepositoryInterface
         if (!"".equals(commentaire)){
             visite.setCommentaire(commentaire);
         }
+        UtilisateurEntity utilisateur = new UtilisateurRepository(session).findById(Integer.parseInt(utilisateurId));
+        visite.setUtilisateur(utilisateur);
 
-        visite.setUtilisateurId(Integer.parseInt(utilisateurId));
-        visite.setCacheId(Integer.parseInt(cacheId));
+        CacheEntity cache = new CacheRepository(session).findById(Integer.parseInt(cacheId));
+        visite.setCache(cache);
+
         visite.setStatut(statut.toUpperCase());
 
         session.persist(visite);

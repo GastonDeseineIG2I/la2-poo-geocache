@@ -388,16 +388,15 @@ public class Main {
 
     }
 
-
     private static void createVisite(RepositoryInterface repository) throws IOException{
 
             System.out.println("Si une valeur est inchangée tapez sur entree");
-            System.out.println("Entrez la nouvelle date et heure de visite");
+            System.out.println(" Optionnel : Entrez la nouvelle date et heure de visite");
             System.out.println("Format : YYYY-MM-DD hh:mm:ss");
             // A faire : Controle de la date
             String dateVisite;
             dateVisite = reader.readLine();
-            System.out.println("Entrez l'id de l'utilisateur quI a fait la visite  ");
+            System.out.println("Obligatoire : Entrez l'id de l'utilisateur quI a fait la visite  ");
             String utilisateurId;
             Object object;
             do{
@@ -407,7 +406,7 @@ public class Main {
                 object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             }while (object == null);
-            System.out.println("Entrez l'id de la cache'");
+            System.out.println(" Obligatoire : Entrez l'id de la cache'");
             String cacheId;
             do {
                 cacheId = reader.readLine();
@@ -418,10 +417,10 @@ public class Main {
             } while (object == null);
 
             String commentaire;
-            System.out.println("Entrez un commentaire'");
+            System.out.println(" Optionnel : Entrez un commentaire'");
             commentaire = reader.readLine();
             String statut;
-            System.out.println("Entrez un statut : En cours / Terminee'");
+            System.out.println(" Obligatoire : Entrez un statut : En cours / Terminee'");
             do {
                 statut = reader.readLine();
                 // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
@@ -434,7 +433,7 @@ public class Main {
 
         // On declare un libellé que nous recupérons sur la ligne de commande
         String libelle = "";
-        System.out.println("Entrez le libellé du nouveau lieu");
+        System.out.println("Obligatoire : Entrez le libellé du nouveau lieu");
 
         //On vérifie que l'entrée n'est pas vide
         do
@@ -448,7 +447,7 @@ public class Main {
 
     }
     private static void createUtilisateur(RepositoryInterface repository) throws IOException {
-        System.out.println("Entrez le  pseudo ");
+        System.out.println("Obligatoire : Entrez le  pseudo ");
         String pseudo;
 
         do
@@ -456,11 +455,11 @@ public class Main {
             //TODO tester si le pseudo est unique
         while (pseudo.length() > 50);
 
-        System.out.println("Entrez la description ");
+        System.out.println(" Optionnel : Entrez la description ");
         String descripton = reader.readLine();
 
         String avatar;
-        System.out.println("Entrez le nom de l'image ");
+        System.out.println("Optionnel : Entrez le nom de l'image ");
         System.out.println("Ne pas oblier .png a la fin");
         do
             avatar = reader.readLine();

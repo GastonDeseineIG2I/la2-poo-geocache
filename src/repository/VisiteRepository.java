@@ -64,17 +64,19 @@ public class VisiteRepository implements RepositoryInterface
     public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = new VisiteEntity();
-
-        visite.setDateVisite(Timestamp.valueOf(dateVisite));
-
-        if (!"".equals(utilisateurId)){
-            visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+        if (!"".equals(utilisateurId)) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+           visite.setDateVisite(timestamp);
+        }else{
+            visite.setDateVisite(Timestamp.valueOf(dateVisite));
         }
-        visite.setCacheId(Integer.parseInt(cacheId));
 
         if (!"".equals(commentaire)){
             visite.setCommentaire(commentaire);
         }
+
+        visite.setUtilisateurId(Integer.parseInt(utilisateurId));
+        visite.setCacheId(Integer.parseInt(cacheId));
         visite.setStatut(statut.toUpperCase());
 
         session.persist(visite);

@@ -150,6 +150,7 @@ public class Main {
                         createUtilisateur(repository);
                         break;
                     case "visite":
+                        createVisite(repository);
                         break;
                 }
                 break;
@@ -193,6 +194,8 @@ public class Main {
         reader.readLine();
 
     }
+
+
 
     public static int isNumeric(String res){
         int numeric;
@@ -386,6 +389,45 @@ public class Main {
     }
 
 
+    private static void createVisite(RepositoryInterface repository) throws IOException{
+
+            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Entrez la nouvelle date et heure de visite");
+            System.out.println("Format : YYYY-MM-DD hh:mm:ss");
+            // A faire : Controle de la date
+            String dateVisite;
+            dateVisite = reader.readLine();
+            System.out.println("Entrez l'id de l'utilisateur quI a fait la visite  ");
+            String utilisateurId;
+            Object object;
+            do{
+                utilisateurId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(getSession());
+                object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
+                System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
+            }while (object == null);
+            System.out.println("Entrez l'id de la cache'");
+            String cacheId;
+            do {
+                cacheId = reader.readLine();
+                //On regarde si on a un utilisateur que existe
+                CacheRepository repoCache = new CacheRepository(getSession());
+                object = repoCache.findById(Integer.parseInt(cacheId));
+                System.out.println(object != null ? object.toString() : "Cache non trouvé.");
+            } while (object == null);
+
+            String commentaire;
+            System.out.println("Entrez un commentaire'");
+            commentaire = reader.readLine();
+            String statut;
+            System.out.println("Entrez un statut : En cours / Terminee'");
+            do {
+                statut = reader.readLine();
+                // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
+            } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
+            ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
+        }
 
     private static void createLieu(RepositoryInterface repository) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -429,10 +471,6 @@ public class Main {
         System.out.println("L'utilisateur a bien été ajouté ");
 
     }
-
-
-
-
     private static void createCache (RepositoryInterface repository) throws  IOException{
 
             System.out.println("Si une valeur est inchangée tapez sur entree");
@@ -501,6 +539,4 @@ public class Main {
 
 
     }
-
-
 }

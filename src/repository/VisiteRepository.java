@@ -1,11 +1,13 @@
 package repository;
 
+import modele.CacheEntity;
 import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VisiteRepository implements RepositoryInterface
@@ -83,6 +85,30 @@ public class VisiteRepository implements RepositoryInterface
         tx.commit();
     }
 
-    public void validerVisite() {
+    public void validerVisite(int idVisite, String commentaire) {
+        Transaction tx = session.beginTransaction();
+        VisiteEntity visite = session.load(VisiteEntity.class, idVisite);
+
+        visite.setDateVisite(Timestamp.valueOf(LocalDateTime.now()));
+
+        if (!"".equals(commentaire)){
+            visite.setCommentaire(commentaire);
+        }
+        visite.setStatut("TERMINEE");
+
+        session.update(visite);
+        tx.commit();
+    }
+
+    public boolean compareCodeSecret(int idCache, String CodeSecret){
+        CacheEntity cache = session.load(CacheEntity.class, idCache);
+        String codeOfficielCache = cache.getCodeSecret();
+        findById(idCache);
+        if(codeOfficielCache.equals(CodeSecret)){
+            VisiteRepository visite = new VisiteRepository(session);
+        }else{
+            return false ;
+        }
+        return true ;
     }
 }

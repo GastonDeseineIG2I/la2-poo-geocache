@@ -126,16 +126,5 @@ public class CacheRepository implements RepositoryInterface
         tx.commit();
     }
 
-    public int compareCodeSecret(int idCache, String CodeSecret){
-        CacheEntity cache = session.load(CacheEntity.class, idCache);
-        String codeOfficielCache = cache.getCodeSecret();
-        findById(idCache);
-        if(codeOfficielCache.equals(CodeSecret)){
-            VisiteRepository visite = new VisiteRepository(session);
-            visite.validerVisite();
-        }else{
-            return 1 ;
-        }
-        return 0 ;
-    }
+
 }

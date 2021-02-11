@@ -248,14 +248,14 @@ public class Menu
                             String code;
                             do
                             {
-                                System.out.println(" Obligatoire : Code secret de la visite'");
+                                System.out.println(" Obligatoire : Code secret de la cache");
                                 code = reader.readLine();
-                            }while(compareCodeSecret(((VisiteEntity)object).getCacheId(), code));
+                            }while(!((VisiteRepository)repository).compareCodeSecret(((VisiteEntity)object).getCacheId(), code));
 
                             String commentaire;
-                            System.out.println(" Optionnel : Entrez un commentaire'");
+                            System.out.println(" Optionnel : Entrez un commentaire");
                             commentaire = reader.readLine();
-                            //((VisiteRepository)repository).validerVisite(id);
+                            ((VisiteRepository)repository).validerVisite(id, commentaire);
                             object = repository.findById(id);
                             System.out.println(object.toString());
                             System.out.println("La visite a été validée.");
@@ -355,7 +355,7 @@ public class Menu
                 System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
             } while (object == null);
 
-            System.out.println("Obligatoire : Entrez l'id du lieu de la cache'");
+            System.out.println("Obligatoire : Entrez l'id du lieu de la cache");
             String lieuId;
             do {
                 lieuId = reader.readLine();
@@ -416,7 +416,7 @@ public class Menu
             } while (object == null);
 
 
-            System.out.println("Entrez l'id de la cache'");
+            System.out.println("Entrez l'id de la cache");
             String cacheId;
             do {
                 cacheId = reader.readLine();
@@ -467,7 +467,7 @@ public class Menu
             object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         }while (object == null);
-        System.out.println(" Obligatoire : Entrez l'id de la cache'");
+        System.out.println(" Obligatoire : Entrez l'id de la cache");
         String cacheId;
         do {
             cacheId = reader.readLine();
@@ -478,10 +478,10 @@ public class Menu
         } while (object == null);
 
         String commentaire;
-        System.out.println(" Optionnel : Entrez un commentaire'");
+        System.out.println(" Optionnel : Entrez un commentaire");
         commentaire = reader.readLine();
         String statut;
-        System.out.println(" Obligatoire : Entrez un statut : En cours / Terminee'");
+        System.out.println(" Obligatoire : Entrez un statut : En cours / Terminee");
         do {
             statut = reader.readLine();
             // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
@@ -582,7 +582,7 @@ public class Menu
             System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
         } while (object == null);
 
-        System.out.println("Obligatoire : Entrez l'id du lieu de la cache'");
+        System.out.println("Obligatoire : Entrez l'id du lieu de la cache");
         String lieuId;
         do {
             lieuId = reader.readLine();

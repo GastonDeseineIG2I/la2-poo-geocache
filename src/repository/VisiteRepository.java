@@ -83,4 +83,6 @@ public class VisiteRepository implements RepositoryInterface
         tx.commit();
     }
 
+    public void validerVisite() {
+    }
 }

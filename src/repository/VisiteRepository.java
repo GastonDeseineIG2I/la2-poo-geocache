@@ -111,4 +111,21 @@ public class VisiteRepository implements RepositoryInterface
         }
         return true ;
     }
+
+    public List<VisiteEntity> getVisiteByDate(String datee){
+
+     //   String[] parts = date.split(" ");
+        String part1 = datee + " 00:00:00";
+        String part2 =datee + " 23:59:59";
+        Timestamp dateDebut = Timestamp.valueOf(part1);
+        Timestamp dateFin = Timestamp.valueOf(part2);
+        System.out.println(part1);
+        System.out.println(part2);
+        List<VisiteEntity> visite = session.createQuery("from VisiteEntity as visite where visite.dateVisite >= :dateDebut  and visite.dateVisite <= :dateFin")
+                .setParameter("dateDebut",dateDebut)
+                .setParameter("dateFin",dateFin)
+                .list();
+        return visite;
+    }
+
 }

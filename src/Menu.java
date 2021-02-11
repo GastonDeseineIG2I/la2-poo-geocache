@@ -188,6 +188,7 @@ public class Menu
                 break;
             case "visite":
                 System.out.println("6 - Valider " + menuString);
+                System.out.println("7 - Recherche de visite en fonction d'une date");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
@@ -271,11 +272,28 @@ public class Menu
                             System.out.println("Cette visite n'existe pas.");
                         }
                         break;
+                    case 7:
+                        listeVisiteParDate(((VisiteRepository)repository));
                 }
                 break;
             default:
                 return;
         }
+    }
+
+    private static void listeVisiteParDate(VisiteRepository repository) throws IOException {
+        System.out.println("Entrez la date de visite :");
+        System.out.println("Format YYYY-MM-dd:");
+        String dateVisite ;
+        Object object;
+        dateVisite = reader.readLine();
+
+
+        for (Object objectfromlist:(repository).getVisiteByDate(dateVisite))
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
+
     }
 
 

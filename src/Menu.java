@@ -1,3 +1,5 @@
+import modele.CacheEntity;
+import modele.VisiteEntity;
 import repository.*;
 
 import java.io.BufferedReader;
@@ -183,7 +185,7 @@ public class Menu
                 System.out.println("6 - Specifique " + menuString);
                 break;
             case "visite":
-                System.out.println("6 - Specifique " + menuString);
+                System.out.println("6 - Valider " + menuString);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
@@ -206,6 +208,8 @@ public class Menu
                             ((CacheRepository)repository).activeCache(id);
                             System.out.println(object.toString());
                             System.out.println("La cache a été activée.");
+                        }else{
+                            System.out.println("Cette cache n'existe pas");
                         }
                     break;
                     case 7:
@@ -216,6 +220,8 @@ public class Menu
                             ((CacheRepository)repository).desactiveCache(id);
                             System.out.println(object.toString());
                             System.out.println("La cache a été desactivée.");
+                        }else{
+                            System.out.println("Cette cache n'existe pas");
                         }
 
                     break;
@@ -233,7 +239,30 @@ public class Menu
                 break;
             case "visite":
                 switch (cas){
+                    case 6:
+                        System.out.println("Entrez l'identifiant de la visite : ");
+                        id = Main.isNumeric(reader.readLine());
+                        object = repository.findById(id);
+                        System.out.println(object.toString());
+                        if(object != null){
+                            String code;
+                            do
+                            {
+                                System.out.println(" Obligatoire : Code secret de la visite'");
+                                code = reader.readLine();
+                            }while(compareCodeSecret(((VisiteEntity)object).getCacheId(), code));
 
+                            String commentaire;
+                            System.out.println(" Optionnel : Entrez un commentaire'");
+                            commentaire = reader.readLine();
+                            //((VisiteRepository)repository).validerVisite(id);
+                            object = repository.findById(id);
+                            System.out.println(object.toString());
+                            System.out.println("La visite a été validée.");
+                        }else{
+                            System.out.println("Cette visite n'existe pas.");
+                        }
+                        break;
                 }
                 break;
             default:

@@ -118,6 +118,13 @@ public class CacheRepository implements RepositoryInterface
         session.update(cache);
         tx.commit();
     }
+    public void desactiveCache(int id) {
+        Transaction tx = session.beginTransaction();
+        CacheEntity cache = session.load(CacheEntity.class, id);
+        cache.setStatut("INACTIVE");
+        session.update(cache);
+        tx.commit();
+    }
 
     public void compareCodeSecret(int idCache, String CodeSecret){
 

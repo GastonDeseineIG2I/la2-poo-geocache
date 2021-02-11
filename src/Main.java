@@ -427,7 +427,6 @@ public class Main {
             } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
             ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
         }
-
     private static void createLieu(RepositoryInterface repository) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 

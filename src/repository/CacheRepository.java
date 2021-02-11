@@ -138,16 +138,20 @@ public class CacheRepository implements RepositoryInterface
 
     public List<CacheEntity> getCacheByProprietaire(int id){
 
-        List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaireId =:id ")
-                .setParameter("id",id)
+        UtilisateurEntity utilisateur = new UtilisateurRepository(session).findById(id);
+
+        List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaire =:utilisateur ")
+                .setParameter("utilisateur",utilisateur)
                 .list();
         return cacheUtilisateur;
     }
 
     public List<CacheEntity> getCacheByLieu(int id){
 
-        List<CacheEntity> cacheLieux = session.createQuery("from CacheEntity as cache where cache.lieuId =:id ")
-                .setParameter("id",id)
+        LieuEntity lieu = new LieuRepository(session).findById(id);
+
+        List<CacheEntity> cacheLieux = session.createQuery("from CacheEntity as cache where cache.lieu =:lieu ")
+                .setParameter("lieu",lieu)
                 .list();
         return cacheLieux;
     }

@@ -135,3 +135,15 @@ Voici les choix que nous avons réalisé pour le moment :
 ## Description de la solution
 
 - Notre solution est une interface console sur un premier menu vous pouvez selectionnez un grand domaine fonctionnel exemple Sur les caches / utilisateur .. Puis une fois le choix réalisé on allez avoir un autre menu ou vous allez pouvoir tester différentes fonctionnalités
+
+
+## Difficultés
+
+- Nous avons eu beaucoup de mal à mettre en place switch vers mongoDB, Le problème est que nous avons développé le projet tout d'abord avec mysql et lorsque nous avons du passer à mongoDB nous avons du changer beaucoup de choses.
+
+
+## Conclusion 
+
+- Le projet à été très interessant car nous avons pu approfondir nos connaissances en JAVA / mongoDB.
+ Ca à été très intéressant aussi très enrichissant de decouvrir Hibernate car c'est quelque choses que nous ne connaissions pas du tout.
+ Il aurait été aussi interessant de le faire avec une vraie interface graphique pour voir comment cela s'implement en JAVA cependant il aurait fallut plus de temps pour le réaliser. N'étant pas forcement à l'aise avec le JAVA / Hibernate heureusement que nous avions un peu de temps libre pour travailler aussi dessus.

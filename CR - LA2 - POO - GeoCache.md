@@ -126,3 +126,12 @@ Voici les choix que nous avons réalisé pour le moment :
  
 
 - Nous avons fait le choix de réduire l'état d'une cache a inactif ou actif. Nous avons trouvé que en cours d'activation, fermée et suspendue était des sous catégories d'inactif. Nous avons jugé que nous n'avions pas besoin de ce niveau d'information.
+
+
+- Pour les visites nous avons décidé que le statut serait soit en en cours soit terminée
+
+- Au niveau de notre structure de code nous avons decidé de faire des repositories pour chacune de nos entity et nous avons aussi rajouté une interface RepositoryInterface pour y mettre les fonctions commune a nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Se fichier et charger de contacter le bon repositorie pour avoir les informations
+
+## Description de la solution
+
+- Notre solution est une interface console sur un premier menu vous pouvez selectionnez un grand domaine fonctionnel exemple Sur les caches / utilisateur .. Puis une fois le choix réalisé on allez avoir un autre menu ou vous allez pouvoir tester différentes fonctionnalités

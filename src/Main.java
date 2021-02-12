@@ -1,3 +1,5 @@
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import modele.CacheEntity;
 import modele.VisiteEntity;
 import modele.CacheEntity;
@@ -9,6 +11,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.internal.expression.function.UpperFunction;
 import repository.*;
+import repository.JPA.JPARepository;
+import repository.MONGODB.MONGODBRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,24 +23,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
-    private static final SessionFactory ourSessionFactory;
 
-    static {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure();
+    public static final String BDD = "MONGODB"; // MONGODB | MYSQL
+    protected static MongoClient mongoClient;
+    protected static MongoDatabase database;
 
-            ourSessionFactory = configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
 
-    public static Session getSession() throws HibernateException {
-        return ourSessionFactory.openSession();
-    }
 
     public static void main(final String[] args) throws Exception {
+        if(BDD == "MYSQL"){
+            JPARepository.getSession(); //Initialise la session JPA
+        }else if(BDD == "MONGODB"){
+            MONGODBRepository.getSession();
+        }else{
+            return;
+        }
+
         Menu.menu();
     }
 

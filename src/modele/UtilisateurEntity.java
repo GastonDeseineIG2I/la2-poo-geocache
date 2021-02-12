@@ -5,10 +5,13 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@org.mongodb.morphia.annotations.Entity
 @Table(name = "utilisateur", schema = "la2-geocache", catalog = "")
 public class UtilisateurEntity
 {
-    private int id;
+    @org.mongodb.morphia.annotations.Id
+    private String id;
+
     private String pseudo;
     private String description;
     private String avatar;
@@ -17,12 +20,12 @@ public class UtilisateurEntity
 
     @Id
     @Column(name = "id", nullable = false)
-    public int getId()
+    public String getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(String id)
     {
         this.id = id;
     }

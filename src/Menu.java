@@ -1,7 +1,10 @@
-import modele.CacheEntity;
 import modele.LieuEntity;
 import modele.VisiteEntity;
 import repository.*;
+import repository.MONGODB.CacheRepository;
+import repository.MONGODB.LieuRepository;
+import repository.MONGODB.UtilisateurRepository;
+import repository.MONGODB.VisiteRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,19 +67,19 @@ public class Menu
         switch (typeMenu) {
             case "cache":
                 menuString = "une cache";
-                repository = new CacheRepository(Main.getSession());
+                repository = new CacheRepository();
                 break;
             case "utilisateur":
                 menuString = "un utilisateur";
-                repository = new UtilisateurRepository(Main.getSession());
+                repository = new UtilisateurRepository();
                 break;
             case "lieu":
                 menuString = "un lieu";
-                repository = new LieuRepository(Main.getSession());
+                repository = new LieuRepository();
                 break;
             case "visite":
                 menuString = "une visite";
-                repository = new VisiteRepository(Main.getSession());
+                repository = new VisiteRepository();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
@@ -304,7 +307,7 @@ public class Menu
         Object object;
         do {
             id = reader.readLine();
-            LieuRepository repoLieux = new LieuRepository(Main.getSession());
+            LieuRepository repoLieux = new LieuRepository();
             object = repoLieux.findById(Integer.parseInt(id));
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
@@ -320,7 +323,7 @@ public class Menu
         Object object;
         do {
             id = reader.readLine();
-            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
             object = repoUtilisateur.findById(Integer.parseInt(id));
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         } while (object == null);
@@ -411,7 +414,7 @@ public class Menu
             do {
                 proprietaireId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
-                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
                 object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
                 System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
             } while (object == null);
@@ -420,7 +423,7 @@ public class Menu
             String lieuId;
             do {
                 lieuId = reader.readLine();
-                LieuRepository repoCache = new LieuRepository(Main.getSession());
+                LieuRepository repoCache = new LieuRepository();
                 object = repoCache.findById(Integer.parseInt(lieuId));
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
@@ -471,7 +474,7 @@ public class Menu
             do {
                 utilisateurId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
-                UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+                UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
                 object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             } while (object == null);
@@ -482,7 +485,7 @@ public class Menu
             do {
                 cacheId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
-                CacheRepository repoCache = new CacheRepository(Main.getSession());
+                CacheRepository repoCache = new CacheRepository();
                 object = repoCache.findById(Integer.parseInt(cacheId));
                 System.out.println(object != null ? object.toString() : "Cache non trouvé.");
             } while (object == null);
@@ -524,7 +527,7 @@ public class Menu
         do{
             utilisateurId = reader.readLine();
             //On regarde si on a un utilisateur que existe
-            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
             object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         }while (object == null);
@@ -533,7 +536,7 @@ public class Menu
         do {
             cacheId = reader.readLine();
             //On regarde si on a un utilisateur que existe
-            CacheRepository repoCache = new CacheRepository(Main.getSession());
+            CacheRepository repoCache = new CacheRepository();
             object = repoCache.findById(Integer.parseInt(cacheId));
             System.out.println(object != null ? object.toString() : "Cache non trouvé.");
         } while (object == null);
@@ -637,7 +640,7 @@ public class Menu
 
             proprietaireId = reader.readLine();
             //On regarde si on a un utilisateur que existe
-            UtilisateurRepository repoUtilisateur = new UtilisateurRepository(Main.getSession());
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
             object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
             System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
         } while (object == null);
@@ -646,7 +649,7 @@ public class Menu
         String lieuId;
         do {
             lieuId = reader.readLine();
-            LieuRepository repoCache = new LieuRepository(Main.getSession());
+            LieuRepository repoCache = new LieuRepository();
             object = repoCache.findById(Integer.parseInt(lieuId));
             System.out.println(object != null ? object.toString() : "lieu non trouvé.");
         } while (object == null);

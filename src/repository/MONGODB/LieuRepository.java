@@ -1,15 +1,12 @@
 package repository.MONGODB;
 
 import com.mongodb.MongoClient;
-import modele.CacheEntity;
 import modele.LieuEntity;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
-import java.util.UUID;
 
 import java.util.List;
 
@@ -24,7 +21,6 @@ public class LieuRepository extends MONGODBRepository
         try {
             MongoClient mongoClient = MONGODBRepository.getSession();
             Morphia morphia = new Morphia();
-            morphia.map(CacheEntity.class);
             datastore = morphia.createDatastore(mongoClient,"la2geocache");
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -32,16 +28,16 @@ public class LieuRepository extends MONGODBRepository
 
     }
 
-    public LieuEntity findById(int id)
+    public LieuEntity findById(String id)
     {
-        return datastore.get(entityClass, ""+id);
+        return datastore.get(entityClass, new ObjectId(id));
 
     }
 
     // Permet de supprimer un lieu avec son id
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
-            datastore.delete(id);
+            datastore.delete( new ObjectId(id));
     }
 
     public List<LieuEntity> getAll()
@@ -51,11 +47,11 @@ public class LieuRepository extends MONGODBRepository
 
 
     // Permet de mettre a jour le libellé d'un lieu
-    public void updateLieu(int id, String nomlieu)
+    public void updateLieu(String id, String nomlieu)
     {
-        Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
+        Query query = datastore.createQuery(entityClass).field("id").equal(new ObjectId(id));
         UpdateOperations<LieuEntity> operation = datastore.createUpdateOperations(entityClass);
-        operation.set("lieu", nomlieu);
+        operation.set("libelle", nomlieu);
 
         datastore.update(query, operation);
     }

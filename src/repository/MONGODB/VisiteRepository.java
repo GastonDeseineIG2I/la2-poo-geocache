@@ -27,12 +27,12 @@ public class VisiteRepository extends MONGODBRepository
 
     }
 
-    public VisiteEntity findById(int id)
+    public VisiteEntity findById(String id)
     {
         return datastore.get(entityClass, id);
     }
 
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         datastore.delete(id);
     }
@@ -80,10 +80,10 @@ public class VisiteRepository extends MONGODBRepository
         if (!"".equals(commentaire)){
             visite.setCommentaire(commentaire);
         }
-        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(Integer.parseInt(utilisateurId));
+        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
         visite.setUtilisateur(utilisateur);
 
-        CacheEntity cache = new CacheRepository().findById(Integer.parseInt(cacheId));
+        CacheEntity cache = new CacheRepository().findById(cacheId);
         visite.setCache(cache);
 
         visite.setStatut(statut.toUpperCase());
@@ -91,7 +91,7 @@ public class VisiteRepository extends MONGODBRepository
         datastore.save(visite);
     }
 
-    public void validerVisite(int idVisite, String commentaire) {
+    public void validerVisite(String idVisite, String commentaire) {
         /*Transaction tx = session.beginTransaction();
         VisiteEntity visite = session.load(VisiteEntity.class, idVisite);
 

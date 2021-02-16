@@ -155,13 +155,13 @@ public class Menu
             case 4:
                 System.out.println("Entrez l'identifiant à supprimer : ");
                 id = reader.readLine();
-                repository.deleteById(Integer.parseInt(id));
+                repository.deleteById(id);
 
                 break;
             case 5:
                 System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
-                object = repository.findById(Integer.parseInt(id));
+                object = repository.findById(id);
                 System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
                 break;
             case 99:
@@ -202,14 +202,14 @@ public class Menu
 
     private static void casSpecifique(String typeMenu, int cas, RepositoryInterface repository) throws IOException
     {
-        int id;
+        String id;
         Object object;
         switch (typeMenu) {
             case "cache":
                 switch (cas){
                     case 6:
                         System.out.println("Entrez l'identifiant à activer : ");
-                        id = Main.isNumeric(reader.readLine());
+                        id = reader.readLine();
                         object = repository.findById(id);
                         if(object != null){
                             ((CacheRepository)repository).activeCache(id);
@@ -221,7 +221,7 @@ public class Menu
                     break;
                     case 7:
                         System.out.println("Entrez l'identifiant à desactiver : ");
-                        id = Main.isNumeric(reader.readLine());
+                        id = reader.readLine();
                         object = repository.findById(id);
                         if(object != null){
                             ((CacheRepository)repository).desactiveCache(id);
@@ -254,7 +254,7 @@ public class Menu
                 switch (cas){
                     case 6:
                         System.out.println("Entrez l'identifiant de la visite : ");
-                        id = Main.isNumeric(reader.readLine());
+                        id = reader.readLine();
                         object = repository.findById(id);
                         System.out.println(object.toString());
                         if(object != null){
@@ -308,7 +308,7 @@ public class Menu
         do {
             id = reader.readLine();
             LieuRepository repoLieux = new LieuRepository();
-            object = repoLieux.findById(Integer.parseInt(id));
+            object = repoLieux.findById(id);
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
         for (Object objectfromlist:((LieuEntity)object).getCaches())
@@ -324,10 +324,10 @@ public class Menu
         do {
             id = reader.readLine();
             UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
-            object = repoUtilisateur.findById(Integer.parseInt(id));
+            object = repoUtilisateur.findById(id);
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         } while (object == null);
-        for (Object objectfromlist:(repository).getCacheByProprietaire(Integer.parseInt(id)))
+        for (Object objectfromlist:(repository).getCacheByProprietaire(id))
         {
             System.out.println(objectfromlist != null?objectfromlist.toString():"");
         }
@@ -338,7 +338,7 @@ public class Menu
     private static void updateUtilisateur(RepositoryInterface repository) throws IOException {
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
         String id = reader.readLine();
-        Object object = repository.findById(Integer.parseInt(id));
+        Object object = repository.findById(id);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
         if (object != null) {
             System.out.println("Si une valeur est inchangée tapez sur entree");
@@ -358,13 +358,13 @@ public class Menu
             while (avatar.length() > 255);
 
 
-            ((UtilisateurRepository)repository).updateUtilisateur(Integer.parseInt(id), pseudo, descripton, avatar);
+            ((UtilisateurRepository)repository).updateUtilisateur(id, pseudo, descripton, avatar);
         }
     }
     private static void updateCache(RepositoryInterface repository) throws IOException {
         System.out.println("Entrez l'identifiant de la cache à modifier : ");
         String idCache = reader.readLine();
-        Object object = repository.findById(Integer.parseInt(idCache));
+        Object object = repository.findById(idCache);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
         if (object != null) {
@@ -415,7 +415,7 @@ public class Menu
                 proprietaireId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
-                object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
+                object = repoUtilisateur.findById(proprietaireId);
                 System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
             } while (object == null);
 
@@ -424,12 +424,12 @@ public class Menu
             do {
                 lieuId = reader.readLine();
                 LieuRepository repoCache = new LieuRepository();
-                object = repoCache.findById(Integer.parseInt(lieuId));
+                object = repoCache.findById(lieuId);
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
 
 
-            ((CacheRepository)repository).updateCache(Integer.parseInt(idCache), latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
+            ((CacheRepository)repository).updateCache(idCache, latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
         }
     }
     private static void updateLieu(RepositoryInterface repository) throws IOException {
@@ -437,7 +437,7 @@ public class Menu
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Entrez l'identifiant du lieux à modifier : ");
         String id = reader.readLine();
-        Object object = repository.findById(Integer.parseInt(id));
+        Object object = repository.findById(id);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
         if (object != null) {
             // On declare un libellé que nous recupérons sur la ligne de commande
@@ -450,14 +450,14 @@ public class Menu
             while (("".equals(libelle)) || (libelle.length() > 100));
 
             //On effectue les changements en base
-            ((LieuRepository)repository).updateLieu(Integer.parseInt(id), libelle);
+            ((LieuRepository)repository).updateLieu(id, libelle);
         }
     }
     private static void updateVisite(RepositoryInterface repository) throws IOException {
         System.out.println("Entrez l'identifiant de la visite à modifier : ");
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
         String idVisite = reader.readLine();
-        Object object = repository.findById(Integer.parseInt(idVisite));
+        Object object = repository.findById(idVisite);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
         if (object != null) {
@@ -475,7 +475,7 @@ public class Menu
                 utilisateurId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
-                object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
+                object = repoUtilisateur.findById(utilisateurId);
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             } while (object == null);
 
@@ -486,7 +486,7 @@ public class Menu
                 cacheId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 CacheRepository repoCache = new CacheRepository();
-                object = repoCache.findById(Integer.parseInt(cacheId));
+                object = repoCache.findById(cacheId);
                 System.out.println(object != null ? object.toString() : "Cache non trouvé.");
             } while (object == null);
 
@@ -528,7 +528,7 @@ public class Menu
             utilisateurId = reader.readLine();
             //On regarde si on a un utilisateur que existe
             UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
-            object = repoUtilisateur.findById(Integer.parseInt(utilisateurId));
+            object = repoUtilisateur.findById(utilisateurId);
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         }while (object == null);
         System.out.println(" Obligatoire : Entrez l'id de la cache");
@@ -537,7 +537,7 @@ public class Menu
             cacheId = reader.readLine();
             //On regarde si on a un utilisateur que existe
             CacheRepository repoCache = new CacheRepository();
-            object = repoCache.findById(Integer.parseInt(cacheId));
+            object = repoCache.findById(cacheId);
             System.out.println(object != null ? object.toString() : "Cache non trouvé.");
         } while (object == null);
 
@@ -641,7 +641,7 @@ public class Menu
             proprietaireId = reader.readLine();
             //On regarde si on a un utilisateur que existe
             UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
-            object = repoUtilisateur.findById(Integer.parseInt(proprietaireId));
+            object = repoUtilisateur.findById(proprietaireId);
             System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
         } while (object == null);
 
@@ -650,7 +650,7 @@ public class Menu
         do {
             lieuId = reader.readLine();
             LieuRepository repoCache = new LieuRepository();
-            object = repoCache.findById(Integer.parseInt(lieuId));
+            object = repoCache.findById(lieuId);
             System.out.println(object != null ? object.toString() : "lieu non trouvé.");
         } while (object == null);
 

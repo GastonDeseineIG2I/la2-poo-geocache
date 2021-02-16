@@ -1,5 +1,7 @@
 package modele;
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -10,6 +12,7 @@ import java.util.Set;
 public class LieuEntity
 {
     private String libelle;
+
     @org.mongodb.morphia.annotations.Id
     private String id;
 

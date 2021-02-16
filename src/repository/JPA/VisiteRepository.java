@@ -6,7 +6,6 @@ import modele.VisiteEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import repository.RepositoryInterface;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -21,14 +20,14 @@ public class VisiteRepository extends JPARepository
         this.session = JPARepository.getSession();
     }
 
-    public VisiteEntity findById(int id)
+    public VisiteEntity findById(String id)
     {
         Query q = this.session.createQuery("from VisiteEntity where id = :id");
         q.setParameter("id",id);
         return (VisiteEntity) q.uniqueResult();
     }
 
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = session.load(VisiteEntity.class, id);
@@ -50,11 +49,11 @@ public class VisiteRepository extends JPARepository
             visite.setDateVisite(Timestamp.valueOf(dateVisite));
         }
         if (!"".equals(utilisateurId)){
-            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(Integer.parseInt(utilisateurId));
+            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
             visite.setUtilisateur(utilisateur);
         }
         if (!"".equals(cacheId)){
-            CacheEntity cache = new CacheRepository().findById(Integer.parseInt(cacheId));
+            CacheEntity cache = new CacheRepository().findById(cacheId);
             visite.setCache(cache);
         }
         if (!"".equals(commentaire)){
@@ -80,10 +79,10 @@ public class VisiteRepository extends JPARepository
         if (!"".equals(commentaire)){
             visite.setCommentaire(commentaire);
         }
-        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(Integer.parseInt(utilisateurId));
+        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
         visite.setUtilisateur(utilisateur);
 
-        CacheEntity cache = new CacheRepository().findById(Integer.parseInt(cacheId));
+        CacheEntity cache = new CacheRepository().findById(cacheId);
         visite.setCache(cache);
 
         visite.setStatut(statut.toUpperCase());
@@ -107,7 +106,7 @@ public class VisiteRepository extends JPARepository
         tx.commit();
     }
 
-    public boolean compareCodeSecret(int idCache, String CodeSecret){
+    public boolean compareCodeSecret(String idCache, String CodeSecret){
         CacheEntity cache = session.load(CacheEntity.class, idCache);
         String codeOfficielCache = cache.getCodeSecret();
         findById(idCache);

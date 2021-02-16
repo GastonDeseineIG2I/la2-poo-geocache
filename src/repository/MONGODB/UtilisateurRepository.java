@@ -3,9 +3,6 @@ package repository.MONGODB;
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
 import modele.UtilisateurEntity;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -27,12 +24,12 @@ public class UtilisateurRepository extends MONGODBRepository
 
     }
 
-    public UtilisateurEntity findById(int id)
+    public UtilisateurEntity findById(String id)
     {
         return datastore.get(entityClass, id);
     }
 
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         datastore.delete(id);
     }
@@ -42,7 +39,7 @@ public class UtilisateurRepository extends MONGODBRepository
         return datastore.find(entityClass).asList();
     }
 
-    public void updateUtilisateur(int id,String pseudo, String descripton, String avatar) {
+    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {
     /*Transaction tx = session.beginTransaction();
     UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
     if (!"".equals(pseudo) )

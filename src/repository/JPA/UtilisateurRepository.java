@@ -1,11 +1,9 @@
 package repository.JPA;
 
-import modele.LieuEntity;
 import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import repository.RepositoryInterface;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class UtilisateurRepository extends JPARepository
         this.session = JPARepository.getSession();
     }
 
-    public UtilisateurEntity findById(int id)
+    public UtilisateurEntity findById(String id)
     {
         Query q = this.session.createQuery("from UtilisateurEntity where id = :id");
         q.setParameter("id",id);
@@ -27,7 +25,7 @@ public class UtilisateurRepository extends JPARepository
 
     }
 
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         Transaction tx = session.beginTransaction();
         UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);

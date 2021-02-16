@@ -1,16 +1,10 @@
 package repository.MONGODB;
 
 import com.mongodb.MongoClient;
-import com.mongodb.operation.UpdateOperation;
 import modele.CacheEntity;
 import modele.LieuEntity;
 import modele.UtilisateurEntity;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.ogm.datastore.mongodb.query.impl.MongoDBQueryDescriptor;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
@@ -35,20 +29,20 @@ public class CacheRepository extends MONGODBRepository
 
     }
 
-    public CacheEntity findById(int id)
+    public CacheEntity findById(String id)
     {
         return datastore.get(entityClass, id);
 
     }
 
     @Override
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         datastore.delete(id);
     }
 
-    public void updateCache(int id, String latitude, String longitude, String description, String nature,
-                            String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
+    public void updateCache(String id, String latitude, String longitude, String description, String nature,
+                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
 
         Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
@@ -76,11 +70,11 @@ public class CacheRepository extends MONGODBRepository
             operation.set("code_secret", codeSecret);
         }
         if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
             operation.set("lieu", lieu.getLibelle());
         }
         if (!"".equals(proprietaireId)){
-            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(Integer.parseInt(proprietaireId));
+            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
             operation.set("proprietaire", proprietaire.getPseudo());
         }
         if (!"".equals(statut)){
@@ -107,14 +101,14 @@ public class CacheRepository extends MONGODBRepository
             cache.setDescription(description);
         }
         if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
             cache.setLieu(lieu);
         }
         // Ne peuvent pas être nul
         cache.setNature(nature.toUpperCase());
         cache.setTypeCache(typeCache.toUpperCase());
         cache.setCodeSecret(codeSecret);
-        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(Integer.parseInt(proprietaireId));
+        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
         cache.setProprietaire(proprietaire);
         cache.setStatut("INACTIVE");
 
@@ -127,13 +121,13 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void activeCache(int id) {
+    public void activeCache(String id) {
         Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("statut","ACTIVE");
         datastore.update(query, operation);
     }
-    public void desactiveCache(int id) {
+    public void desactiveCache(String id) {
         Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("statut","INACTIVE");
@@ -144,7 +138,7 @@ public class CacheRepository extends MONGODBRepository
     //List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache join UtilisateurEntity as utilisateur " +
       //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
-    public List<CacheEntity> getCacheByProprietaire(int id){
+    public List<CacheEntity> getCacheByProprietaire(String id){
 
         /*UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
 

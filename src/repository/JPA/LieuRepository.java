@@ -4,7 +4,6 @@ import modele.LieuEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import repository.RepositoryInterface;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class LieuRepository extends JPARepository
         this.session = JPARepository.getSession();
     }
 
-    public LieuEntity findById(int id)
+    public LieuEntity findById(String id)
     {
         Query q = this.session.createQuery("from LieuEntity where id = :id");
         q.setParameter("id",id);
@@ -27,7 +26,7 @@ public class LieuRepository extends JPARepository
     }
 
     // Permet de supprimer un lieu avec son id
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         Transaction tx = session.beginTransaction();
         LieuEntity lieu = session.load(LieuEntity.class, id);

@@ -6,7 +6,6 @@ import modele.UtilisateurEntity;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import repository.RepositoryInterface;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +20,7 @@ public class CacheRepository extends JPARepository
         this.session = JPARepository.getSession();
     }
 
-    public CacheEntity findById(int id)
+    public CacheEntity findById(String id)
     {
         Query q = this.session.createQuery("from CacheEntity where id = :id");
         q.setParameter("id",id);
@@ -31,7 +30,7 @@ public class CacheRepository extends JPARepository
     }
 
     @Override
-    public void deleteById(int id)
+    public void deleteById(String id)
     {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
@@ -65,11 +64,11 @@ public class CacheRepository extends JPARepository
             cache.setCodeSecret(codeSecret);
         }
         if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
             cache.setLieu(lieu);
         }
         if (!"".equals(proprietaireId)){
-            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(Integer.parseInt(proprietaireId));
+            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
             cache.setProprietaire(proprietaire);
         }
         if (!"".equals(statut)){
@@ -98,14 +97,14 @@ public class CacheRepository extends JPARepository
             cache.setDescription(description);
         }
         if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(Integer.parseInt(lieuId));
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
             cache.setLieu(lieu);
         }
         // Ne peuvent pas être nul
         cache.setNature(nature.toUpperCase());
         cache.setTypeCache(typeCache.toUpperCase());
         cache.setCodeSecret(codeSecret);
-        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(Integer.parseInt(proprietaireId));
+        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
         cache.setProprietaire(proprietaire);
         cache.setStatut("INACTIVE");
         session.persist(cache);
@@ -138,7 +137,7 @@ public class CacheRepository extends JPARepository
     //List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache join UtilisateurEntity as utilisateur " +
       //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
-    public List<CacheEntity> getCacheByProprietaire(int id){
+    public List<CacheEntity> getCacheByProprietaire(String id){
 
         UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
 
@@ -148,7 +147,7 @@ public class CacheRepository extends JPARepository
         return cacheUtilisateur;
     }
 
-    public List<CacheEntity> getCacheByLieu(int id){
+    public List<CacheEntity> getCacheByLieu(String id){
 
         LieuEntity lieu = new LieuRepository().findById(id);
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface RepositoryInterface
 {
-    public Object findById(int id);
-    public void deleteById (int id);
+    public Object findById(String id);
+    public void deleteById (String id);
     public List<?> getAll();
 
 }

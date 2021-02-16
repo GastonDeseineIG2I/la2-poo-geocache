@@ -119,18 +119,14 @@ Voici les choix que nous avons réalisé pour le moment :
 
 - Code secret associé a une cache qui permet de valider la visite par un utilisateur. Si le code n'est pas bon la visite n'est pas comptabilisé. Cela constitue une preuve de la visite.
 
-
-
 - On stock l'avatar d'un utilisateur dans un répertoire. On indique le chemin vers l'avatar de l'utilisateur dans la base de donnée en temps que VARCHAR(255). Le fichier de l'avatar est nommé en concaténant le pseudo de l'utilisateur (unique) avec l'extension du fichier. Une image par défaut est attribué à l'utilisateur tant qu'il n'a pas défini la sienne.
-
- 
 
 - Nous avons fait le choix de réduire l'état d'une cache a inactif ou actif. Nous avons trouvé que en cours d'activation, fermée et suspendue était des sous catégories d'inactif. Nous avons jugé que nous n'avions pas besoin de ce niveau d'information.
 
 
 - Pour les visites nous avons décidé que le statut serait soit en en cours soit terminée
 
-- Au niveau de notre structure de code nous avons decidé de faire des repositories pour chacune de nos entity et nous avons aussi rajouté une interface RepositoryInterface pour y mettre les fonctions commune a nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Se fichier et charger de contacter le bon repositorie pour avoir les informations
+- Au niveau de notre structure de code nous avons décidé de faire des repositories pour chacune de nos entités et nous avons aussi rajouté une interface RepositoryInterface pour y mettre les fonctions commune a nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Se fichier et charger de contacter le bon repository pour avoir les informations.
 
 ## Description de la solution
 
@@ -145,5 +141,5 @@ Voici les choix que nous avons réalisé pour le moment :
 ## Conclusion 
 
 - Le projet à été très interessant car nous avons pu approfondir nos connaissances en JAVA / mongoDB.
- Ca à été très intéressant aussi très enrichissant de decouvrir Hibernate car c'est quelque choses que nous ne connaissions pas du tout.
- Il aurait été aussi interessant de le faire avec une vraie interface graphique pour voir comment cela s'implement en JAVA cependant il aurait fallut plus de temps pour le réaliser. N'étant pas forcement à l'aise avec le JAVA / Hibernate heureusement que nous avions un peu de temps libre pour travailler aussi dessus.
+ Ca a été très intéressant et très enrichissant de découvrir Hibernate car c'est quelque choses que nous ne connaissions pas du tout.
+Il aurait été aussi interessant de le faire avec une vraie interface graphique pour voir comment cela s'implémente en JAVA cependant il aurait fallut plus de temps pour le réaliser. N'étant pas forcement à l'aise avec le JAVA / Hibernate heureusement que nous avions un peu de temps libre pour travailler aussi dessus.

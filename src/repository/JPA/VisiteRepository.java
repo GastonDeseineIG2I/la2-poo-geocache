@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class VisiteRepository extends JPARepository
 {
@@ -69,6 +70,7 @@ public class VisiteRepository extends JPARepository
     public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = new VisiteEntity();
+        visite.setId(UUID.randomUUID().toString());
         if (!"".equals(utilisateurId)) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
            visite.setDateVisite(timestamp);
@@ -91,7 +93,7 @@ public class VisiteRepository extends JPARepository
         tx.commit();
     }
 
-    public void validerVisite(int idVisite, String commentaire) {
+    public void validerVisite(String idVisite, String commentaire) {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = session.load(VisiteEntity.class, idVisite);
 

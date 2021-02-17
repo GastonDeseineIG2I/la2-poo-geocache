@@ -2,9 +2,13 @@ package repository.MONGODB;
 
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
+import modele.LieuEntity;
 import modele.UtilisateurEntity;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 
@@ -26,12 +30,12 @@ public class UtilisateurRepository extends MONGODBRepository
 
     public UtilisateurEntity findById(String id)
     {
-        return datastore.get(entityClass, id);
+        return datastore.get(entityClass, new ObjectId(id));
     }
 
     public void deleteById(String id)
     {
-        datastore.delete(id);
+        datastore.delete(entityClass, new ObjectId(id));
     }
 
     public List<UtilisateurEntity> getAll()
@@ -39,33 +43,34 @@ public class UtilisateurRepository extends MONGODBRepository
         return datastore.find(entityClass).asList();
     }
 
-    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {
-    /*Transaction tx = session.beginTransaction();
-    UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
-    if (!"".equals(pseudo) )
-    {
-        //TODO verifier l'unicité
-        utilisateur.setPseudo(pseudo);
-    }
-    if (!"".equals(descripton)){
-        utilisateur.setDescription(descripton);
-    }
-    if (!"".equals(avatar)){
-        utilisateur.setAvatar(avatar);
-    }
-    session.update(utilisateur);
-    tx.commit();*/
+    public void updateUtilisateur(String id, String pseudo, String description, String avatar) {
+
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
+        UpdateOperations<UtilisateurEntity> operation = datastore.createUpdateOperations(entityClass);
+
+        if (!"".equals(pseudo) )
+        {
+            //TODO verifier l'unicité
+            operation.set("pseudo", pseudo);
+        }
+        if (!"".equals(description)){
+            operation.set("description", description);
+        }
+        if (!"".equals(avatar)){
+            operation.set("avatar", avatar);
+        }
+        datastore.update(query, operation);
 }
 
-    public void createUtilisateur(String pseudo, String descripton, String avatar) {
+    public void createUtilisateur(String pseudo, String description, String avatar) {
         UtilisateurEntity utilisateur = new UtilisateurEntity();
         if (!"".equals(pseudo) )
         {
             //TODO verifier l'unicité
             utilisateur.setPseudo(pseudo);
         }
-        if (!"".equals(descripton)){
-            utilisateur.setDescription(descripton);
+        if (!"".equals(description)){
+            utilisateur.setDescription(description);
         }else{
             utilisateur.setDescription("");
         }

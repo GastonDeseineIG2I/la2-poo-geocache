@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 public class UtilisateurRepository extends JPARepository
 {
@@ -39,7 +40,7 @@ public class UtilisateurRepository extends JPARepository
         return lieux;
     }
 
-    public void updateUtilisateur(int id,String pseudo, String descripton, String avatar) {
+    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {
     Transaction tx = session.beginTransaction();
     UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
     if (!"".equals(pseudo) )
@@ -60,6 +61,7 @@ public class UtilisateurRepository extends JPARepository
     public void createUtilisateur(String pseudo, String descripton, String avatar) {
         Transaction tx = session.beginTransaction();
         UtilisateurEntity utilisateur = new UtilisateurEntity();
+        utilisateur.setId(UUID.randomUUID().toString());
         if (!"".equals(pseudo) )
         {
             //TODO verifier l'unicité

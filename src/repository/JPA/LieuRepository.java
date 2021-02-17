@@ -1,11 +1,13 @@
 package repository.JPA;
 
 import modele.LieuEntity;
+import org.bson.types.ObjectId;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 public class LieuRepository extends JPARepository
 {
@@ -42,7 +44,7 @@ public class LieuRepository extends JPARepository
 
 
     // Permet de mettre a jour le libellé d'un lieu
-    public void updateLieu(int id, String nomlieu)
+    public void updateLieu(String id, String nomlieu)
     {
         Transaction tx = session.beginTransaction();
         LieuEntity lieu = session.load(LieuEntity.class, id);
@@ -56,6 +58,7 @@ public class LieuRepository extends JPARepository
     {
         Transaction tx = session.beginTransaction();
         LieuEntity lieu = new LieuEntity();
+        lieu.setId(UUID.randomUUID().toString());
         lieu.setLibelle(nomlieu);
         session.persist(lieu);
         tx.commit();

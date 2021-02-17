@@ -1,5 +1,7 @@
 package modele;
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -10,6 +12,8 @@ import java.util.Objects;
 public class VisiteEntity
 {
     @org.mongodb.morphia.annotations.Id
+    private ObjectId _id;
+
     private String id;
 
     private Timestamp dateVisite;
@@ -19,7 +23,7 @@ public class VisiteEntity
     private CacheEntity cache;
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 100)
     public String getId()
     {
         return id;
@@ -28,6 +32,17 @@ public class VisiteEntity
     public void setId(String id)
     {
         this.id = id;
+    }
+
+    @Transient
+    public ObjectId get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id)
+    {
+        this._id = _id;
     }
 
     @Basic
@@ -97,16 +112,13 @@ public class VisiteEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VisiteEntity that = (VisiteEntity) o;
-        return id == that.id &&
-                utilisateur.getId() == that.utilisateur.getId() &&
-                cache.getId() == that.cache.getId() &&
-                Objects.equals(dateVisite, that.dateVisite) &&
+        return  Objects.equals(dateVisite, that.dateVisite) &&
                 Objects.equals(commentaire, that.commentaire) &&
                 Objects.equals(statut, that.statut);
     }
 
     public String toString(){
-        return  " | Id : " + this.id + "\n" +
+        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
                 " | Date visite : " + this.dateVisite + "\n" +
                 " | Commentaire : " + this.commentaire + "\n" +
                 " | Statut : " + this.statut + "\n" ;

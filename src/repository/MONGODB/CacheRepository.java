@@ -5,6 +5,7 @@ import modele.CacheEntity;
 import modele.LieuEntity;
 import modele.UtilisateurEntity;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
@@ -31,20 +32,20 @@ public class CacheRepository extends MONGODBRepository
 
     public CacheEntity findById(String id)
     {
-        return datastore.get(entityClass, id);
+        return datastore.get(entityClass, new ObjectId(id));
 
     }
 
     @Override
     public void deleteById(String id)
     {
-        datastore.delete(id);
+        datastore.delete(entityClass, new ObjectId(id));
     }
 
     public void updateCache(String id, String latitude, String longitude, String description, String nature,
                             String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
 
-        Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
 
 
@@ -122,13 +123,13 @@ public class CacheRepository extends MONGODBRepository
 
 
     public void activeCache(String id) {
-        Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("statut","ACTIVE");
         datastore.update(query, operation);
     }
     public void desactiveCache(String id) {
-        Query query = datastore.createQuery(entityClass).field("uUid").equal(id);
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("statut","INACTIVE");
         datastore.update(query, operation);

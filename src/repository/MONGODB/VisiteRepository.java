@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import modele.CacheEntity;
 import modele.UtilisateurEntity;
 import modele.VisiteEntity;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -118,7 +119,7 @@ public class VisiteRepository extends MONGODBRepository
         return true ;
     }
 
-    public List<VisiteEntity> getVisiteByDate(String datee){
+    public List<VisiteEntity> getVisiteByDate(String date){
 
      //   String[] parts = date.split(" ");
        /* String part1 = datee + " 00:00:00";

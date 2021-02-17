@@ -1,5 +1,7 @@
 package modele;
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -11,6 +13,8 @@ import java.util.Set;
 public class CacheEntity
 {
     @org.mongodb.morphia.annotations.Id
+    private ObjectId _id;
+
     private String id;
 
     private BigDecimal latitude;
@@ -25,7 +29,7 @@ public class CacheEntity
     private Set<VisiteEntity> visites;
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 100)
     public String getId()
     {
         return id;
@@ -34,6 +38,17 @@ public class CacheEntity
     public void setId(String id)
     {
         this.id = id;
+    }
+
+    @Transient
+    public ObjectId get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id)
+    {
+        this._id = _id;
     }
 
     @Basic
@@ -161,9 +176,7 @@ public class CacheEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CacheEntity that = (CacheEntity) o;
-        return id == that.id &&
-                proprietaire.getId() == that.proprietaire.getId() &&
-                Objects.equals(latitude, that.latitude) &&
+        return  Objects.equals(latitude, that.latitude) &&
                 Objects.equals(longitude, that.longitude) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(nature, that.nature) &&
@@ -172,7 +185,7 @@ public class CacheEntity
     }
 
     public String toString(){
-        return  " | Id : " + this.id + "\n" +
+        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
                 " | GPS : " + this.latitude + " ; " + this.longitude + "\n" +
                 " | Description : " + this.description + "\n" +
                 " | Lieu : " + this.lieu.getLibelle() + "\n" +

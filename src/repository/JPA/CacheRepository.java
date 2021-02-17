@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 
 public class CacheRepository extends JPARepository
@@ -38,8 +39,8 @@ public class CacheRepository extends JPARepository
         tx.commit();
     }
 
-    public void updateCache(int id, String latitude, String longitude, String description, String nature,
-                            String typeCache,String statut, String codeSecret,String lieuId, String proprietaireId) {
+    public void updateCache(String id, String latitude, String longitude, String description, String nature,
+                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         if (!"".equals(latitude) )
@@ -83,6 +84,7 @@ public class CacheRepository extends JPARepository
                             String typeCache, String codeSecret,String lieuId, String proprietaireId) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = new CacheEntity();
+        cache.setId(UUID.randomUUID().toString());
 
         if (!"".equals(latitude) )
         {
@@ -118,14 +120,14 @@ public class CacheRepository extends JPARepository
     }
 
 
-    public void activeCache(int id) {
+    public void activeCache(String id) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         cache.setStatut("ACTIVE");
         session.update(cache);
         tx.commit();
     }
-    public void desactiveCache(int id) {
+    public void desactiveCache(String id) {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         cache.setStatut("INACTIVE");

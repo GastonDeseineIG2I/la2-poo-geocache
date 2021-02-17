@@ -1,5 +1,7 @@
 package modele;
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -9,9 +11,11 @@ import java.util.Set;
 @Table(name = "utilisateur", schema = "la2-geocache", catalog = "")
 public class UtilisateurEntity
 {
-    @org.mongodb.morphia.annotations.Id
-    private String id;
 
+    @org.mongodb.morphia.annotations.Id
+    private ObjectId _id;
+
+    private String id;
     private String pseudo;
     private String description;
     private String avatar;
@@ -19,7 +23,7 @@ public class UtilisateurEntity
     private Set<VisiteEntity> visites;
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, length = 100)
     public String getId()
     {
         return id;
@@ -28,6 +32,17 @@ public class UtilisateurEntity
     public void setId(String id)
     {
         this.id = id;
+    }
+
+    @Transient
+    public ObjectId get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id)
+    {
+        this._id = _id;
     }
 
     @Basic
@@ -89,14 +104,13 @@ public class UtilisateurEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UtilisateurEntity that = (UtilisateurEntity) o;
-        return id == that.id &&
-                Objects.equals(pseudo, that.pseudo) &&
+        return  Objects.equals(pseudo, that.pseudo) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(avatar, that.avatar);
     }
 
     public String toString(){
-        return  " | Id : " + this.id + "\n" +
+        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
                 " | Pseudo : " + this.pseudo + "\n" +
                 " | Description : " + this.description + "\n" +
                 " | Avatar : " + this.avatar + "\n";

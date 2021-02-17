@@ -37,7 +37,7 @@ public class LieuRepository extends MONGODBRepository
     // Permet de supprimer un lieu avec son id
     public void deleteById(String id)
     {
-            datastore.delete( new ObjectId(id));
+        datastore.delete(entityClass, new ObjectId(id));
     }
 
     public List<LieuEntity> getAll()
@@ -49,7 +49,7 @@ public class LieuRepository extends MONGODBRepository
     // Permet de mettre a jour le libellé d'un lieu
     public void updateLieu(String id, String nomlieu)
     {
-        Query query = datastore.createQuery(entityClass).field("id").equal(new ObjectId(id));
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<LieuEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("libelle", nomlieu);
 

@@ -1,10 +1,10 @@
 import modele.LieuEntity;
 import modele.VisiteEntity;
 import repository.*;
-import repository.MONGODB.CacheRepository;
-import repository.MONGODB.LieuRepository;
-import repository.MONGODB.UtilisateurRepository;
-import repository.MONGODB.VisiteRepository;
+import repository.JPA.CacheRepository;
+import repository.JPA.LieuRepository;
+import repository.JPA.UtilisateurRepository;
+import repository.JPA.VisiteRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -263,7 +263,7 @@ public class Menu
                             {
                                 System.out.println(" Obligatoire : Code secret de la cache");
                                 code = reader.readLine();
-                            }while(!((VisiteRepository)repository).compareCodeSecret(((VisiteEntity)object).getCache().getId(), code));
+                            }while(!((VisiteRepository)repository).compareCodeSecret(""+((VisiteEntity)object).getCache().getId(), code));
 
                             String commentaire;
                             System.out.println(" Optionnel : Entrez un commentaire");

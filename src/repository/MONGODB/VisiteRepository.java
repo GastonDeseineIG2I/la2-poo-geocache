@@ -2,12 +2,16 @@ package repository.MONGODB;
 
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
+import modele.LieuEntity;
 import modele.UtilisateurEntity;
 import modele.VisiteEntity;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -43,29 +47,30 @@ public class VisiteRepository extends MONGODBRepository
         return datastore.find(entityClass).asList();
     }
 
-    public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
-        /*Transaction tx = session.beginTransaction();
-        VisiteEntity visite = session.load(VisiteEntity.class, id);
+    public void updateVisite(String id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
+
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
+        UpdateOperations<VisiteEntity> operation = datastore.createUpdateOperations(entityClass);
         if (!"".equals(dateVisite) )
         {
-            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+            operation.set("dateVisite",Timestamp.valueOf(dateVisite));
         }
         if (!"".equals(utilisateurId)){
-            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(Integer.parseInt(utilisateurId));
-            visite.setUtilisateur(utilisateur);
+            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
+            operation.set("utilisateur",utilisateur.getId());
         }
         if (!"".equals(cacheId)){
-            CacheEntity cache = new CacheRepository().findById(Integer.parseInt(cacheId));
-            visite.setCache(cache);
+            CacheEntity cache = new CacheRepository().findById(cacheId);
+            operation.set("cache",cache.getId());
         }
         if (!"".equals(commentaire)){
-            visite.setCommentaire(commentaire);
+            operation.set("commentaire",commentaire);
         }
         if (!"".equals(statut)){
-            visite.setStatut(statut.toUpperCase());
+            operation.set("statut",statut.toUpperCase());
         }
-        session.update(visite);
-        tx.commit();*/
+
+        datastore.update(query, operation);
     }
 
     public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {

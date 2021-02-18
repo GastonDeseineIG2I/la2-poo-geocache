@@ -6,7 +6,7 @@ import repository.MONGODB.MONGODBRepository;
 
 public class Main {
 
-    public static final String BDD = "MYSQL"; // MONGODB | MYSQL
+    public static final String BDD = "MONGODB"; // MONGODB | MYSQL
     protected static MongoClient mongoClient;
     protected static MongoDatabase database;
 

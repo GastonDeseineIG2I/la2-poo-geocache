@@ -61,7 +61,6 @@ public class LieuRepository extends MONGODBRepository
     {
         LieuEntity lieu = new LieuEntity();
         lieu.setLibelle(nomlieu);
-
         datastore.save(lieu);
     }
 

@@ -18,16 +18,18 @@ import java.util.List;
 public class CacheRepository extends MONGODBRepository
 {
 
-    private static MongoClient mongoClient;
+
     private static Datastore datastore;
     private final static Class<CacheEntity> entityClass = CacheEntity.class;
 
     public CacheRepository(){
-        mongoClient = MONGODBRepository.getSession();
-        Morphia morphia = new Morphia();
-        morphia.map(CacheEntity.class);
-        datastore = morphia.createDatastore(mongoClient,"la2geocache");
-
+        try {
+            MongoClient mongoClient = MONGODBRepository.getSession();
+            Morphia morphia = new Morphia();
+            datastore = morphia.createDatastore(mongoClient,"la2geocache");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     public CacheEntity findById(String id)
@@ -36,18 +38,17 @@ public class CacheRepository extends MONGODBRepository
 
     }
 
-    @Override
     public void deleteById(String id)
     {
         datastore.delete(entityClass, new ObjectId(id));
     }
+
 
     public void updateCache(String id, String latitude, String longitude, String description, String nature,
                             String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
 
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
-
 
         if (!"".equals(latitude) )
         {
@@ -65,10 +66,10 @@ public class CacheRepository extends MONGODBRepository
             operation.set("nature", nature.toUpperCase());
         }
         if (!"".equals(typeCache)){
-            operation.set("type_cache",typeCache.toUpperCase());
+            operation.set("typeCache",typeCache.toUpperCase());
         }
         if (!"".equals(codeSecret)){
-            operation.set("code_secret", codeSecret);
+            operation.set("codeSecret", codeSecret);
         }
         if (!"".equals(lieuId)){
             LieuEntity lieu = new LieuRepository().findById(lieuId);
@@ -88,7 +89,6 @@ public class CacheRepository extends MONGODBRepository
     public void createCache(String latitude, String longitude, String description, String nature,
                             String typeCache, String codeSecret,String lieuId, String proprietaireId) {
         CacheEntity cache = new CacheEntity();
-
         if (!"".equals(latitude) )
         {
             BigDecimal lat = new BigDecimal(latitude);
@@ -112,7 +112,6 @@ public class CacheRepository extends MONGODBRepository
         UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
         cache.setProprietaire(proprietaire);
         cache.setStatut("INACTIVE");
-
         datastore.save(cache);
     }
 
@@ -140,14 +139,15 @@ public class CacheRepository extends MONGODBRepository
       //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
     public List<CacheEntity> getCacheByProprietaire(String id){
-
+        return datastore.find(entityClass).filter("proprietaire._id",id).asList();
         /*UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
 
         List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaire =:utilisateur ")
                 .setParameter("utilisateur",utilisateur)
                 .list();
         return cacheUtilisateur;*/
-        return null;
+
+
     }
 
     public List<CacheEntity> getCacheByLieu(int id){

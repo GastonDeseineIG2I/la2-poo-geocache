@@ -34,12 +34,13 @@ public class VisiteRepository extends MONGODBRepository<VisiteEntity>
 
     public VisiteEntity findById(String id)
     {
-        return datastore.get(entityClass, id);
+        return datastore.get(entityClass, new ObjectId(id));
+
     }
 
     public void deleteById(String id)
     {
-        datastore.delete(id);
+        datastore.delete(entityClass, new ObjectId(id));
     }
 
     public List<VisiteEntity> getAll()
@@ -69,11 +70,11 @@ public class VisiteRepository extends MONGODBRepository<VisiteEntity>
         }
         if (!"".equals(utilisateurId)){
             UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
-            operation.set("utilisateur",utilisateur.getId());
+            operation.set("utilisateur",utilisateur);
         }
         if (!"".equals(cacheId)){
             CacheEntity cache = new CacheRepository().findById(cacheId);
-            operation.set("cache",cache.getId());
+            operation.set("cache",cache);
         }
         if (!"".equals(commentaire)){
             operation.set("commentaire",commentaire);

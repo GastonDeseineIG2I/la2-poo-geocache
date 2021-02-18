@@ -92,7 +92,8 @@ public class CacheRepository extends MONGODBRepository<CacheEntity>
       //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
     public List<CacheEntity> getCacheByProprietaire(String id){
-        return datastore.find(entityClass).filter("proprietaire._id",id).asList();
+        return datastore.createQuery(entityClass).field("proprietaire._id").equal(new ObjectId(id)).asList();
+
         /*UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
 
         List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaire =:utilisateur ")
@@ -103,14 +104,14 @@ public class CacheRepository extends MONGODBRepository<CacheEntity>
 
     }
 
-    public List<CacheEntity> getCacheByLieu(int id){
-
+    public List<CacheEntity> getCacheByLieu(String id){
+        return datastore.createQuery(entityClass).field("lieu._id").equal(new ObjectId(id)).asList();
         /*LieuEntity lieu = new LieuRepository().findById(id);
 
         List<CacheEntity> cacheLieux = session.createQuery("from CacheEntity as cache where cache.lieu =:lieu ")
                 .setParameter("lieu",lieu)
                 .list();
         return cacheLieux;*/
-        return null;
+
     }
 }

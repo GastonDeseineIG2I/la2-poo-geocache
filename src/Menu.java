@@ -206,10 +206,8 @@ public class Menu
                 System.out.println("9 - Liste les caches d'un lieu " );
                 break;
             case "utilisateur":
-                System.out.println("6 - Specifique " + menuString);
                 break;
             case "lieu":
-                System.out.println("6 - Specifique " + menuString);
                 break;
             case "visite":
                 System.out.println("6 - Valider " + menuString);
@@ -374,7 +372,7 @@ public class Menu
             object = repository.get("lieu").findById(id);
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
-        for (Object objectfromlist:((LieuEntity)object).getCaches())
+        for (Object objectfromlist:repository.get("cache").getCacheByLieu(id))
         {
             System.out.println(objectfromlist != null?objectfromlist.toString():"");
         }
@@ -409,6 +407,11 @@ public class Menu
     }
 
     private static void updateUtilisateur() throws IOException {
+
+        for (Object objectfromlist:repository.get("utilisateur").getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
         String id = reader.readLine();
         Object object = repository.get("utilisateur").findById(id);
@@ -521,6 +524,10 @@ public class Menu
         }
     }
     private static void updateLieu() throws IOException {
+        for (Object objectfromlist:repository.get("lieu").getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Entrez l'identifiant du lieux à modifier : ");
@@ -545,6 +552,11 @@ public class Menu
         }
     }
     private static void updateVisite() throws IOException {
+
+        for (Object objectfromlist:repository.get("visite").getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         System.out.println("Entrez l'identifiant de la visite à modifier : ");
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
         String idVisite = reader.readLine();
@@ -559,7 +571,10 @@ public class Menu
             String dateVisite;
             dateVisite = reader.readLine();
 
-
+            for (Object objectfromlist:repository.get("utilisateur").getAll())
+            {
+                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            }
             System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
             String utilisateurId;
             do {
@@ -569,7 +584,10 @@ public class Menu
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             } while (object == null);
 
-
+            for (Object objectfromlist:repository.get("cache").getAll())
+            {
+                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            }
             System.out.println("Entrez l'id de la cache");
             String cacheId;
             do {

@@ -355,11 +355,10 @@ public class Menu
         Object object;
         do {
             id = reader.readLine();
-
             object = repoLieux.findById(id);
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
-        for (Object objectfromlist:((LieuEntity)object).getCaches())
+        for (Object objectfromlist:(repository).getCacheByLieu(id))
         {
             System.out.println(objectfromlist != null?objectfromlist.toString():"");
         }

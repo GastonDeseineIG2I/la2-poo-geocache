@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
-public class CacheRepository extends MONGODBRepository
+public class CacheRepository extends MONGODBRepository<CacheEntity>
 {
 
 
@@ -44,75 +44,28 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void updateCache(String id, String latitude, String longitude, String description, String nature,
-                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
+    public void update(CacheEntity object){
 
-        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
+        Query query = datastore.createQuery(entityClass).field("_id").equal(object.get_id());
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
 
-        if (!"".equals(latitude) )
-        {
-            BigDecimal lat = new BigDecimal(latitude);
-            operation.set("latitude", lat);
-        }
-        if (!"".equals(longitude)){
-            BigDecimal lon = new BigDecimal(longitude);
-            operation.set("longitude", lon);
-        }
-        if (!"".equals(description)){
-            operation.set("description", description);
-        }
-        if (!"".equals(nature)){
-            operation.set("nature", nature.toUpperCase());
-        }
-        if (!"".equals(typeCache)){
-            operation.set("typeCache",typeCache.toUpperCase());
-        }
-        if (!"".equals(codeSecret)){
-            operation.set("codeSecret", codeSecret);
-        }
-        if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(lieuId);
-            operation.set("lieu", lieu.getLibelle());
-        }
-        if (!"".equals(proprietaireId)){
-            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
-            operation.set("proprietaire", proprietaire.getPseudo());
-        }
-        if (!"".equals(statut)){
-            operation.set("statut",statut.toUpperCase());
-        }
+        operation.set("latitude", object.getLatitude());
+        operation.set("longitude", object.getLongitude());
+        operation.set("description", object.getDescription());
+        operation.set("nature", object.getNature().toUpperCase());
+        operation.set("typeCache", object.getTypeCache().toUpperCase());
+        operation.set("codeSecret", object.getCodeSecret());
+        operation.set("lieu", object.getLieu());
+        operation.set("proprietaire", object.getProprietaire());
+        operation.set("statut", object.getStatut());
+
         datastore.update(query, operation);
     }
 
 
-    public void createCache(String latitude, String longitude, String description, String nature,
-                            String typeCache, String codeSecret,String lieuId, String proprietaireId) {
-        CacheEntity cache = new CacheEntity();
-        if (!"".equals(latitude) )
-        {
-            BigDecimal lat = new BigDecimal(latitude);
-            cache.setLatitude(lat);
-        }
-        if (!"".equals(longitude)){
-            BigDecimal lon = new BigDecimal(longitude);
-            cache.setLongitude(lon);
-        }
-        if (!"".equals(description)){
-            cache.setDescription(description);
-        }
-        if (!"".equals(lieuId)){
-            LieuEntity lieu = new LieuRepository().findById(lieuId);
-            cache.setLieu(lieu);
-        }
-        // Ne peuvent pas être nul
-        cache.setNature(nature.toUpperCase());
-        cache.setTypeCache(typeCache.toUpperCase());
-        cache.setCodeSecret(codeSecret);
-        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
-        cache.setProprietaire(proprietaire);
-        cache.setStatut("INACTIVE");
-        datastore.save(cache);
+    public void create(CacheEntity object){
+
+        datastore.save(object);
     }
 
     public List<CacheEntity> getAll()

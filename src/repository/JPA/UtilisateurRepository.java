@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.UUID;
 
-public class UtilisateurRepository extends JPARepository
+public class UtilisateurRepository extends JPARepository<UtilisateurEntity>
 {
 
     private Session session;
@@ -38,6 +38,18 @@ public class UtilisateurRepository extends JPARepository
     {
         List<UtilisateurEntity> lieux = session.createQuery("from UtilisateurEntity").list();
         return lieux;
+    }
+
+    @Override
+    public void create(UtilisateurEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(UtilisateurEntity object)
+    {
+
     }
 
     public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {

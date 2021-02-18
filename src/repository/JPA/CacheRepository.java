@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class CacheRepository extends JPARepository
+public class CacheRepository extends JPARepository<CacheEntity>
 {
 
     private Session session;
@@ -117,6 +117,18 @@ public class CacheRepository extends JPARepository
     {
         List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();
         return lieux;
+    }
+
+    @Override
+    public void create(CacheEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(CacheEntity object)
+    {
+
     }
 
 

@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class VisiteRepository extends MONGODBRepository
+public class VisiteRepository extends MONGODBRepository<VisiteEntity>
 {
 
     private static MongoClient mongoClient;
@@ -45,6 +45,18 @@ public class VisiteRepository extends MONGODBRepository
     public List<VisiteEntity> getAll()
     {
         return datastore.find(entityClass).asList();
+    }
+
+    @Override
+    public void create(VisiteEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(VisiteEntity object)
+    {
+
     }
 
     public void updateVisite(String id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {

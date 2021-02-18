@@ -12,7 +12,7 @@ import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 
-public class UtilisateurRepository extends MONGODBRepository
+public class UtilisateurRepository extends MONGODBRepository<UtilisateurEntity>
 {
 
     private static MongoClient mongoClient;
@@ -41,6 +41,18 @@ public class UtilisateurRepository extends MONGODBRepository
     public List<UtilisateurEntity> getAll()
     {
         return datastore.find(entityClass).asList();
+    }
+
+    @Override
+    public void create(UtilisateurEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(UtilisateurEntity object)
+    {
+
     }
 
     public void updateUtilisateur(String id, String pseudo, String description, String avatar) {

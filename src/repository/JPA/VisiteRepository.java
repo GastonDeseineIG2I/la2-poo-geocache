@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class VisiteRepository extends JPARepository
+public class VisiteRepository extends JPARepository<VisiteEntity>
 {
 
     private Session session;
@@ -40,6 +40,18 @@ public class VisiteRepository extends JPARepository
     {
         List<VisiteEntity> visites = session.createQuery("from VisiteEntity").list();
         return visites;
+    }
+
+    @Override
+    public void create(VisiteEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(VisiteEntity object)
+    {
+
     }
 
     public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {

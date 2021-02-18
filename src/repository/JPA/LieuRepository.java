@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 import java.util.UUID;
 
-public class LieuRepository extends JPARepository
+public class LieuRepository extends JPARepository<LieuEntity>
 {
 
     private Session session;
@@ -40,6 +40,18 @@ public class LieuRepository extends JPARepository
     {
         List<LieuEntity> lieux = session.createQuery("from LieuEntity").list();
         return lieux;
+    }
+
+    @Override
+    public void create(LieuEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(LieuEntity object)
+    {
+
     }
 
 

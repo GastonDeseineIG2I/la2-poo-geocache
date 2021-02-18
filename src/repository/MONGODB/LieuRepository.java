@@ -10,7 +10,7 @@ import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 
-public class LieuRepository extends MONGODBRepository
+public class LieuRepository extends MONGODBRepository<LieuEntity>
 {
 
     private static Datastore datastore;
@@ -43,6 +43,18 @@ public class LieuRepository extends MONGODBRepository
     public List<LieuEntity> getAll()
     {
         return datastore.find(entityClass).asList();
+    }
+
+    @Override
+    public void create(LieuEntity object)
+    {
+
+    }
+
+    @Override
+    public void update(LieuEntity object)
+    {
+
     }
 
 

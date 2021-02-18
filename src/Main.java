@@ -6,10 +6,6 @@ import repository.MONGODB.MONGODBRepository;
 
 public class Main {
 
-    public static final String BDD = "MONGODB"; // MONGODB | MYSQL
-
-
-
 
     public static void main(final String[] args) throws Exception {
         Menu.menu();

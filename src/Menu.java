@@ -1,6 +1,4 @@
 import modele.CacheEntity;
-import modele.LieuEntity;
-import modele.UtilisateurEntity;
 import modele.VisiteEntity;
 import repository.*;
 
@@ -8,7 +6,6 @@ import repository.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +23,7 @@ public class Menu
             choixBDD = reader.readLine();
         } while (!"MYSQL".equals(choixBDD.toUpperCase()) && (!"MONGODB".equals(choixBDD.toUpperCase())));
 
+        Main.initSession(choixBDD);
 
         if(choixBDD.equals("MYSQL")){
             repository.put("cache", new repository.JPA.CacheRepository());
@@ -38,9 +36,6 @@ public class Menu
             repository.put("utilisateur", new repository.MONGODB.UtilisateurRepository());
             repository.put("visite", new repository.MONGODB.VisiteRepository());
         }
-
-        Main.initSession(choixBDD);
-
 
         boolean terminate = false;
         while (!terminate) {

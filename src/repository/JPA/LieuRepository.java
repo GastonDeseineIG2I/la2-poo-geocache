@@ -1,7 +1,6 @@
 package repository.JPA;
 
 import modele.LieuEntity;
-import org.bson.types.ObjectId;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -44,13 +43,13 @@ public class LieuRepository extends JPARepository
     }
 
     @Override
-    public void create(HashMap<String, ?> data)
+    public void create(HashMap<String, Object> data)
     {
 
     }
 
     @Override
-    public void update(HashMap<String, ?> data)
+    public void update(HashMap<String, Object> data)
     {
 
     }

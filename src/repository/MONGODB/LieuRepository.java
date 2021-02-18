@@ -47,21 +47,21 @@ public class LieuRepository extends MONGODBRepository
     }
 
     @Override
-    public void create(HashMap<String, ?> data)
+    public void create(HashMap<String, Object> data)
     {
+        String nomlieu = (String) data.get("libelle");
 
+        LieuEntity lieu = new LieuEntity();
+        lieu.setLibelle(nomlieu);
+        datastore.save(lieu);
     }
 
     @Override
-    public void update(HashMap<String, ?> data)
+    public void update(HashMap<String, Object> data)
     {
+        String nomlieu = (String) data.get("libelle");
+        String id = (String) data.get("id");
 
-    }
-
-
-    // Permet de mettre a jour le libellé d'un lieu
-    public void updateLieu(String id, String nomlieu)
-    {
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<LieuEntity> operation = datastore.createUpdateOperations(entityClass);
         operation.set("libelle", nomlieu);
@@ -69,12 +69,6 @@ public class LieuRepository extends MONGODBRepository
         datastore.update(query, operation);
     }
 
-    // Permet de créer un lieu
-    public void createLieu(String nomlieu)
-    {
-        LieuEntity lieu = new LieuEntity();
-        lieu.setLibelle(nomlieu);
-        datastore.save(lieu);
-    }
+
 
 }

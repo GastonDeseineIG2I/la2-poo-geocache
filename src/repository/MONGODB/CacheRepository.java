@@ -2,8 +2,6 @@ package repository.MONGODB;
 
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
-import modele.LieuEntity;
-import modele.UtilisateurEntity;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
@@ -11,7 +9,6 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,13 +71,13 @@ public class CacheRepository extends MONGODBRepository
     }
 
     @Override
-    public void create(HashMap<String, ?> data)
+    public void create(HashMap<String, Object> data)
     {
 
     }
 
     @Override
-    public void update(HashMap<String, ?> data)
+    public void update(HashMap<String, Object> data)
     {
 
     }

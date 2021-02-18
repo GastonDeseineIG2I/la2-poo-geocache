@@ -244,14 +244,8 @@ public class Menu
                 }
                 break;
             case "utilisateur":
-                switch (cas){
-
-                }
                 break;
             case "lieu":
-                switch (cas){
-
-                }
                 break;
             case "visite":
                 switch (cas){
@@ -552,8 +546,10 @@ public class Menu
 
             //On effectue les changements en base
 
-            repository.get("lieu").update(null);
-            //TODO ((LieuRepository)repository).updateLieu(id, libelle);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("libelle", libelle);
+            data.put("id", id);
+            repository.get("lieu").update(data);
         }
     }
     private static void updateVisite() throws IOException {
@@ -690,10 +686,11 @@ public class Menu
             libelle = reader.readLine();
         while (("".equals(libelle)) || (libelle.length() > 100));
 
-        //On effectue les changements en base
-        repository.get("lieu").create(null);
 
-        //TODO ((LieuRepository)repository).createLieu(libelle);
+        //On effectue les changements en base
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("libelle", libelle);
+        repository.get("lieu").create(data);
 
         System.out.println("Le lieu a été créé");
 

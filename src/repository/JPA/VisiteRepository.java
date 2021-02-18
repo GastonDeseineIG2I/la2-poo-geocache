@@ -44,13 +44,13 @@ public class VisiteRepository extends JPARepository
     }
 
     @Override
-    public void create(HashMap<String, ?> data)
+    public void create(HashMap<String, Object> data)
     {
 
     }
 
     @Override
-    public void update(HashMap<String, ?> data)
+    public void update(HashMap<String, Object> data)
     {
 
     }

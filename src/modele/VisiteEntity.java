@@ -112,16 +112,17 @@ public class VisiteEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VisiteEntity that = (VisiteEntity) o;
-        return  Objects.equals(dateVisite, that.dateVisite) &&
+        return Objects.equals(dateVisite, that.dateVisite) &&
                 Objects.equals(commentaire, that.commentaire) &&
                 Objects.equals(statut, that.statut);
     }
 
-    public String toString(){
-        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
+    public String toString()
+    {
+        return " | Id : " + (this.id != null ? this.id : this._id) + "\n" +
                 " | Date visite : " + this.dateVisite + "\n" +
                 " | Commentaire : " + this.commentaire + "\n" +
-                " | Statut : " + this.statut + "\n" ;
+                " | Statut : " + this.statut + "\n";
     }
 
     @Override

@@ -14,14 +14,15 @@ public class LieuRepository extends JPARepository
 
     private Session session;
 
-    public LieuRepository(){
+    public LieuRepository()
+    {
         this.session = JPARepository.getSession();
     }
 
     public LieuEntity findById(String id)
     {
         Query q = this.session.createQuery("from LieuEntity where id = :id");
-        q.setParameter("id",id);
+        q.setParameter("id", id);
 
         return (LieuEntity) q.uniqueResult();
 

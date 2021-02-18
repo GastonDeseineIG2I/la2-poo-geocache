@@ -1,7 +1,6 @@
 import modele.CacheEntity;
 import modele.VisiteEntity;
-import repository.*;
-
+import repository.RepositoryInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,25 +11,28 @@ import java.util.List;
 public class Menu
 {
 
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static String choixBDD;
-    private static HashMap<String,RepositoryInterface> repository = new HashMap<>();
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static HashMap<String, RepositoryInterface> repository = new HashMap<>();
 
     public static void menu() throws IOException
     {
         System.out.println("Selectionnez la base souhaité MYSQL ou MONGODB");
-        do {
+        do
+        {
             choixBDD = reader.readLine();
         } while (!"MYSQL".equals(choixBDD.toUpperCase()) && (!"MONGODB".equals(choixBDD.toUpperCase())));
 
         Main.initSession(choixBDD);
 
-        if(choixBDD.equals("MYSQL")){
+        if (choixBDD.equals("MYSQL"))
+        {
             repository.put("cache", new repository.JPA.CacheRepository());
             repository.put("lieu", new repository.JPA.LieuRepository());
             repository.put("utilisateur", new repository.JPA.UtilisateurRepository());
             repository.put("visite", new repository.JPA.VisiteRepository());
-        }else{
+        } else
+        {
             repository.put("cache", new repository.MONGODB.CacheRepository());
             repository.put("lieu", new repository.MONGODB.LieuRepository());
             repository.put("utilisateur", new repository.MONGODB.UtilisateurRepository());
@@ -38,7 +40,8 @@ public class Menu
         }
 
         boolean terminate = false;
-        while (!terminate) {
+        while (!terminate)
+        {
             System.out.println("Selectionnez en entrant le numéro du menu");
             System.out.println("-----------------------------------------");
             System.out.println("1 - Gestion des caches");
@@ -52,11 +55,12 @@ public class Menu
             {
                 res = reader.readLine();
                 choice = Main.isNumeric(res);
-            }while(choice > 5 || choice < 0);
+            } while (choice > 5 || choice < 0);
 
             System.out.println("-----------------------------------------");
 
-            switch (Integer.parseInt(res)) {
+            switch (Integer.parseInt(res))
+            {
                 case 1:
                     menu("cache");
                     break;
@@ -78,10 +82,12 @@ public class Menu
     }
 
 
-    public static void menu(String typeMenu) throws IOException {
+    public static void menu(String typeMenu) throws IOException
+    {
         String menuString;
 
-        switch (typeMenu) {
+        switch (typeMenu)
+        {
             case "cache":
                 menuString = "une cache";
                 break;
@@ -99,7 +105,7 @@ public class Menu
         }
 
         System.out.println("-----------------------------------------");
-        System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ?"x":"s"));
+        System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ? "x" : "s"));
         System.out.println("2 - Ajouter " + menuString);
         System.out.println("3 - Modifier " + menuString);
         System.out.println("4 - Supprimer " + menuString);
@@ -109,28 +115,30 @@ public class Menu
 
 
         System.out.println("99 - Retour au menu précédent");
-        String res ;
+        String res;
         int choice;
         do
         {
             res = reader.readLine();
 
             choice = Main.isNumeric(res);
-        }while(choice > 99 || choice < 0);
+        } while (choice > 99 || choice < 0);
 
 
         System.out.println("-----------------------------------------");
         String id;
-        Object object ;
-        switch (Integer.parseInt(res)){
+        Object object;
+        switch (Integer.parseInt(res))
+        {
             case 1:
-                for (Object objectfromlist:repository.get(typeMenu).getAll())
+                for (Object objectfromlist : repository.get(typeMenu).getAll())
                 {
-                    System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                    System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
                 }
                 break;
             case 2:
-                switch (typeMenu) {
+                switch (typeMenu)
+                {
                     case "cache":
                         createCache();
                         break;
@@ -146,7 +154,8 @@ public class Menu
                 }
                 break;
             case 3:
-                switch (typeMenu) {
+                switch (typeMenu)
+                {
                     case "cache":
                         updateCache();
                         break;
@@ -169,9 +178,9 @@ public class Menu
                 break;
             case 5:
 
-                for (Object objectfromlist:repository.get(typeMenu).getAll())
+                for (Object objectfromlist : repository.get(typeMenu).getAll())
                 {
-                    System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                    System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
                 }
                 System.out.println("Entrez l'identifiant rechercher : ");
                 id = reader.readLine();
@@ -181,7 +190,7 @@ public class Menu
             case 99:
                 return;
             default:
-                casSpecifique(typeMenu,Integer.parseInt(res));
+                casSpecifique(typeMenu, Integer.parseInt(res));
                 break;
         }
         System.out.println("Appuyer sur ENTER pour continuer.");
@@ -190,15 +199,15 @@ public class Menu
     }
 
 
-
-
-    public static void menuSpecifique(String typeMenu, String menuString){
-        switch (typeMenu) {
+    public static void menuSpecifique(String typeMenu, String menuString)
+    {
+        switch (typeMenu)
+        {
             case "cache":
                 System.out.println("6 - Activer " + menuString);
                 System.out.println("7 - Desactiver " + menuString);
-                System.out.println("8 - Liste les caches d'un utilisateur " );
-                System.out.println("9 - Liste les caches d'un lieu " );
+                System.out.println("8 - Liste les caches d'un utilisateur ");
+                System.out.println("9 - Liste les caches d'un lieu ");
                 break;
             case "utilisateur":
                 break;
@@ -218,18 +227,20 @@ public class Menu
     {
         String id;
         Object object;
-        switch (typeMenu) {
+        switch (typeMenu)
+        {
             case "cache":
-                switch (cas){
+                switch (cas)
+                {
                     case 6:
                         changeStatutCache(true);
 
-                    break;
+                        break;
                     case 7:
                         changeStatutCache(false);
 
 
-                    break;
+                        break;
                     case 8:
                         listeCacheProprietaire();
                         break;
@@ -243,39 +254,46 @@ public class Menu
             case "lieu":
                 break;
             case "visite":
-                switch (cas){
+                switch (cas)
+                {
                     case 6:
                         System.out.println("Entrez l'identifiant de la visite : ");
                         id = reader.readLine();
                         object = repository.get("visite").findById(id);
                         System.out.println(object.toString());
-                        if(object != null){
+                        if (object != null)
+                        {
                             String code;
                             boolean compareCode = false;
                             do
                             {
                                 System.out.println(" Obligatoire : Code secret de la cache");
                                 code = reader.readLine();
-                                if(choixBDD.equals("MYSQL")){
-                                    compareCode = !((repository.JPA.VisiteRepository)repository.get("visite")).compareCodeSecret(""+((VisiteEntity)object).getCache().getId(), code);
-                                }else{
-                                    compareCode = !((repository.MONGODB.VisiteRepository)repository.get("visite")).compareCodeSecret(""+((VisiteEntity)object).getCache().getId(), code);
+                                if (choixBDD.equals("MYSQL"))
+                                {
+                                    compareCode = !((repository.JPA.VisiteRepository) repository.get("visite")).compareCodeSecret("" + ((VisiteEntity) object).getCache().getId(), code);
+                                } else
+                                {
+                                    compareCode = !((repository.MONGODB.VisiteRepository) repository.get("visite")).compareCodeSecret("" + ((VisiteEntity) object).getCache().getId(), code);
                                 }
 
-                            }while(compareCode);
+                            } while (compareCode);
 
                             String commentaire;
                             System.out.println(" Optionnel : Entrez un commentaire");
                             commentaire = reader.readLine();
-                            if(choixBDD.equals("MYSQL")){
-                                ((repository.JPA.VisiteRepository)repository.get("visite")).validerVisite(id, commentaire);
-                            }else{
-                                ((repository.MONGODB.VisiteRepository)repository.get("visite")).validerVisite(id, commentaire);
+                            if (choixBDD.equals("MYSQL"))
+                            {
+                                ((repository.JPA.VisiteRepository) repository.get("visite")).validerVisite(id, commentaire);
+                            } else
+                            {
+                                ((repository.MONGODB.VisiteRepository) repository.get("visite")).validerVisite(id, commentaire);
                             }
                             object = repository.get("visite").findById(id);
                             System.out.println(object.toString());
                             System.out.println("La visite a été validée.");
-                        }else{
+                        } else
+                        {
                             System.out.println("Cette visite n'existe pas.");
                         }
                         break;
@@ -289,29 +307,37 @@ public class Menu
     }
 
 
-    private static void changeStatutCache(boolean statut) throws IOException {
-        for (Object objectfromlist:repository.get("cache").getAll())
+    private static void changeStatutCache(boolean statut) throws IOException
+    {
+        for (Object objectfromlist : repository.get("cache").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entrez l'identifiant de la cache : ");
         String id;
         id = reader.readLine();
         Object object = repository.get("cache").findById(id);
-        if(object != null){
-            if(statut){
-                if(choixBDD.equals("MYSQL")){
+        if (object != null)
+        {
+            if (statut)
+            {
+                if (choixBDD.equals("MYSQL"))
+                {
                     ((repository.JPA.CacheRepository) repository.get("cache")).activeCache(id);
-                }else{
+                } else
+                {
                     ((repository.MONGODB.CacheRepository) repository.get("cache")).activeCache(id);
                 }
                 System.out.println(object.toString());
                 System.out.println("La cache a été activée.");
-            }else{
-                if(choixBDD.equals("MYSQL")){
-                    ((repository.JPA.CacheRepository)repository.get("cache")).desactiveCache(id);
-                }else{
-                    ((repository.MONGODB.CacheRepository)repository.get("cache")).desactiveCache(id);
+            } else
+            {
+                if (choixBDD.equals("MYSQL"))
+                {
+                    ((repository.JPA.CacheRepository) repository.get("cache")).desactiveCache(id);
+                } else
+                {
+                    ((repository.MONGODB.CacheRepository) repository.get("cache")).desactiveCache(id);
                 }
 
                 System.out.println(object.toString());
@@ -319,43 +345,49 @@ public class Menu
             }
 
 
-        }else{
+        } else
+        {
             System.out.println("Cette cache n'existe pas");
         }
     }
 
 
-    private static void listeVisiteParDate() throws IOException {
+    private static void listeVisiteParDate() throws IOException
+    {
         System.out.println("Entrez la date de visite :");
         System.out.println("Format YYYY-MM-dd:");
-        String dateVisite ;
+        String dateVisite;
         Object object;
         dateVisite = reader.readLine();
 
         List<VisiteEntity> visites;
-        if(choixBDD.equals("MYSQL")){
+        if (choixBDD.equals("MYSQL"))
+        {
             visites = ((repository.JPA.VisiteRepository) repository.get("visite")).getVisiteByDate(dateVisite);
-        }else{
+        } else
+        {
             visites = ((repository.MONGODB.VisiteRepository) repository.get("visite")).getVisiteByDate(dateVisite);
         }
 
-        for (Object objectfromlist: visites)
+        for (Object objectfromlist : visites)
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
 
     }
 
 
-    private static void listeCacheLieu() throws IOException {
-        for (Object objectfromlist:repository.get("lieu").getAll())
+    private static void listeCacheLieu() throws IOException
+    {
+        for (Object objectfromlist : repository.get("lieu").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entre l'identifiant du lieu pour afficher ses caches");
-        String id ;
+        String id;
         Object object;
-        do {
+        do
+        {
             id = reader.readLine();
 
             object = repository.get("lieu").findById(id);
@@ -363,57 +395,66 @@ public class Menu
         } while (object == null);
 
         List<CacheEntity> caches;
-        if(choixBDD.equals("MYSQL")){
+        if (choixBDD.equals("MYSQL"))
+        {
             caches = ((repository.JPA.CacheRepository) repository.get("cache")).getCacheByLieu(id);
-        }else{
+        } else
+        {
             caches = ((repository.MONGODB.CacheRepository) repository.get("cache")).getCacheByLieu(id);
         }
 
-        for (Object objectfromlist:caches)
+        for (Object objectfromlist : caches)
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
 
     }
-    private static void listeCacheProprietaire() throws IOException {
-        for (Object objectfromlist:repository.get("utilisateur").getAll())
+
+    private static void listeCacheProprietaire() throws IOException
+    {
+        for (Object objectfromlist : repository.get("utilisateur").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entre l'identifiant de l'utilisateur pour afficher ses caches");
-        String id ;
+        String id;
         Object object;
-        do {
+        do
+        {
             id = reader.readLine();
             object = repository.get("utilisateur").findById(id);
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
         } while (object == null);
 
         List<CacheEntity> caches;
-        if(choixBDD.equals("MYSQL")){
+        if (choixBDD.equals("MYSQL"))
+        {
             caches = ((repository.JPA.CacheRepository) repository.get("cache")).getCacheByProprietaire(id);
-        }else{
+        } else
+        {
             caches = ((repository.MONGODB.CacheRepository) repository.get("cache")).getCacheByProprietaire(id);
         }
 
-        for (Object objectfromlist:caches)
+        for (Object objectfromlist : caches)
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
 
     }
 
-    private static void updateUtilisateur() throws IOException {
+    private static void updateUtilisateur() throws IOException
+    {
 
-        for (Object objectfromlist:repository.get("utilisateur").getAll())
+        for (Object objectfromlist : repository.get("utilisateur").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
         String id = reader.readLine();
         Object object = repository.get("utilisateur").findById(id);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
-        if (object != null) {
+        if (object != null)
+        {
             System.out.println("Si une valeur est inchangée tapez sur entree");
             System.out.println("Entrez le nouveau pseudo ");
             String pseudo;
@@ -434,17 +475,20 @@ public class Menu
             // TODO ((UtilisateurRepository)repository).updateUtilisateur(id, pseudo, descripton, avatar);
         }
     }
-    private static void updateCache() throws IOException {
-        for (Object objectfromlist:repository.get("cache").getAll())
+
+    private static void updateCache() throws IOException
+    {
+        for (Object objectfromlist : repository.get("cache").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entrez l'identifiant de la cache à modifier : ");
         String idCache = reader.readLine();
         Object object = repository.get("cache").findById(idCache);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
-        if (object != null) {
+        if (object != null)
+        {
             System.out.println("Si une valeur est inchangée tapez sur entree");
             System.out.println("Entrez la latitude");
             String latitude;
@@ -460,7 +504,8 @@ public class Menu
 
             System.out.println("Entrez la nature PHYSIQUE / VIRTUELLE");
             String nature;
-            do{
+            do
+            {
                 nature = reader.readLine();
             } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) && (!"".equals(nature.toUpperCase())));
 
@@ -473,7 +518,6 @@ public class Menu
             while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())) && (!"".equals(typeCache.toUpperCase())));
 
 
-
             System.out.println("Entrez le code secret");
             String codeSecret;
             codeSecret = reader.readLine();
@@ -481,33 +525,36 @@ public class Menu
             System.out.println("Entrez le statut de la cache");
             System.out.println("ACTIVE / INACTIVE");
             String statut;
-            do {
+            do
+            {
                 statut = reader.readLine();
             } while (!"ACTIVE".equals(statut.toUpperCase()) && (!"INACTIVE".equals(statut.toUpperCase())) && (!"".equals(statut.toUpperCase())));
 
 
-            for (Object objectfromlist:repository.get("utilisateur").getAll())
+            for (Object objectfromlist : repository.get("utilisateur").getAll())
             {
-                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
             }
             System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
             String proprietaireId;
-            do {
+            do
+            {
                 proprietaireId = reader.readLine();
                 object = repository.get("utilisateur").findById(proprietaireId);
                 System.out.println(object != null ? object.toString() : "Propriétaire non trouvé.");
             } while (object == null);
 
 
-            for (Object objectfromlist:repository.get("lieu").getAll())
+            for (Object objectfromlist : repository.get("lieu").getAll())
             {
-                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
             }
             System.out.println("Obligatoire : Entrez l'id du lieu de la cache");
             String lieuId;
-            do {
+            do
+            {
                 lieuId = reader.readLine();
-               // LieuRepository repoCache = new LieuRepository();
+                // LieuRepository repoCache = new LieuRepository();
                 object = repository.get("lieu").findById(lieuId);
                 System.out.println(object != null ? object.toString() : "lieu non trouvé.");
             } while (object == null);
@@ -518,10 +565,12 @@ public class Menu
             //TODO ((CacheRepository)repository).updateCache(idCache, latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
         }
     }
-    private static void updateLieu() throws IOException {
-        for (Object objectfromlist:repository.get("lieu").getAll())
+
+    private static void updateLieu() throws IOException
+    {
+        for (Object objectfromlist : repository.get("lieu").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -529,7 +578,8 @@ public class Menu
         String id = reader.readLine();
         Object object = repository.get("lieu").findById(id);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
-        if (object != null) {
+        if (object != null)
+        {
             // On declare un libellé que nous recupérons sur la ligne de commande
             String libelle = "";
             System.out.println("Entrez le nouveau libellé de lieux");
@@ -547,11 +597,13 @@ public class Menu
             repository.get("lieu").update(data);
         }
     }
-    private static void updateVisite() throws IOException {
 
-        for (Object objectfromlist:repository.get("visite").getAll())
+    private static void updateVisite() throws IOException
+    {
+
+        for (Object objectfromlist : repository.get("visite").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Entrez l'identifiant de la visite à modifier : ");
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
@@ -559,7 +611,8 @@ public class Menu
         Object object = repository.get("visite").findById(idVisite);
         System.out.println(object != null ? object.toString() : "Resultat non trouvé.");
 
-        if (object != null) {
+        if (object != null)
+        {
             System.out.println("Si une valeur est inchangée tapez sur entree");
             System.out.println("Entrez la nouvelle date et heure de visite");
             System.out.println("Format : YYYY-MM-DD hh:mm:ss");
@@ -567,26 +620,28 @@ public class Menu
             String dateVisite;
             dateVisite = reader.readLine();
 
-            for (Object objectfromlist:repository.get("utilisateur").getAll())
+            for (Object objectfromlist : repository.get("utilisateur").getAll())
             {
-                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
             }
             System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
             String utilisateurId;
-            do {
+            do
+            {
                 utilisateurId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 object = repository.get("utilisateur").findById(utilisateurId);
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             } while (object == null);
 
-            for (Object objectfromlist:repository.get("cache").getAll())
+            for (Object objectfromlist : repository.get("cache").getAll())
             {
-                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+                System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
             }
             System.out.println("Entrez l'id de la cache");
             String cacheId;
-            do {
+            do
+            {
                 cacheId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
                 object = repository.get("cache").findById(cacheId);
@@ -601,7 +656,8 @@ public class Menu
             String statut;
             System.out.println("Entrez un statut : En cours / Terminee'");
 
-            do {
+            do
+            {
                 statut = reader.readLine();
                 // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
             } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
@@ -616,7 +672,8 @@ public class Menu
 
     }
 
-    private static void createVisite() throws IOException{
+    private static void createVisite() throws IOException
+    {
 
         System.out.println("Si une valeur est inchangée tapez sur entree");
         System.out.println(" Optionnel : Entrez la nouvelle date et heure de visite");
@@ -625,31 +682,30 @@ public class Menu
         String dateVisite;
         dateVisite = reader.readLine();
 
-        for (Object objectfromlist:repository.get("utilisateur").getAll())
+        for (Object objectfromlist : repository.get("utilisateur").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Obligatoire : Entrez l'id de l'utilisateur quI a fait la visite  ");
         String utilisateurId;
         Object object;
-        do{
+        do
+        {
             utilisateurId = reader.readLine();
             //On regarde si on a un utilisateur que existe
             object = repository.get("utilisateur").findById(utilisateurId);
             System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
-        }while (object == null);
+        } while (object == null);
 
 
-
-
-
-        for (Object objectfromlist:repository.get("cache").getAll())
+        for (Object objectfromlist : repository.get("cache").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println(" Obligatoire : Entrez l'id de la cache");
         String cacheId;
-        do {
+        do
+        {
             cacheId = reader.readLine();
             //On regarde si on a un utilisateur que existe
             object = repository.get("cache").findById(cacheId);
@@ -661,7 +717,8 @@ public class Menu
         commentaire = reader.readLine();
         String statut;
         System.out.println(" Obligatoire : Entrez un statut : En cours / Terminee");
-        do {
+        do
+        {
             statut = reader.readLine();
             // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
         } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
@@ -669,7 +726,9 @@ public class Menu
         repository.get("visite").create(null);
         //TODO ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
     }
-    private static void createLieu() throws IOException {
+
+    private static void createLieu() throws IOException
+    {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         // On declare un libellé que nous recupérons sur la ligne de commande
@@ -690,7 +749,9 @@ public class Menu
         System.out.println("Le lieu a été créé");
 
     }
-    private static void createUtilisateur() throws IOException {
+
+    private static void createUtilisateur() throws IOException
+    {
         System.out.println("Obligatoire : Entrez le  pseudo ");
         String pseudo;
 
@@ -710,13 +771,14 @@ public class Menu
         while (avatar.length() > 255);
 
 
-
         repository.get("utilisateur").create(null);
         //TODO ((UtilisateurRepository)repository).createUtilisateur(pseudo, descripton, avatar);
         System.out.println("L'utilisateur a bien été ajouté ");
 
     }
-    private static void createCache () throws  IOException{
+
+    private static void createCache() throws IOException
+    {
 
         System.out.println("Si une valeur est inchangée tapez sur entree");
         System.out.println("Optionnel : Entrez la latitude");
@@ -733,9 +795,10 @@ public class Menu
 
         System.out.println("Obligatoire : Entrez la nature PHYSIQUE / VIRTUELLE");
         String nature;
-        do{
+        do
+        {
             nature = reader.readLine();
-        } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())) );
+        } while (!"PHYSIQUE".equals(nature.toUpperCase()) && (!"VIRTUELLE".equals(nature.toUpperCase())));
 
 
         System.out.println("Obligatoire : Entrez le type de cache");
@@ -746,20 +809,20 @@ public class Menu
         while (!"TRADITIONNELLE".equals(typeCache.toUpperCase()) && (!"JEU DE PISTE".equals(typeCache.toUpperCase())) && (!"OBJET".equals(typeCache.toUpperCase())));
 
 
-
         System.out.println("Obligatoire : Entrez le code secret");
         String codeSecret;
         codeSecret = reader.readLine();
 
-        for (Object objectfromlist:repository.get("utilisateur").getAll())
+        for (Object objectfromlist : repository.get("utilisateur").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
 
         System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
         String proprietaireId;
         Object object;
-        do {
+        do
+        {
 
             proprietaireId = reader.readLine();
             //On regarde si on a un utilisateur que existe
@@ -769,13 +832,14 @@ public class Menu
         } while (object == null);
 
 
-        for (Object objectfromlist:repository.get("lieu").getAll())
+        for (Object objectfromlist : repository.get("lieu").getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
         System.out.println("Obligatoire : Entrez l'id du lieu de la cache");
         String lieuId;
-        do {
+        do
+        {
             lieuId = reader.readLine();
 
             object = repository.get("lieu").findById(lieuId);
@@ -787,12 +851,13 @@ public class Menu
 
     }
 
-    private static void delete(String type) throws IOException {
-        for (Object objectfromlist:repository.get(type).getAll())
+    private static void delete(String type) throws IOException
+    {
+        for (Object objectfromlist : repository.get(type).getAll())
         {
-            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            System.out.println(objectfromlist != null ? objectfromlist.toString() : "");
         }
-        String id ;
+        String id;
         System.out.println("Entrez l'identifiant à supprimer : ");
         id = reader.readLine();
         repository.get(type).deleteById(id);

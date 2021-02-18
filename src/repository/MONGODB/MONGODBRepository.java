@@ -11,14 +11,16 @@ public abstract class MONGODBRepository implements RepositoryInterface
     private static MongoClient mongoClient;
     private static MongoDatabase database;
 
-    static {
+    static
+    {
 
         mongoClient = new MongoClient(new MongoClientURI("mongodb://127.0.0.1:27017"));
         database = mongoClient.getDatabase("la2geocache");
 
     }
 
-    public static MongoClient getSession() throws HibernateException {
+    public static MongoClient getSession() throws HibernateException
+    {
         return mongoClient;
     }
 }

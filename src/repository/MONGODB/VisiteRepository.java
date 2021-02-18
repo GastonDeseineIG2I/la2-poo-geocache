@@ -17,17 +17,18 @@ import java.util.List;
 public class VisiteRepository extends MONGODBRepository
 {
 
+    private final static Class<VisiteEntity> entityClass = VisiteEntity.class;
     private static MongoClient mongoClient;
     private static Datastore datastore;
-    private final static Class<VisiteEntity> entityClass = VisiteEntity.class;
 
 
-    public VisiteRepository(){
+    public VisiteRepository()
+    {
 
         mongoClient = MONGODBRepository.getSession();
         Morphia morphia = new Morphia();
         morphia.map(CacheEntity.class);
-        datastore = morphia.createDatastore(mongoClient,"la2geocache");
+        datastore = morphia.createDatastore(mongoClient, "la2geocache");
 
     }
 
@@ -59,43 +60,52 @@ public class VisiteRepository extends MONGODBRepository
 
     }
 
-    public void updateVisite(String id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
+    public void updateVisite(String id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
+    {
 
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<VisiteEntity> operation = datastore.createUpdateOperations(entityClass);
-        if (!"".equals(dateVisite) )
+        if (!"".equals(dateVisite))
         {
-            operation.set("dateVisite",Timestamp.valueOf(dateVisite));
+            operation.set("dateVisite", Timestamp.valueOf(dateVisite));
         }
-        if (!"".equals(utilisateurId)){
+        if (!"".equals(utilisateurId))
+        {
             UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
-            operation.set("utilisateur",utilisateur);
+            operation.set("utilisateur", utilisateur);
         }
-        if (!"".equals(cacheId)){
+        if (!"".equals(cacheId))
+        {
             CacheEntity cache = new CacheRepository().findById(cacheId);
-            operation.set("cache",cache);
+            operation.set("cache", cache);
         }
-        if (!"".equals(commentaire)){
-            operation.set("commentaire",commentaire);
+        if (!"".equals(commentaire))
+        {
+            operation.set("commentaire", commentaire);
         }
-        if (!"".equals(statut)){
-            operation.set("statut",statut.toUpperCase());
+        if (!"".equals(statut))
+        {
+            operation.set("statut", statut.toUpperCase());
         }
 
         datastore.update(query, operation);
     }
 
-    public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
+    public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
+    {
 
         VisiteEntity visite = new VisiteEntity();
-        if (!"".equals(utilisateurId)) {
+        if (!"".equals(utilisateurId))
+        {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-           visite.setDateVisite(timestamp);
-        }else{
+            visite.setDateVisite(timestamp);
+        } else
+        {
             visite.setDateVisite(Timestamp.valueOf(dateVisite));
         }
 
-        if (!"".equals(commentaire)){
+        if (!"".equals(commentaire))
+        {
             visite.setCommentaire(commentaire);
         }
         UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
@@ -109,7 +119,8 @@ public class VisiteRepository extends MONGODBRepository
         datastore.save(visite);
     }
 
-    public void validerVisite(String idVisite, String commentaire) {
+    public void validerVisite(String idVisite, String commentaire)
+    {
         /*Transaction tx = session.beginTransaction();
         VisiteEntity visite = session.load(VisiteEntity.class, idVisite);
 
@@ -124,7 +135,8 @@ public class VisiteRepository extends MONGODBRepository
         tx.commit();*/
     }
 
-    public boolean compareCodeSecret(String idCache, String CodeSecret){
+    public boolean compareCodeSecret(String idCache, String CodeSecret)
+    {
         /*CacheEntity cache = session.load(CacheEntity.class, idCache);
         String codeOfficielCache = cache.getCodeSecret();
         findById(idCache);
@@ -133,12 +145,13 @@ public class VisiteRepository extends MONGODBRepository
         }else{
             return false ;
         }*/
-        return true ;
+        return true;
     }
 
-    public List<VisiteEntity> getVisiteByDate(String date){
+    public List<VisiteEntity> getVisiteByDate(String date)
+    {
 
-     //   String[] parts = date.split(" ");
+        //   String[] parts = date.split(" ");
        /* String part1 = datee + " 00:00:00";
         String part2 =datee + " 23:59:59";
         Timestamp dateDebut = Timestamp.valueOf(part1);
@@ -150,7 +163,7 @@ public class VisiteRepository extends MONGODBRepository
                 .setParameter("dateFin",dateFin)
                 .list();
         return visite;*/
-       return null;
+        return null;
     }
 
 }

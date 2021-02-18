@@ -14,14 +14,15 @@ public class UtilisateurRepository extends JPARepository
 
     private Session session;
 
-    public UtilisateurRepository(){
+    public UtilisateurRepository()
+    {
         this.session = JPARepository.getSession();
     }
 
     public UtilisateurEntity findById(String id)
     {
         Query q = this.session.createQuery("from UtilisateurEntity where id = :id");
-        q.setParameter("id",id);
+        q.setParameter("id", id);
 
         return (UtilisateurEntity) q.uniqueResult();
 
@@ -54,41 +55,49 @@ public class UtilisateurRepository extends JPARepository
     }
 
 
-    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {
-    Transaction tx = session.beginTransaction();
-    UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
-    if (!"".equals(pseudo) )
+    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar)
     {
-        //TODO verifier l'unicité
-        utilisateur.setPseudo(pseudo);
-    }
-    if (!"".equals(descripton)){
-        utilisateur.setDescription(descripton);
-    }
-    if (!"".equals(avatar)){
-        utilisateur.setAvatar(avatar);
-    }
-    session.update(utilisateur);
-    tx.commit();
-}
-
-    public void createUtilisateur(String pseudo, String descripton, String avatar) {
         Transaction tx = session.beginTransaction();
-        UtilisateurEntity utilisateur = new UtilisateurEntity();
-        utilisateur.setId(UUID.randomUUID().toString());
-        if (!"".equals(pseudo) )
+        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
+        if (!"".equals(pseudo))
         {
             //TODO verifier l'unicité
             utilisateur.setPseudo(pseudo);
         }
-        if (!"".equals(descripton)){
+        if (!"".equals(descripton))
+        {
             utilisateur.setDescription(descripton);
-        }else{
+        }
+        if (!"".equals(avatar))
+        {
+            utilisateur.setAvatar(avatar);
+        }
+        session.update(utilisateur);
+        tx.commit();
+    }
+
+    public void createUtilisateur(String pseudo, String descripton, String avatar)
+    {
+        Transaction tx = session.beginTransaction();
+        UtilisateurEntity utilisateur = new UtilisateurEntity();
+        utilisateur.setId(UUID.randomUUID().toString());
+        if (!"".equals(pseudo))
+        {
+            //TODO verifier l'unicité
+            utilisateur.setPseudo(pseudo);
+        }
+        if (!"".equals(descripton))
+        {
+            utilisateur.setDescription(descripton);
+        } else
+        {
             utilisateur.setDescription("");
         }
-        if (!"".equals(avatar)){
+        if (!"".equals(avatar))
+        {
             utilisateur.setAvatar(avatar);
-        }else{
+        } else
+        {
             utilisateur.setAvatar("default.png");
         }
         session.persist(utilisateur);

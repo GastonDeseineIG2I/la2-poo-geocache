@@ -15,16 +15,17 @@ import java.util.List;
 public class UtilisateurRepository extends MONGODBRepository
 {
 
+    private final static Class<UtilisateurEntity> entityClass = UtilisateurEntity.class;
     private static MongoClient mongoClient;
     private static Datastore datastore;
-    private final static Class<UtilisateurEntity> entityClass = UtilisateurEntity.class;
 
 
-    public UtilisateurRepository(){
+    public UtilisateurRepository()
+    {
         mongoClient = MONGODBRepository.getSession();
         Morphia morphia = new Morphia();
         morphia.map(CacheEntity.class);
-        datastore = morphia.createDatastore(mongoClient,"la2geocache");
+        datastore = morphia.createDatastore(mongoClient, "la2geocache");
 
     }
 
@@ -56,40 +57,48 @@ public class UtilisateurRepository extends MONGODBRepository
     }
 
 
-    public void updateUtilisateur(String id, String pseudo, String description, String avatar) {
+    public void updateUtilisateur(String id, String pseudo, String description, String avatar)
+    {
 
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<UtilisateurEntity> operation = datastore.createUpdateOperations(entityClass);
 
-        if (!"".equals(pseudo) )
+        if (!"".equals(pseudo))
         {
             //TODO verifier l'unicité
             operation.set("pseudo", pseudo);
         }
-        if (!"".equals(description)){
+        if (!"".equals(description))
+        {
             operation.set("description", description);
         }
-        if (!"".equals(avatar)){
+        if (!"".equals(avatar))
+        {
             operation.set("avatar", avatar);
         }
         datastore.update(query, operation);
-}
+    }
 
-    public void createUtilisateur(String pseudo, String description, String avatar) {
+    public void createUtilisateur(String pseudo, String description, String avatar)
+    {
         UtilisateurEntity utilisateur = new UtilisateurEntity();
-        if (!"".equals(pseudo) )
+        if (!"".equals(pseudo))
         {
             //TODO verifier l'unicité
             utilisateur.setPseudo(pseudo);
         }
-        if (!"".equals(description)){
+        if (!"".equals(description))
+        {
             utilisateur.setDescription(description);
-        }else{
+        } else
+        {
             utilisateur.setDescription("");
         }
-        if (!"".equals(avatar)){
+        if (!"".equals(avatar))
+        {
             utilisateur.setAvatar(avatar);
-        }else{
+        } else
+        {
             utilisateur.setAvatar("default.png");
         }
         datastore.save(utilisateur);

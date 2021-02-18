@@ -1,30 +1,34 @@
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
 import repository.JPA.JPARepository;
 import repository.MONGODB.MONGODBRepository;
 
 
-public class Main {
+public class Main
+{
 
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception
+    {
         Menu.menu();
     }
 
     public static boolean initSession(String type)
     {
-        if(type.equals("MYSQL")){
+        if (type.equals("MYSQL"))
+        {
             JPARepository.getSession(); //Initialise la session JPA
-        }else if(type.equals("MONGODB")){
+        } else if (type.equals("MONGODB"))
+        {
             MONGODBRepository.getSession();
-        }else{
+        } else
+        {
             return true;
         }
         return false;
     }
 
 
-    public static int isNumeric(String res){
+    public static int isNumeric(String res)
+    {
         int numeric;
         try
         {

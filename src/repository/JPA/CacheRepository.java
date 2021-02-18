@@ -18,14 +18,15 @@ public class CacheRepository extends JPARepository
 
     private Session session;
 
-    public CacheRepository(){
+    public CacheRepository()
+    {
         this.session = JPARepository.getSession();
     }
 
     public CacheEntity findById(String id)
     {
         Query q = this.session.createQuery("from CacheEntity where id = :id");
-        q.setParameter("id",id);
+        q.setParameter("id", id);
 
         return (CacheEntity) q.uniqueResult();
 
@@ -41,39 +42,48 @@ public class CacheRepository extends JPARepository
     }
 
     public void updateCache(String id, String latitude, String longitude, String description, String nature,
-                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId) {
+                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId)
+    {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
-        if (!"".equals(latitude) )
+        if (!"".equals(latitude))
         {
             BigDecimal lat = new BigDecimal(latitude);
             cache.setLatitude(lat);
         }
-        if (!"".equals(longitude)){
+        if (!"".equals(longitude))
+        {
             BigDecimal lon = new BigDecimal(longitude);
             cache.setLongitude(lon);
         }
-        if (!"".equals(description)){
+        if (!"".equals(description))
+        {
             cache.setDescription(description);
         }
-        if (!"".equals(nature)){
+        if (!"".equals(nature))
+        {
             cache.setNature(nature.toUpperCase());
         }
-        if (!"".equals(typeCache)){
+        if (!"".equals(typeCache))
+        {
             cache.setTypeCache(typeCache.toUpperCase());
         }
-        if (!"".equals(codeSecret)){
+        if (!"".equals(codeSecret))
+        {
             cache.setCodeSecret(codeSecret);
         }
-        if (!"".equals(lieuId)){
+        if (!"".equals(lieuId))
+        {
             LieuEntity lieu = new LieuRepository().findById(lieuId);
             cache.setLieu(lieu);
         }
-        if (!"".equals(proprietaireId)){
+        if (!"".equals(proprietaireId))
+        {
             UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
             cache.setProprietaire(proprietaire);
         }
-        if (!"".equals(statut)){
+        if (!"".equals(statut))
+        {
             cache.setStatut(statut.toUpperCase());
         }
         session.update(cache);
@@ -82,24 +92,28 @@ public class CacheRepository extends JPARepository
 
 
     public void createCache(String latitude, String longitude, String description, String nature,
-                            String typeCache, String codeSecret,String lieuId, String proprietaireId) {
+                            String typeCache, String codeSecret, String lieuId, String proprietaireId)
+    {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = new CacheEntity();
         cache.setId(UUID.randomUUID().toString());
 
-        if (!"".equals(latitude) )
+        if (!"".equals(latitude))
         {
             BigDecimal lat = new BigDecimal(latitude);
             cache.setLatitude(lat);
         }
-        if (!"".equals(longitude)){
+        if (!"".equals(longitude))
+        {
             BigDecimal lon = new BigDecimal(longitude);
             cache.setLongitude(lon);
         }
-        if (!"".equals(description)){
+        if (!"".equals(description))
+        {
             cache.setDescription(description);
         }
-        if (!"".equals(lieuId)){
+        if (!"".equals(lieuId))
+        {
             LieuEntity lieu = new LieuRepository().findById(lieuId);
             cache.setLieu(lieu);
         }
@@ -133,14 +147,17 @@ public class CacheRepository extends JPARepository
     }
 
 
-    public void activeCache(String id) {
+    public void activeCache(String id)
+    {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         cache.setStatut("ACTIVE");
         session.update(cache);
         tx.commit();
     }
-    public void desactiveCache(String id) {
+
+    public void desactiveCache(String id)
+    {
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         cache.setStatut("INACTIVE");
@@ -150,24 +167,26 @@ public class CacheRepository extends JPARepository
 
 
     //List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache join UtilisateurEntity as utilisateur " +
-      //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
+    //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
-    public List<CacheEntity> getCacheByProprietaire(String id){
+    public List<CacheEntity> getCacheByProprietaire(String id)
+    {
 
         UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
 
         List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache where cache.proprietaire =:utilisateur ")
-                .setParameter("utilisateur",utilisateur)
+                .setParameter("utilisateur", utilisateur)
                 .list();
         return cacheUtilisateur;
     }
 
-    public List<CacheEntity> getCacheByLieu(String id){
+    public List<CacheEntity> getCacheByLieu(String id)
+    {
 
         LieuEntity lieu = new LieuRepository().findById(id);
 
         List<CacheEntity> cacheLieux = session.createQuery("from CacheEntity as cache where cache.lieu =:lieu ")
-                .setParameter("lieu",lieu)
+                .setParameter("lieu", lieu)
                 .list();
         return cacheLieux;
     }

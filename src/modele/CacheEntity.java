@@ -160,15 +160,26 @@ public class CacheEntity
     }
 
 
+    @OneToMany(mappedBy = "cache")
+    public Set<VisiteEntity> getVisites()
+    {
+        return visites;
+    }
 
+    public void setVisites(Set<VisiteEntity> visites)
+    {
+        this.visites = visites;
+    }
 
-    @OneToMany(mappedBy="cache")
-    public Set<VisiteEntity> getVisites() {return visites; }
+    public void addVisite(VisiteEntity visite)
+    {
+        this.visites.add(visite);
+    }
 
-    public void setVisites(Set<VisiteEntity> visites){this.visites = visites ;}
-
-    public void addVisite(VisiteEntity visite){this.visites.add(visite) ;}
-    public void removeVisite(VisiteEntity visite){this.visites.remove(visite) ;}
+    public void removeVisite(VisiteEntity visite)
+    {
+        this.visites.remove(visite);
+    }
 
     @Override
     public boolean equals(Object o)
@@ -176,7 +187,7 @@ public class CacheEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CacheEntity that = (CacheEntity) o;
-        return  Objects.equals(latitude, that.latitude) &&
+        return Objects.equals(latitude, that.latitude) &&
                 Objects.equals(longitude, that.longitude) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(nature, that.nature) &&
@@ -184,8 +195,9 @@ public class CacheEntity
                 Objects.equals(lieu.getId(), that.lieu.getId());
     }
 
-    public String toString(){
-        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
+    public String toString()
+    {
+        return " | Id : " + (this.id != null ? this.id : this._id) + "\n" +
                 " | GPS : " + this.latitude + " ; " + this.longitude + "\n" +
                 " | Description : " + this.description + "\n" +
                 " | Lieu : " + this.lieu.getLibelle() + "\n" +
@@ -193,7 +205,7 @@ public class CacheEntity
                 " | Nature : " + this.nature + "\n" +
                 " | Statut : " + this.statut + "\n" +
                 " | Type cache : " + this.typeCache + "\n" +
-                " | Code secret : " + this.codeSecret + "\n" ;
+                " | Code secret : " + this.codeSecret + "\n";
     }
 
     @Override

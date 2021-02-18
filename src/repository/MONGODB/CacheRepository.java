@@ -2,7 +2,6 @@ package repository.MONGODB;
 
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
-
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -17,15 +16,18 @@ public class CacheRepository extends MONGODBRepository
 {
 
 
-    private static Datastore datastore;
     private final static Class<CacheEntity> entityClass = CacheEntity.class;
+    private static Datastore datastore;
 
-    public CacheRepository(){
-        try {
+    public CacheRepository()
+    {
+        try
+        {
             MongoClient mongoClient = MONGODBRepository.getSession();
             Morphia morphia = new Morphia();
-            datastore = morphia.createDatastore(mongoClient,"la2geocache");
-        } catch (Exception e) {
+            datastore = morphia.createDatastore(mongoClient, "la2geocache");
+        } catch (Exception e)
+        {
             System.out.println(e.toString());
         }
     }
@@ -42,7 +44,8 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void update(CacheEntity object){
+    public void update(CacheEntity object)
+    {
 
         Query query = datastore.createQuery(entityClass).field("_id").equal(object.get_id());
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
@@ -61,7 +64,8 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void create(CacheEntity object){
+    public void create(CacheEntity object)
+    {
         datastore.save(object);
     }
 
@@ -83,24 +87,28 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void activeCache(String id) {
+    public void activeCache(String id)
+    {
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
-        operation.set("statut","ACTIVE");
+        operation.set("statut", "ACTIVE");
         datastore.update(query, operation);
     }
-    public void desactiveCache(String id) {
+
+    public void desactiveCache(String id)
+    {
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
-        operation.set("statut","INACTIVE");
+        operation.set("statut", "INACTIVE");
         datastore.update(query, operation);
     }
 
 
     //List<CacheEntity> cacheUtilisateur = session.createQuery("from CacheEntity as cache join UtilisateurEntity as utilisateur " +
-      //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
+    //      "on cache.proprietaireId =utilisateur.id where cache.proprietaireId =:id ").setParameter("id",id).list();
 
-    public List<CacheEntity> getCacheByProprietaire(String id){
+    public List<CacheEntity> getCacheByProprietaire(String id)
+    {
         return datastore.createQuery(entityClass).field("proprietaire._id").equal(new ObjectId(id)).asList();
 
         /*UtilisateurEntity utilisateur = new UtilisateurRepository().findById(id);
@@ -113,7 +121,8 @@ public class CacheRepository extends MONGODBRepository
 
     }
 
-    public List<CacheEntity> getCacheByLieu(String id){
+    public List<CacheEntity> getCacheByLieu(String id)
+    {
         return datastore.createQuery(entityClass).field("lieu._id").equal(new ObjectId(id)).asList();
         /*LieuEntity lieu = new LieuRepository().findById(id);
 

@@ -14,16 +14,19 @@ import java.util.List;
 public class LieuRepository extends MONGODBRepository
 {
 
-    private static Datastore datastore;
     private final static Class<LieuEntity> entityClass = LieuEntity.class;
+    private static Datastore datastore;
 
 
-    public LieuRepository(){
-        try {
+    public LieuRepository()
+    {
+        try
+        {
             MongoClient mongoClient = MONGODBRepository.getSession();
             Morphia morphia = new Morphia();
-            datastore = morphia.createDatastore(mongoClient,"la2geocache");
-        } catch (Exception e) {
+            datastore = morphia.createDatastore(mongoClient, "la2geocache");
+        } catch (Exception e)
+        {
             System.out.println(e.toString());
         }
 
@@ -68,7 +71,6 @@ public class LieuRepository extends MONGODBRepository
 
         datastore.update(query, operation);
     }
-
 
 
 }

@@ -55,13 +55,26 @@ public class LieuEntity
         this._id = _id;
     }
 
-    @OneToMany(mappedBy="lieu")
-    public Set<CacheEntity> getCaches() {return caches; }
+    @OneToMany(mappedBy = "lieu")
+    public Set<CacheEntity> getCaches()
+    {
+        return caches;
+    }
 
-    public void setCaches(Set<CacheEntity> caches){this.caches = caches ;}
+    public void setCaches(Set<CacheEntity> caches)
+    {
+        this.caches = caches;
+    }
 
-    public void addCaches(CacheEntity cache){this.caches.add(cache) ;}
-    public void removeCaches(CacheEntity cache){this.caches.remove(cache) ;}
+    public void addCaches(CacheEntity cache)
+    {
+        this.caches.add(cache);
+    }
+
+    public void removeCaches(CacheEntity cache)
+    {
+        this.caches.remove(cache);
+    }
 
     @Override
     public boolean equals(Object o)
@@ -72,9 +85,10 @@ public class LieuEntity
         return Objects.equals(libelle, that.libelle);
     }
 
-    public String toString(){
+    public String toString()
+    {
 
-        return  " | Id : " + (this.id!=null?this.id:this._id) + "\n" +
+        return " | Id : " + (this.id != null ? this.id : this._id) + "\n" +
                 " | Libelle : " + this.libelle + "\n";
     }
 

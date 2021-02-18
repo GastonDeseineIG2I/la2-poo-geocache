@@ -13,9 +13,10 @@ import org.mongodb.morphia.query.UpdateOperations;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
-public class VisiteRepository extends MONGODBRepository<VisiteEntity>
+public class VisiteRepository extends MONGODBRepository
 {
 
     private static MongoClient mongoClient;
@@ -49,13 +50,13 @@ public class VisiteRepository extends MONGODBRepository<VisiteEntity>
     }
 
     @Override
-    public void create(VisiteEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(VisiteEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }

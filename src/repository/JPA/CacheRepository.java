@@ -8,11 +8,12 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 
-public class CacheRepository extends JPARepository<CacheEntity>
+public class CacheRepository extends JPARepository
 {
 
     private Session session;
@@ -120,13 +121,13 @@ public class CacheRepository extends JPARepository<CacheEntity>
     }
 
     @Override
-    public void create(CacheEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(CacheEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }

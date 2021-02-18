@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import org.hibernate.HibernateException;
 import repository.RepositoryInterface;
 
-public abstract class MONGODBRepository<T> implements RepositoryInterface<T>
+public abstract class MONGODBRepository implements RepositoryInterface
 {
     private static MongoClient mongoClient;
     private static MongoDatabase database;

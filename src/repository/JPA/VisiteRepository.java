@@ -9,10 +9,11 @@ import org.hibernate.query.Query;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class VisiteRepository extends JPARepository<VisiteEntity>
+public class VisiteRepository extends JPARepository
 {
 
     private Session session;
@@ -43,16 +44,17 @@ public class VisiteRepository extends JPARepository<VisiteEntity>
     }
 
     @Override
-    public void create(VisiteEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(VisiteEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }
+
 
     public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut) {
         Transaction tx = session.beginTransaction();

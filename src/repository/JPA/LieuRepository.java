@@ -6,10 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class LieuRepository extends JPARepository<LieuEntity>
+public class LieuRepository extends JPARepository
 {
 
     private Session session;
@@ -43,13 +44,13 @@ public class LieuRepository extends JPARepository<LieuEntity>
     }
 
     @Override
-    public void create(LieuEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(LieuEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }

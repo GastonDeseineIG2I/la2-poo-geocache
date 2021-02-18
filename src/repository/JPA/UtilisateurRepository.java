@@ -5,10 +5,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class UtilisateurRepository extends JPARepository<UtilisateurEntity>
+public class UtilisateurRepository extends JPARepository
 {
 
     private Session session;
@@ -41,16 +42,17 @@ public class UtilisateurRepository extends JPARepository<UtilisateurEntity>
     }
 
     @Override
-    public void create(UtilisateurEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(UtilisateurEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }
+
 
     public void updateUtilisateur(String id, String pseudo, String descripton, String avatar) {
     Transaction tx = session.beginTransaction();

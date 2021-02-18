@@ -8,9 +8,10 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class LieuRepository extends MONGODBRepository<LieuEntity>
+public class LieuRepository extends MONGODBRepository
 {
 
     private static Datastore datastore;
@@ -46,13 +47,13 @@ public class LieuRepository extends MONGODBRepository<LieuEntity>
     }
 
     @Override
-    public void create(LieuEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(LieuEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }

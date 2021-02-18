@@ -12,10 +12,11 @@ import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 
-public class CacheRepository extends MONGODBRepository<CacheEntity>
+public class CacheRepository extends MONGODBRepository
 {
 
 
@@ -64,13 +65,24 @@ public class CacheRepository extends MONGODBRepository<CacheEntity>
 
 
     public void create(CacheEntity object){
-
         datastore.save(object);
     }
 
     public List<CacheEntity> getAll()
     {
         return datastore.find(entityClass).asList();
+    }
+
+    @Override
+    public void create(HashMap<String, ?> data)
+    {
+
+    }
+
+    @Override
+    public void update(HashMap<String, ?> data)
+    {
+
     }
 
 

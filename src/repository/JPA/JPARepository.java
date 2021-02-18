@@ -9,7 +9,7 @@ import repository.RepositoryInterface;
 
 import javax.persistence.EntityManager;
 
-public abstract class JPARepository<T> implements RepositoryInterface<T>
+public abstract class JPARepository implements RepositoryInterface
 {
     private static SessionFactory ourSessionFactory;
 

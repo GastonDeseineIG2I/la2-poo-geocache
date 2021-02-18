@@ -10,9 +10,10 @@ import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class UtilisateurRepository extends MONGODBRepository<UtilisateurEntity>
+public class UtilisateurRepository extends MONGODBRepository
 {
 
     private static MongoClient mongoClient;
@@ -44,16 +45,17 @@ public class UtilisateurRepository extends MONGODBRepository<UtilisateurEntity>
     }
 
     @Override
-    public void create(UtilisateurEntity object)
+    public void create(HashMap<String, ?> data)
     {
 
     }
 
     @Override
-    public void update(UtilisateurEntity object)
+    public void update(HashMap<String, ?> data)
     {
 
     }
+
 
     public void updateUtilisateur(String id, String pseudo, String description, String avatar) {
 

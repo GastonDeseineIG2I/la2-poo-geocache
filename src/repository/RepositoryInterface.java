@@ -1,14 +1,15 @@
 package repository;
 
 
+import java.util.HashMap;
 import java.util.List;
 
-public interface RepositoryInterface<T>
+public interface RepositoryInterface
 {
     public Object findById(String id);
     public void deleteById (String id);
     public List<?> getAll();
-    public void create(T object);
-    public void update(T object);
+    public void create(HashMap<String, ?> data);
+    public void update(HashMap<String, ?> data);
 
 }

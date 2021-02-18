@@ -441,8 +441,7 @@ public class Menu
                 avatar = reader.readLine();
             while (avatar.length() > 255);
 
-            UtilisateurEntity utilisateur = new UtilisateurEntity();
-            repository.get("utilisateur").update(utilisateur);
+            repository.get("utilisateur").update(null);
             // TODO ((UtilisateurRepository)repository).updateUtilisateur(id, pseudo, descripton, avatar);
         }
     }
@@ -525,8 +524,7 @@ public class Menu
             } while (object == null);
 
 
-            CacheEntity cache = new CacheEntity();
-            repository.get("cache").update(cache);
+            repository.get("cache").update(null);
 
             //TODO ((CacheRepository)repository).updateCache(idCache, latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
         }
@@ -554,8 +552,7 @@ public class Menu
 
             //On effectue les changements en base
 
-            LieuEntity lieu = new LieuEntity();
-            repository.get("lieu").update(lieu);
+            repository.get("lieu").update(null);
             //TODO ((LieuRepository)repository).updateLieu(id, libelle);
         }
     }
@@ -622,8 +619,7 @@ public class Menu
             //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
             //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
 
-            VisiteEntity visite = new VisiteEntity();
-            repository.get("visite").update(visite);
+            repository.get("visite").update(null);
             //TODO ((VisiteRepository)repository).updateVisite(idVisite, dateVisite, utilisateurId, cacheId, commentaire, statut);
         }
 
@@ -679,8 +675,7 @@ public class Menu
             // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
         } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
 
-        VisiteEntity visite = new VisiteEntity();
-        repository.get("visite").create(visite);
+        repository.get("visite").create(null);
         //TODO ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
     }
     private static void createLieu() throws IOException {
@@ -696,8 +691,7 @@ public class Menu
         while (("".equals(libelle)) || (libelle.length() > 100));
 
         //On effectue les changements en base
-        LieuEntity lieu = new LieuEntity();
-        repository.get("lieu").create(lieu);
+        repository.get("lieu").create(null);
 
         //TODO ((LieuRepository)repository).createLieu(libelle);
 
@@ -724,8 +718,8 @@ public class Menu
         while (avatar.length() > 255);
 
 
-        UtilisateurEntity utilisateur = new UtilisateurEntity();
-        repository.get("utilisateur").create(utilisateur);
+
+        repository.get("utilisateur").create(null);
         //TODO ((UtilisateurRepository)repository).createUtilisateur(pseudo, descripton, avatar);
         System.out.println("L'utilisateur a bien été ajouté ");
 
@@ -796,30 +790,8 @@ public class Menu
             System.out.println(object != null ? object.toString() : "lieu non trouvé.");
         } while (object == null);
 
-        CacheEntity cache = new CacheEntity();
-        if (!"".equals(latitude) )
-        {
-            BigDecimal lat = new BigDecimal(latitude);
-            cache.setLatitude(lat);
-        }
-        if (!"".equals(longitude)){
-            BigDecimal lon = new BigDecimal(longitude);
-            cache.setLongitude(lon);
-        }
-        if (!"".equals(description)){
-            cache.setDescription(description);
-        }
-        if (!"".equals(lieuId)){
-            LieuEntity lieu = (LieuEntity) repository.get("lieu").findById(lieuId);
-            cache.setLieu(lieu);
-        }
-        // Ne peuvent pas être nul
-        cache.setNature(nature.toUpperCase());
-        cache.setTypeCache(typeCache.toUpperCase());
-        cache.setCodeSecret(codeSecret);
-        cache.setProprietaire((UtilisateurEntity) repository.get("utilisateur").findById(proprietaireId));
-        cache.setStatut("INACTIVE");
-        repository.get("cache").create(cache);
+        //TODO
+        repository.get("cache").create(null);
 
     }
 

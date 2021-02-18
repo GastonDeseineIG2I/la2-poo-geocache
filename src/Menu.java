@@ -372,7 +372,15 @@ public class Menu
             object = repository.get("lieu").findById(id);
             System.out.println(object != null ? object.toString() : "Lieu non trouvé.");
         } while (object == null);
-        for (Object objectfromlist:repository.get("cache").getCacheByLieu(id))
+
+        List<CacheEntity> caches;
+        if(choixBDD.equals("MYSQL")){
+            caches = ((repository.JPA.CacheRepository) repository.get("cache")).getCacheByLieu(id);
+        }else{
+            caches = ((repository.MONGODB.CacheRepository) repository.get("cache")).getCacheByLieu(id);
+        }
+
+        for (Object objectfromlist:caches)
         {
             System.out.println(objectfromlist != null?objectfromlist.toString():"");
         }

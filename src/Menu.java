@@ -208,10 +208,8 @@ public class Menu
                 System.out.println("9 - Liste les caches d'un lieu " );
                 break;
             case "utilisateur":
-                System.out.println("6 - Specifique " + menuString);
                 break;
             case "lieu":
-                System.out.println("6 - Specifique " + menuString);
                 break;
             case "visite":
                 System.out.println("6 - Valider " + menuString);
@@ -386,6 +384,10 @@ public class Menu
     }
 
     private static void updateUtilisateur(RepositoryInterface repository) throws IOException {
+        for (Object objectfromlist:(repository).getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
         String id = reader.readLine();
         Object object = repository.findById(id);
@@ -498,6 +500,10 @@ public class Menu
         }
     }
     private static void updateLieu(RepositoryInterface repository) throws IOException {
+        for (Object objectfromlist:(repository).getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Entrez l'identifiant du lieux à modifier : ");
@@ -518,7 +524,12 @@ public class Menu
             ((LieuRepository)repository).updateLieu(id, libelle);
         }
     }
+
     private static void updateVisite(RepositoryInterface repository) throws IOException {
+        for (Object objectfromlist:(repository).getAll())
+        {
+            System.out.println(objectfromlist != null?objectfromlist.toString():"");
+        }
         System.out.println("Entrez l'identifiant de la visite à modifier : ");
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
         String idVisite = reader.readLine();
@@ -533,24 +544,31 @@ public class Menu
             String dateVisite;
             dateVisite = reader.readLine();
 
-
+            UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
+            for (Object objectfromlist:(repoUtilisateur).getAll())
+            {
+                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            }
             System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
             String utilisateurId;
             do {
                 utilisateurId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
-                UtilisateurRepository repoUtilisateur = new UtilisateurRepository();
+
                 object = repoUtilisateur.findById(utilisateurId);
                 System.out.println(object != null ? object.toString() : "Utilisateur non trouvé.");
             } while (object == null);
-
-
+            CacheRepository repoCache = new CacheRepository();
+            for (Object objectfromlist:(repoCache).getAll())
+            {
+                System.out.println(objectfromlist != null?objectfromlist.toString():"");
+            }
             System.out.println("Entrez l'id de la cache");
             String cacheId;
             do {
                 cacheId = reader.readLine();
                 //On regarde si on a un utilisateur que existe
-                CacheRepository repoCache = new CacheRepository();
+
                 object = repoCache.findById(cacheId);
                 System.out.println(object != null ? object.toString() : "Cache non trouvé.");
             } while (object == null);

@@ -73,11 +73,11 @@ public class CacheRepository extends MONGODBRepository
         }
         if (!"".equals(lieuId)){
             LieuEntity lieu = new LieuRepository().findById(lieuId);
-            operation.set("lieu", lieu.getLibelle());
+            operation.set("lieu", lieu);
         }
         if (!"".equals(proprietaireId)){
             UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
-            operation.set("proprietaire", proprietaire.getPseudo());
+            operation.set("proprietaire", proprietaire);
         }
         if (!"".equals(statut)){
             operation.set("statut",statut.toUpperCase());

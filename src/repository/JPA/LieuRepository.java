@@ -46,29 +46,8 @@ public class LieuRepository extends JPARepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String nomlieu = (String) data.get("libelle");
 
-    }
-
-    @Override
-    public void update(HashMap<String, Object> data)
-    {
-
-    }
-
-
-    // Permet de mettre a jour le libellé d'un lieu
-    public void updateLieu(String id, String nomlieu)
-    {
-        Transaction tx = session.beginTransaction();
-        LieuEntity lieu = session.load(LieuEntity.class, id);
-        lieu.setLibelle(nomlieu);
-        session.update(lieu);
-        tx.commit();
-    }
-
-    // Permet de créer un lieu
-    public void createLieu(String nomlieu)
-    {
         Transaction tx = session.beginTransaction();
         LieuEntity lieu = new LieuEntity();
         lieu.setId(UUID.randomUUID().toString());
@@ -76,5 +55,20 @@ public class LieuRepository extends JPARepository
         session.persist(lieu);
         tx.commit();
     }
+
+    @Override
+    public void update(HashMap<String, Object> data)
+    {
+        String nomlieu = (String) data.get("libelle");
+        String id = (String) data.get("id");
+
+        Transaction tx = session.beginTransaction();
+        LieuEntity lieu = session.load(LieuEntity.class, id);
+        lieu.setLibelle(nomlieu);
+        session.update(lieu);
+        tx.commit();
+    }
+
+
 
 }

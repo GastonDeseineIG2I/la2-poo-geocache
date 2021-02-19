@@ -41,9 +41,75 @@ public class CacheRepository extends MYSQLRepository
         tx.commit();
     }
 
-    public void updateCache(String id, String latitude, String longitude, String description, String nature,
-                            String typeCache, String statut, String codeSecret, String lieuId, String proprietaireId)
+
+
+    public List<CacheEntity> getAll()
     {
+        List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();
+        return lieux;
+    }
+
+    @Override
+    public void create(HashMap<String, Object> data)
+    {
+        String latitude = (String) data.get("latitude");
+        String longitude = (String) data.get("longitude");
+        String description = (String) data.get("description");
+        String nature = (String) data.get("nature");
+        String typeCache = (String) data.get("typeCache");
+        String codeSecret = (String) data.get("codeSecret");
+        String lieuId = (String) data.get("lieuId");
+        String proprietaireId = (String) data.get("proprietaireId");
+
+        Transaction tx = session.beginTransaction();
+        CacheEntity cache = new CacheEntity();
+        cache.setId(UUID.randomUUID().toString());
+
+        if (!"".equals(latitude))
+        {
+            BigDecimal lat = new BigDecimal(latitude);
+            cache.setLatitude(lat);
+        }
+        if (!"".equals(longitude))
+        {
+            BigDecimal lon = new BigDecimal(longitude);
+            cache.setLongitude(lon);
+        }
+        if (!"".equals(description))
+        {
+            cache.setDescription(description);
+        }
+        if (!"".equals(lieuId))
+        {
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
+            cache.setLieu(lieu);
+        }
+        // Ne peuvent pas être nul
+        cache.setNature(nature.toUpperCase());
+        cache.setTypeCache(typeCache.toUpperCase());
+        cache.setCodeSecret(codeSecret);
+        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
+        cache.setProprietaire(proprietaire);
+        cache.setStatut("INACTIVE");
+        session.persist(cache);
+        tx.commit();
+    }
+
+    @Override
+    public void update(HashMap<String, Object> data)
+    {
+        String id = (String) data.get("id");
+        String latitude = (String) data.get("latitude");
+        String longitude = (String) data.get("longitude");
+        String description = (String) data.get("description");
+        String nature = (String) data.get("nature");
+        String typeCache = (String) data.get("typeCache");
+        String codeSecret = (String) data.get("codeSecret");
+        String statut = (String) data.get("statut");
+        String lieuId = (String) data.get("lieuId");
+        String proprietaireId = (String) data.get("proprietaireId");
+
+
         Transaction tx = session.beginTransaction();
         CacheEntity cache = session.load(CacheEntity.class, id);
         if (!"".equals(latitude))
@@ -88,62 +154,6 @@ public class CacheRepository extends MYSQLRepository
         }
         session.update(cache);
         tx.commit();
-    }
-
-
-    public void createCache(String latitude, String longitude, String description, String nature,
-                            String typeCache, String codeSecret, String lieuId, String proprietaireId)
-    {
-        Transaction tx = session.beginTransaction();
-        CacheEntity cache = new CacheEntity();
-        cache.setId(UUID.randomUUID().toString());
-
-        if (!"".equals(latitude))
-        {
-            BigDecimal lat = new BigDecimal(latitude);
-            cache.setLatitude(lat);
-        }
-        if (!"".equals(longitude))
-        {
-            BigDecimal lon = new BigDecimal(longitude);
-            cache.setLongitude(lon);
-        }
-        if (!"".equals(description))
-        {
-            cache.setDescription(description);
-        }
-        if (!"".equals(lieuId))
-        {
-            LieuEntity lieu = new LieuRepository().findById(lieuId);
-            cache.setLieu(lieu);
-        }
-        // Ne peuvent pas être nul
-        cache.setNature(nature.toUpperCase());
-        cache.setTypeCache(typeCache.toUpperCase());
-        cache.setCodeSecret(codeSecret);
-        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
-        cache.setProprietaire(proprietaire);
-        cache.setStatut("INACTIVE");
-        session.persist(cache);
-        tx.commit();
-    }
-
-    public List<CacheEntity> getAll()
-    {
-        List<CacheEntity> lieux = session.createQuery("from CacheEntity").list();
-        return lieux;
-    }
-
-    @Override
-    public void create(HashMap<String, Object> data)
-    {
-
-    }
-
-    @Override
-    public void update(HashMap<String, Object> data)
-    {
-
     }
 
 

@@ -2,12 +2,15 @@ package repository.MONGODB;
 
 import com.mongodb.MongoClient;
 import modele.CacheEntity;
+import modele.LieuEntity;
+import modele.UtilisateurEntity;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,31 +47,6 @@ public class CacheRepository extends MONGODBRepository
     }
 
 
-    public void update(CacheEntity object)
-    {
-
-        Query query = datastore.createQuery(entityClass).field("_id").equal(object.get_id());
-        UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
-
-        operation.set("latitude", object.getLatitude());
-        operation.set("longitude", object.getLongitude());
-        operation.set("description", object.getDescription());
-        operation.set("nature", object.getNature().toUpperCase());
-        operation.set("typeCache", object.getTypeCache().toUpperCase());
-        operation.set("codeSecret", object.getCodeSecret());
-        operation.set("lieu", object.getLieu());
-        operation.set("proprietaire", object.getProprietaire());
-        operation.set("statut", object.getStatut());
-
-        datastore.update(query, operation);
-    }
-
-
-    public void create(CacheEntity object)
-    {
-        datastore.save(object);
-    }
-
     public List<CacheEntity> getAll()
     {
         return datastore.find(entityClass).asList();
@@ -77,13 +55,96 @@ public class CacheRepository extends MONGODBRepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String latitude = (String) data.get("latitude");
+        String longitude = (String) data.get("longitude");
+        String description = (String) data.get("description");
+        String nature = (String) data.get("nature");
+        String typeCache = (String) data.get("typeCache");
+        String codeSecret = (String) data.get("codeSecret");
+        String lieuId = (String) data.get("lieuId");
+        String proprietaireId = (String) data.get("proprietaireId");
 
+        CacheEntity cache = new CacheEntity();
+
+        if (!"".equals(latitude) )
+        {
+            BigDecimal lat = new BigDecimal(latitude);
+            cache.setLatitude(lat);
+        }
+        if (!"".equals(longitude)){
+            BigDecimal lon = new BigDecimal(longitude);
+            cache.setLongitude(lon);
+        }
+        if (!"".equals(description)){
+            cache.setDescription(description);
+        }
+        if (!"".equals(lieuId)){
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
+            cache.setLieu(lieu);
+        }
+        // Ne peuvent pas être nul
+        cache.setNature(nature.toUpperCase());
+        cache.setTypeCache(typeCache.toUpperCase());
+        cache.setCodeSecret(codeSecret);
+        UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
+        cache.setProprietaire(proprietaire);
+        cache.setStatut("INACTIVE");
+
+        datastore.save(cache);
     }
 
     @Override
     public void update(HashMap<String, Object> data)
     {
+        String id = (String) data.get("id");
+        String latitude = (String) data.get("latitude");
+        String longitude = (String) data.get("longitude");
+        String description = (String) data.get("description");
+        String nature = (String) data.get("nature");
+        String typeCache = (String) data.get("typeCache");
+        String codeSecret = (String) data.get("codeSecret");
+        String statut = (String) data.get("statut");
+        String lieuId = (String) data.get("lieuId");
+        String proprietaireId = (String) data.get("proprietaireId");
 
+
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
+        UpdateOperations<CacheEntity> operation = datastore.createUpdateOperations(entityClass);
+
+
+        if (!"".equals(latitude) )
+        {
+            BigDecimal lat = new BigDecimal(latitude);
+            operation.set("latitude", lat);
+        }
+        if (!"".equals(longitude)){
+            BigDecimal lon = new BigDecimal(longitude);
+            operation.set("longitude", lon);
+        }
+        if (!"".equals(description)){
+            operation.set("description", description);
+        }
+        if (!"".equals(nature)){
+            operation.set("nature", nature.toUpperCase());
+        }
+        if (!"".equals(typeCache)){
+            operation.set("type_cache",typeCache.toUpperCase());
+        }
+        if (!"".equals(codeSecret)){
+            operation.set("code_secret", codeSecret);
+        }
+        if (!"".equals(lieuId)){
+            LieuEntity lieu = new LieuRepository().findById(lieuId);
+            operation.set("lieu", lieu.getLibelle());
+        }
+        if (!"".equals(proprietaireId)){
+            UtilisateurEntity proprietaire = new UtilisateurRepository().findById(proprietaireId);
+            operation.set("proprietaire", proprietaire.getPseudo());
+        }
+        if (!"".equals(statut)){
+            operation.set("statut",statut.toUpperCase());
+        }
+        datastore.update(query, operation);
     }
 
 

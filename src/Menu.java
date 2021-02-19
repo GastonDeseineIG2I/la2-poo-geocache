@@ -561,9 +561,19 @@ public class Menu
             } while (object == null);
 
 
-            repository.get("cache").update(null);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("id", idCache);
+            data.put("latitude", latitude);
+            data.put("longitude", longitude);
+            data.put("description", description);
+            data.put("nature", nature);
+            data.put("typeCache", typeCache);
+            data.put("codeSecret", codeSecret);
+            data.put("statut", statut);
+            data.put("lieuId", lieuId);
+            data.put("proprietaireId", proprietaireId);
+            repository.get("cache").update(data);
 
-            //TODO ((CacheRepository)repository).updateCache(idCache, latitude, longitude, description, nature, typeCache, statut, codeSecret, lieuId, proprietaireId);
         }
     }
 
@@ -851,8 +861,16 @@ public class Menu
             System.out.println(object != null ? object : "lieu non trouvé.");
         } while (object == null);
 
-        //TODO
-        repository.get("cache").create(null);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("latitude", latitude);
+        data.put("longitude", longitude);
+        data.put("description", description);
+        data.put("nature", nature);
+        data.put("typeCache", typeCache);
+        data.put("codeSecret", codeSecret);
+        data.put("lieuId", lieuId);
+        data.put("proprietaireId", proprietaireId);
+        repository.get("cache").create(data);
 
     }
 

@@ -1,4 +1,4 @@
-package repository.JPA;
+package repository.MYSQL;
 
 import modele.UtilisateurEntity;
 import org.hibernate.Session;
@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class UtilisateurRepository extends JPARepository
+public class UtilisateurRepository extends MYSQLRepository
 {
 
     private Session session;
 
     public UtilisateurRepository()
     {
-        this.session = JPARepository.getSession();
+        this.session = MYSQLRepository.getSession();
     }
 
     public UtilisateurEntity findById(String id)
@@ -45,39 +45,10 @@ public class UtilisateurRepository extends JPARepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String pseudo = (String) data.get("pseudo");
+        String description = (String) data.get("description");
+        String avatar = (String) data.get("avatar");
 
-    }
-
-    @Override
-    public void update(HashMap<String, Object> data)
-    {
-
-    }
-
-
-    public void updateUtilisateur(String id, String pseudo, String descripton, String avatar)
-    {
-        Transaction tx = session.beginTransaction();
-        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
-        if (!"".equals(pseudo))
-        {
-            //TODO verifier l'unicité
-            utilisateur.setPseudo(pseudo);
-        }
-        if (!"".equals(descripton))
-        {
-            utilisateur.setDescription(descripton);
-        }
-        if (!"".equals(avatar))
-        {
-            utilisateur.setAvatar(avatar);
-        }
-        session.update(utilisateur);
-        tx.commit();
-    }
-
-    public void createUtilisateur(String pseudo, String descripton, String avatar)
-    {
         Transaction tx = session.beginTransaction();
         UtilisateurEntity utilisateur = new UtilisateurEntity();
         utilisateur.setId(UUID.randomUUID().toString());
@@ -86,9 +57,9 @@ public class UtilisateurRepository extends JPARepository
             //TODO verifier l'unicité
             utilisateur.setPseudo(pseudo);
         }
-        if (!"".equals(descripton))
+        if (!"".equals(description))
         {
-            utilisateur.setDescription(descripton);
+            utilisateur.setDescription(description);
         } else
         {
             utilisateur.setDescription("");
@@ -103,4 +74,33 @@ public class UtilisateurRepository extends JPARepository
         session.persist(utilisateur);
         tx.commit();
     }
+
+    @Override
+    public void update(HashMap<String, Object> data)
+    {
+
+        String id = (String) data.get("id");
+        String pseudo = (String) data.get("pseudo");
+        String description = (String) data.get("description");
+        String avatar = (String) data.get("avatar");
+
+        Transaction tx = session.beginTransaction();
+        UtilisateurEntity utilisateur = session.load(UtilisateurEntity.class, id);
+        if (!"".equals(pseudo))
+        {
+            //TODO verifier l'unicité
+            utilisateur.setPseudo(pseudo);
+        }
+        if (!"".equals(description))
+        {
+            utilisateur.setDescription(description);
+        }
+        if (!"".equals(avatar))
+        {
+            utilisateur.setAvatar(avatar);
+        }
+        session.update(utilisateur);
+        tx.commit();
+    }
+
 }

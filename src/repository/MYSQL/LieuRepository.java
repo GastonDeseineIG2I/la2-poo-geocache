@@ -1,4 +1,4 @@
-package repository.JPA;
+package repository.MYSQL;
 
 import modele.LieuEntity;
 import org.hibernate.Session;
@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class LieuRepository extends JPARepository
+public class LieuRepository extends MYSQLRepository
 {
 
     private Session session;
 
     public LieuRepository()
     {
-        this.session = JPARepository.getSession();
+        this.session = MYSQLRepository.getSession();
     }
 
     public LieuEntity findById(String id)

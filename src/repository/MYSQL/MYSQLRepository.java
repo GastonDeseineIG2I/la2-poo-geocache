@@ -1,4 +1,4 @@
-package repository.JPA;
+package repository.MYSQL;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import repository.RepositoryInterface;
 
-public abstract class JPARepository implements RepositoryInterface
+public abstract class MYSQLRepository implements RepositoryInterface
 {
     private static SessionFactory ourSessionFactory;
 

@@ -1,4 +1,4 @@
-package repository.JPA;
+package repository.MYSQL;
 
 import modele.CacheEntity;
 import modele.UtilisateurEntity;
@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class VisiteRepository extends JPARepository
+public class VisiteRepository extends MYSQLRepository
 {
 
     private Session session;
 
     public VisiteRepository()
     {
-        this.session = JPARepository.getSession();
+        this.session = MYSQLRepository.getSession();
     }
 
     public VisiteEntity findById(String id)

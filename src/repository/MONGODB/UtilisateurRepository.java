@@ -47,40 +47,10 @@ public class UtilisateurRepository extends MONGODBRepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String pseudo = (String) data.get("pseudo");
+        String description = (String) data.get("description");
+        String avatar = (String) data.get("avatar");
 
-    }
-
-    @Override
-    public void update(HashMap<String, Object> data)
-    {
-
-    }
-
-
-    public void updateUtilisateur(String id, String pseudo, String description, String avatar)
-    {
-
-        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
-        UpdateOperations<UtilisateurEntity> operation = datastore.createUpdateOperations(entityClass);
-
-        if (!"".equals(pseudo))
-        {
-            //TODO verifier l'unicité
-            operation.set("pseudo", pseudo);
-        }
-        if (!"".equals(description))
-        {
-            operation.set("description", description);
-        }
-        if (!"".equals(avatar))
-        {
-            operation.set("avatar", avatar);
-        }
-        datastore.update(query, operation);
-    }
-
-    public void createUtilisateur(String pseudo, String description, String avatar)
-    {
         UtilisateurEntity utilisateur = new UtilisateurEntity();
         if (!"".equals(pseudo))
         {
@@ -103,4 +73,32 @@ public class UtilisateurRepository extends MONGODBRepository
         }
         datastore.save(utilisateur);
     }
+
+    @Override
+    public void update(HashMap<String, Object> data)
+    {
+        String id = (String) data.get("id");
+        String pseudo = (String) data.get("pseudo");
+        String description = (String) data.get("description");
+        String avatar = (String) data.get("avatar");
+
+        Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
+        UpdateOperations<UtilisateurEntity> operation = datastore.createUpdateOperations(entityClass);
+
+        if (!"".equals(pseudo))
+        {
+            //TODO verifier l'unicité
+            operation.set("pseudo", pseudo);
+        }
+        if (!"".equals(description))
+        {
+            operation.set("description", description);
+        }
+        if (!"".equals(avatar))
+        {
+            operation.set("avatar", avatar);
+        }
+        datastore.update(query, operation);
+    }
+
 }

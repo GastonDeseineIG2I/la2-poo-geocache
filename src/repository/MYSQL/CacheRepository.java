@@ -1,4 +1,4 @@
-package repository.JPA;
+package repository.MYSQL;
 
 import modele.CacheEntity;
 import modele.LieuEntity;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class CacheRepository extends JPARepository
+public class CacheRepository extends MYSQLRepository
 {
 
     private Session session;
 
     public CacheRepository()
     {
-        this.session = JPARepository.getSession();
+        this.session = MYSQLRepository.getSession();
     }
 
     public CacheEntity findById(String id)

@@ -1,4 +1,4 @@
-import repository.JPA.JPARepository;
+import repository.MYSQL.MYSQLRepository;
 import repository.MONGODB.MONGODBRepository;
 
 
@@ -15,7 +15,7 @@ public class Main
     {
         if (type.equals("MYSQL"))
         {
-            JPARepository.getSession(); //Initialise la session JPA
+            MYSQLRepository.getSession(); //Initialise la session JPA
         } else if (type.equals("MONGODB"))
         {
             MONGODBRepository.getSession();

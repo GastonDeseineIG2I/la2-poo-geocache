@@ -15,7 +15,7 @@ public abstract class MONGODBRepository implements RepositoryInterface
     {
 
         mongoClient = new MongoClient(new MongoClientURI("mongodb://127.0.0.1:27017"));
-        database = mongoClient.getDatabase("la2geocache");
+        database = mongoClient.getDatabase("la2-geocache");
 
     }
 

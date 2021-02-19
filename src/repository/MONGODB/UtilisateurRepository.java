@@ -25,7 +25,7 @@ public class UtilisateurRepository extends MONGODBRepository
         mongoClient = MONGODBRepository.getSession();
         Morphia morphia = new Morphia();
         morphia.map(CacheEntity.class);
-        datastore = morphia.createDatastore(mongoClient, "la2geocache");
+        datastore = morphia.createDatastore(mongoClient, "la2-geocache");
 
     }
 

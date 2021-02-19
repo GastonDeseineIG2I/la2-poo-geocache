@@ -28,7 +28,7 @@ public class CacheRepository extends MONGODBRepository
         {
             MongoClient mongoClient = MONGODBRepository.getSession();
             Morphia morphia = new Morphia();
-            datastore = morphia.createDatastore(mongoClient, "la2geocache");
+            datastore = morphia.createDatastore(mongoClient, "la2-geocache");
         } catch (Exception e)
         {
             System.out.println(e.toString());

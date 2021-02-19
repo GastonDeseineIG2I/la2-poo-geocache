@@ -79,59 +79,59 @@ create schema `la2-geocache` collate latin1_swedish_ci;
 
 create table cache
 (
-	id varchar(100) not null
-		primary key,
-	latitude decimal(12,10) null,
-	longitude decimal(13,10) null,
-	description text null,
-	nature varchar(10) not null,
-	type_cache varchar(25) default 'traditionnelle' not null,
-	statut varchar(25) default 'inactive' not null,
-	code_secret varchar(50) not null,
-	lieu_id varchar(100) null,
-	proprietaire_id varchar(100) not null
+   id varchar(100) not null
+      primary key,
+   latitude decimal(12,10) null,
+   longitude decimal(13,10) null,
+   description text null,
+   nature varchar(10) not null,
+   type_cache varchar(25) default 'traditionnelle' not null,
+   statut varchar(25) default 'inactive' not null,
+   code_secret varchar(50) not null,
+   lieu_id varchar(100) null,
+   proprietaire_id varchar(100) not null
 );
 
 create index cache_lieu_id_fk
-	on cache (lieu_id);
+   on cache (lieu_id);
 
 create index cache_utilisateur_id_fk
-	on cache (proprietaire_id);
+   on cache (proprietaire_id);
 
 create table lieu
 (
-	libelle varchar(100) not null,
-	id varchar(100) not null
-		primary key
+   libelle varchar(100) not null,
+   id varchar(100) not null
+      primary key
 );
 
 create table utilisateur
 (
-	id varchar(100) not null
-		primary key,
-	pseudo varchar(50) not null,
-	description text null,
-	avatar varchar(255) default 'default.png' not null,
-	constraint utilisateur_pseudo_uindex
-		unique (pseudo)
+   id varchar(100) not null
+      primary key,
+   pseudo varchar(50) not null,
+   description text null,
+   avatar varchar(255) default 'default.png' not null,
+   constraint utilisateur_pseudo_uindex
+      unique (pseudo)
 );
 
 create table visite
 (
-	id varchar(100) not null
-		primary key,
-	date_visite datetime null,
-	utilisateur_id varchar(100) not null,
-	cache_id varchar(100) not null,
-	commentaire text null,
-	statut varchar(25) default 'En cours' not null
+   id varchar(100) not null
+      primary key,
+   date_visite datetime null,
+   utilisateur_id varchar(100) not null,
+   cache_id varchar(100) not null,
+   commentaire text null,
+   statut varchar(25) default 'En cours' not null
 );
 
 create index visite_cache_id_fk
-	on visite (cache_id);
+   on visite (cache_id);
 
 create index visite_utilisateur_id_fk
-	on visite (utilisateur_id);
+   on visite (utilisateur_id);
 
 
 ```
@@ -145,28 +145,28 @@ create index visite_utilisateur_id_fk
 ├── out
 └── src
     ├── META-INF
-    │   └── persistence.xml
+    │   └── persistence.xml
     ├── Main.java
     ├── Menu.java
     ├── hibernate.cfg.xml
     ├── modele
-    │   ├── CacheEntity.java
-    │   ├── LieuEntity.java
-    │   ├── UtilisateurEntity.java
-    │   └── VisiteEntity.java
+    │   ├── CacheEntity.java
+    │   ├── LieuEntity.java
+    │   ├── UtilisateurEntity.java
+    │   └── VisiteEntity.java
     └── repository
         ├── MONGODB
-        │   ├── CacheRepository.java
-        │   ├── LieuRepository.java
-        │   ├── MONGODBRepository.java
-        │   ├── UtilisateurRepository.java
-        │   └── VisiteRepository.java
+        │   ├── CacheRepository.java
+        │   ├── LieuRepository.java
+        │   ├── MONGODBRepository.java
+        │   ├── UtilisateurRepository.java
+        │   └── VisiteRepository.java
         ├── MYSQL
-        │   ├── CacheRepository.java
-        │   ├── LieuRepository.java
-        │   ├── MYSQLRepository.java
-        │   ├── UtilisateurRepository.java
-        │   └── VisiteRepository.java
+        │   ├── CacheRepository.java
+        │   ├── LieuRepository.java
+        │   ├── MYSQLRepository.java
+        │   ├── UtilisateurRepository.java
+        │   └── VisiteRepository.java
         └── RepositoryInterface.java
 ```
 
@@ -183,14 +183,54 @@ Voici les choix que nous avons réalisé :
 - Nous avons fait le choix de réduire l'état d'une cache à inactif ou actif. Nous avons trouvé que en cours d'activation, fermée et suspendue étaient des sous catégories d'inactifs. Nous avons jugé que nous n'avions pas besoin de ce niveau d'information.
 
 
-- Pour les visites nous avons décidé que le statut serait soit en En cours soit Terminée
+Pour les visites nous avons décidé que le statut serait soit :
+  « En cours » c’est à dire que notre utilisateur est en train de rechercher la cache 
+  « Terminée » des lors que l’utilisateur a finit sa chasse ou suite à un abandonné 
 
-- Au niveau de notre structure de code nous avons décidé de faire des repositories pour chacune de nos entités et nous avons aussi rajouté une interface *RepositoryInterface* pour y mettre les fonctions communes à nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Ce fichier est chargé de contacter le bon repository pour avoir les informations voulues.
+Au niveau de notre structure de code nous avons décidé de faire des repositories pour chacune de nos entités et nous avons aussi rajouté une interface *RepositoryInterface* pour y mettre les fonctions communes à nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Ce fichier est chargé de contacter le bon repository pour avoir les informations voulues
+Afin de pouvoir déployer notre solution avec une base mysql ou mongodb nous avons dupliquer nos repository afin de pouvoir implémenter les deux solution 
 
 ## Description de la solution
 
 - Notre solution est une interface console. Sur un premier menu vous pouvez sélectionner un domaine fonctionnel (exemple les caches, les utilisateurs, ... ). Puis une fois le choix réalisé on arrive un autre menu où l'on peut tester les différentes fonctionnalités associés à chaque domaine.
 
+
+##Liste des fonctionnalités
+
+Cache : 
+Afficher tous les caches : liste l’intégralité des caches
+Ajouter une cache : permet de créer une cache
+Modifier une cache 
+Supprimer une cache
+Rechercher une cache
+Activer une cache : permet de passer une cache d’inactive à active
+Désactiver une cache permet de passer une cache d’active à inactive
+Lister les caches d'un utilisateur 
+Lister les caches d'un lieu 
+
+Utilisateur : 
+ Afficher tous les utilisateurs
+ Ajouter un utilisateur
+ Modifier un utilisateur
+ Supprimer un utilisateur
+ Rechercher un utilisateur
+
+
+Lieu :
+ Afficher tous les lieux
+ Ajouter un lieu
+ Modifier un lieu
+ Supprimer un lieu
+ Rechercher un lieu
+
+Visite
+ Afficher tous les visites
+ Ajouter une visite
+ Modifier une visite
+ Supprimer une visite
+ Rechercher une visite
+ Valider une visite
+ Recherche de visites en fonction d'une date
 
 ## Difficultés
 
@@ -205,7 +245,7 @@ Voici les choix que nous avons réalisé :
   private String id;
   ```
 
-- Nous avons eu aussi réfléchir à une façon de choisir le bon repository en fonction de la base de donnée utilisé. Notre choix s'est porté vers un système de tableau associatif qui associerait le nom du repository avec une instance du bon repository:
+- Nous avons eu aussi réfléchi à une façon de choisir le bon repository en fonction de la base de donnée utilisé. Notre choix s'est porté vers un système de tableau associatif qui associerait le nom du repository avec une instance du bon repository:
 
   ```java
   if (choixBDD.equals("MYSQL"))

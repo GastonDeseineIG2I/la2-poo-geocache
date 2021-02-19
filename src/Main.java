@@ -1,50 +1,34 @@
-import modele.CacheEntity;
-import modele.VisiteEntity;
-import modele.CacheEntity;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-import org.hibernate.query.criteria.internal.expression.function.UpperFunction;
-import repository.*;
+import repository.MYSQL.MYSQLRepository;
+import repository.MONGODB.MONGODBRepository;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class Main {
-    private static final SessionFactory ourSessionFactory;
+public class Main
+{
 
-    static {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure();
 
-            ourSessionFactory = configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
-    public static Session getSession() throws HibernateException {
-        return ourSessionFactory.openSession();
-    }
-
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception
+    {
         Menu.menu();
     }
 
+    public static boolean initSession(String type)
+    {
+        if (type.equals("MYSQL"))
+        {
+            MYSQLRepository.getSession(); //Initialise la session JPA
+        } else if (type.equals("MONGODB"))
+        {
+            MONGODBRepository.getSession();
+        } else
+        {
+            return true;
+        }
+        return false;
+    }
 
 
-
-
-    public static int isNumeric(String res){
+    public static int isNumeric(String res)
+    {
         int numeric;
         try
         {

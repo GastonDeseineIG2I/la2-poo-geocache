@@ -1,15 +1,21 @@
 package modele;
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
+@org.mongodb.morphia.annotations.Entity
 @Table(name = "visite", schema = "la2-geocache", catalog = "")
 public class VisiteEntity
 {
-    private int id;
+    @org.mongodb.morphia.annotations.Id
+    private ObjectId _id;
+
+    private String id;
+
     private Timestamp dateVisite;
     private String commentaire;
     private String statut;
@@ -17,15 +23,26 @@ public class VisiteEntity
     private CacheEntity cache;
 
     @Id
-    @Column(name = "id", nullable = false)
-    public int getId()
+    @Column(name = "id", nullable = false, length = 100)
+    public String getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(String id)
     {
         this.id = id;
+    }
+
+    @Transient
+    public ObjectId get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(ObjectId _id)
+    {
+        this._id = _id;
     }
 
     @Basic
@@ -95,19 +112,20 @@ public class VisiteEntity
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VisiteEntity that = (VisiteEntity) o;
-        return id == that.id &&
-                utilisateur.getId() == that.utilisateur.getId() &&
-                cache.getId() == that.cache.getId() &&
-                Objects.equals(dateVisite, that.dateVisite) &&
+        return Objects.equals(dateVisite, that.dateVisite) &&
                 Objects.equals(commentaire, that.commentaire) &&
                 Objects.equals(statut, that.statut);
     }
 
-    public String toString(){
-        return  " | Id : " + this.id + "\n" +
+    public String toString()
+    {
+        return " | Id : " + (this.id != null ? this.id : this._id) + "\n" +
                 " | Date visite : " + this.dateVisite + "\n" +
                 " | Commentaire : " + this.commentaire + "\n" +
-                " | Statut : " + this.statut + "\n" ;
+                " | Utilisateur : " + this.utilisateur.getPseudo() + "\n" +
+                " | Identifiant de la cache : " + (this.cache.getId() != null ? this.cache.getId() : this.cache.get_id()) + "\n" +
+                " | Lieu de la cache : " + this.cache.getLieu().getLibelle() + "\n" +
+                " | Statut : " + this.statut + "\n";
     }
 
     @Override

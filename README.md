@@ -6,7 +6,7 @@ GeoCache est une application java console à destinations de testeurs permettant
 
 # Pré-requis
 
-- Intellij Idea
+- IntelliJ Idea
 - Java 15
 - MySQL 5.7
 - MongoDB 4.4.2
@@ -182,61 +182,59 @@ Voici les choix que nous avons réalisé :
 
 - Nous avons fait le choix de réduire l'état d'une cache à inactif ou actif. Nous avons trouvé que en cours d'activation, fermée et suspendue étaient des sous catégories d'inactifs. Nous avons jugé que nous n'avions pas besoin de ce niveau d'information.
 
-
 Pour les visites nous avons décidé que le statut serait soit :
-  « En cours » c’est à dire que notre utilisateur est en train de rechercher la cache 
-  « Terminée » des lors que l’utilisateur a finit sa chasse ou suite à un abandonné 
 
-Au niveau de notre structure de code nous avons décidé de faire des repositories pour chacune de nos entités et nous avons aussi rajouté une interface *RepositoryInterface* pour y mettre les fonctions communes à nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Ce fichier est chargé de contacter le bon repository pour avoir les informations voulues
-Afin de pouvoir déployer notre solution avec une base mysql ou mongodb nous avons dupliquer nos repository afin de pouvoir implémenter les deux solution 
+- « En cours » c’est à dire que notre utilisateur est en train de rechercher la cache 
+- « Terminée » des lors que l’utilisateur a finit sa chasse ou suite à un abandonné 
+
+Au niveau de notre structure de code nous avons décidé de faire des repositories pour chacune de nos entités et nous avons aussi rajouté une interface *RepositoryInterface* pour y mettre les fonctions communes à nos différents repositories. Toute la partie graphique se fait dans notre fichier Menu. Ce fichier est chargé de contacter le bon repository pour avoir les informations voulues.
+Afin de pouvoir déployer notre solution avec une base MySQL ou MongoDB nous avons dupliquer nos repositories afin de pouvoir implémenter les deux solutions. 
 
 ## Description de la solution
 
 - Notre solution est une interface console. Sur un premier menu vous pouvez sélectionner un domaine fonctionnel (exemple les caches, les utilisateurs, ... ). Puis une fois le choix réalisé on arrive un autre menu où l'on peut tester les différentes fonctionnalités associés à chaque domaine.
 
+## Liste des fonctionnalités
 
-##Liste des fonctionnalités
+- Cache : 
+  - Afficher toutes les caches
+  - Ajouter une cache
+  - Modifier une cache 
+  - Supprimer une cache
+  - Rechercher une cache
+  - Activer une cache : permet de passer une cache d’inactive à active
+  - Désactiver une cache : permet de passer une cache d’active à inactive
+  - Lister les caches d'un utilisateur 
+  - Lister les caches d'un lieu 
 
-Cache : 
-Afficher tous les caches : liste l’intégralité des caches
-Ajouter une cache : permet de créer une cache
-Modifier une cache 
-Supprimer une cache
-Rechercher une cache
-Activer une cache : permet de passer une cache d’inactive à active
-Désactiver une cache permet de passer une cache d’active à inactive
-Lister les caches d'un utilisateur 
-Lister les caches d'un lieu 
+- Utilisateur : 
+  - Afficher tous les utilisateurs
+  - Ajouter un utilisateur
+  - Modifier un utilisateur
+  - Supprimer un utilisateur
+  - Rechercher un utilisateur
 
-Utilisateur : 
- Afficher tous les utilisateurs
- Ajouter un utilisateur
- Modifier un utilisateur
- Supprimer un utilisateur
- Rechercher un utilisateur
+- Lieu :
+  - Afficher tous les lieux
+  - Ajouter un lieu
+  - Modifier un lieu
+  - Supprimer un lieu
+  - Rechercher un lieu
 
-
-Lieu :
- Afficher tous les lieux
- Ajouter un lieu
- Modifier un lieu
- Supprimer un lieu
- Rechercher un lieu
-
-Visite
- Afficher tous les visites
- Ajouter une visite
- Modifier une visite
- Supprimer une visite
- Rechercher une visite
- Valider une visite
- Recherche de visites en fonction d'une date
+- Visite
+  - Afficher toutes les visites
+  - Ajouter une visite
+  - Modifier une visite
+  - Supprimer une visite
+  - Rechercher une visite
+  - Valider une visite
+  - Recherche de visites en fonction d'une date
 
 ## Difficultés
 
-- Nous avons eu beaucoup de mal à mettre en place le switch vers MongoDB. Le problème est que nous avons développé le projet tout d'abord avec MySQL et lorsque nous avons du passer à MongoDB nous avons du changer beaucoup de choses dû aux nouvelles contraintes qui sont apparues. 
+- Nous avons eu beaucoup de mal à mettre en place le switch vers MongoDB. Le problème est que nous avons développé le projet tout d'abord avec MySQL et lorsque nous avons dû passer à MongoDB nous avons du changer beaucoup de choses dues aux nouvelles contraintes qui sont apparues. 
 
-- La difficulté des ID est arrivé dès l'arrivée de MongoDB. MongoDB veut des ObjectID et MySQL ne prend pas en charge ce type de donnée. Nous avons fait le choix d'utiliser 2 champs ID différents qui seraient utilisés en fonction de la BDD choisi.
+- La difficulté des ID est apparu dès la tentative de mise en place de MongoDB. MongoDB veut des ObjectID et MySQL ne prend pas en charge ce type de données. MongoDB accepte d'avoir un String en identifiant mais déclenche un WARNING à chaque requête. Nous avons donc essayé de trouver une solution. Nous avons fait le choix d'utiliser 2 champs ID différents qui seraient utilisés en fonction de la BDD choisie.
 
   ```java
   @org.mongodb.morphia.annotations.Id
@@ -245,7 +243,7 @@ Visite
   private String id;
   ```
 
-- Nous avons eu aussi réfléchi à une façon de choisir le bon repository en fonction de la base de donnée utilisé. Notre choix s'est porté vers un système de tableau associatif qui associerait le nom du repository avec une instance du bon repository:
+- Nous avons eu aussi à réfléchir à une façon de choisir le bon repository en fonction de la base de donnée utilisé. Notre choix s'est porté vers un système de tableau associatif qui associerait le nom du repository avec une instance du bon repository:
 
   ```java
   if (choixBDD.equals("MYSQL"))
@@ -271,12 +269,14 @@ Visite
 
   Ce choix nous a permis de pouvoir factoriser nos fonctions pour ne pas avoir à dupliquer les morceaux de code faisant appel à des repositories.
 
-## Conclusion 
+## Conclusion
 
-Le projet a été très interessant car nous avons pu approfondir nos connaissances en Java / MongoDB.
+Le projet a été très intéressant car nous avons pu approfondir nos connaissances en Java / MongoDB.
 
-Cela a été très enrichissant de découvrir Hibernate car c'est un Framework que nous ne connaissions pas du tout. Nous avions déjà utilisé des Framework de persistance des données dans d'autres langages de programmation mais jamais en Java. 
+Découvrir Hibernate a été très enrichissant car c'est un Framework que nous ne connaissions pas du tout. Nous avions déjà utilisé des Framework de persistance des données dans d'autres langages de programmation mais jamais en Java. 
 
-Il aurait été aussi interessant de le faire avec une vraie interface graphique pour voir comment cela s'implémente en Java. Cependant il aurait fallu plus de temps pour le réaliser. 
+Il aurait été aussi intéressant de le faire avec une vraie interface graphique pour voir comment cela s'implémente en Java. Cependant il aurait fallu plus de temps pour le réaliser. 
+
+Nous avons dû faire face à différentes difficultés mais nous avons toujours su trouver une solution.
 
 Ce projet étant une découverte pour tous les deux, il nous a fallu travailler beaucoup pour obtenir un résultat qui nous satisfait.

@@ -122,6 +122,9 @@ public class VisiteEntity
         return " | Id : " + (this.id != null ? this.id : this._id) + "\n" +
                 " | Date visite : " + this.dateVisite + "\n" +
                 " | Commentaire : " + this.commentaire + "\n" +
+                " | Utilisateur : " + this.utilisateur.getPseudo() + "\n" +
+                " | Identifiant de la cache : " + (this.cache.getId() != null ? this.cache.getId() : this.cache.get_id()) + "\n" +
+                " | Lieu de la cache : " + this.cache.getLieu().getLibelle() + "\n" +
                 " | Statut : " + this.statut + "\n";
     }
 

@@ -47,48 +47,12 @@ public class VisiteRepository extends MYSQLRepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String utilisateurId = (String) data.get("utilisateurId");
+        String dateVisite = (String) data.get("dateVisite");
+        String commentaire = (String) data.get("commentaire");
+        String cacheId = (String) data.get("cacheId");
+        String statut = (String) data.get("statut");
 
-    }
-
-    @Override
-    public void update(HashMap<String, Object> data)
-    {
-
-    }
-
-
-    public void updateVisite(int id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
-    {
-        Transaction tx = session.beginTransaction();
-        VisiteEntity visite = session.load(VisiteEntity.class, id);
-        if (!"".equals(dateVisite))
-        {
-            visite.setDateVisite(Timestamp.valueOf(dateVisite));
-        }
-        if (!"".equals(utilisateurId))
-        {
-            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
-            visite.setUtilisateur(utilisateur);
-        }
-        if (!"".equals(cacheId))
-        {
-            CacheEntity cache = new CacheRepository().findById(cacheId);
-            visite.setCache(cache);
-        }
-        if (!"".equals(commentaire))
-        {
-            visite.setCommentaire(commentaire);
-        }
-        if (!"".equals(statut))
-        {
-            visite.setStatut(statut.toUpperCase());
-        }
-        session.update(visite);
-        tx.commit();
-    }
-
-    public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
-    {
         Transaction tx = session.beginTransaction();
         VisiteEntity visite = new VisiteEntity();
         visite.setId(UUID.randomUUID().toString());
@@ -114,6 +78,44 @@ public class VisiteRepository extends MYSQLRepository
         visite.setStatut(statut.toUpperCase());
 
         session.persist(visite);
+        tx.commit();
+    }
+
+    @Override
+    public void update(HashMap<String, Object> data)
+    {
+        String id = (String) data.get("id");
+        String utilisateurId = (String) data.get("utilisateurId");
+        String dateVisite = (String) data.get("dateVisite");
+        String commentaire = (String) data.get("commentaire");
+        String cacheId = (String) data.get("cacheId");
+        String statut = (String) data.get("statut");
+
+        Transaction tx = session.beginTransaction();
+        VisiteEntity visite = session.load(VisiteEntity.class, id);
+        if (!"".equals(dateVisite))
+        {
+            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+        }
+        if (!"".equals(utilisateurId))
+        {
+            UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
+            visite.setUtilisateur(utilisateur);
+        }
+        if (!"".equals(cacheId))
+        {
+            CacheEntity cache = new CacheRepository().findById(cacheId);
+            visite.setCache(cache);
+        }
+        if (!"".equals(commentaire))
+        {
+            visite.setCommentaire(commentaire);
+        }
+        if (!"".equals(statut))
+        {
+            visite.setStatut(statut.toUpperCase());
+        }
+        session.update(visite);
         tx.commit();
     }
 

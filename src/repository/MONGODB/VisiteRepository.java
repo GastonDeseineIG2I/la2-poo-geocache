@@ -51,17 +51,46 @@ public class VisiteRepository extends MONGODBRepository
     @Override
     public void create(HashMap<String, Object> data)
     {
+        String utilisateurId = (String) data.get("utilisateurId");
+        String dateVisite = (String) data.get("dateVisite");
+        String commentaire = (String) data.get("commentaire");
+        String cacheId = (String) data.get("cacheId");
+        String statut = (String) data.get("statut");
 
+        VisiteEntity visite = new VisiteEntity();
+        if (!"".equals(utilisateurId))
+        {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            visite.setDateVisite(timestamp);
+        } else
+        {
+            visite.setDateVisite(Timestamp.valueOf(dateVisite));
+        }
+
+        if (!"".equals(commentaire))
+        {
+            visite.setCommentaire(commentaire);
+        }
+        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
+        visite.setUtilisateur(utilisateur);
+
+        CacheEntity cache = new CacheRepository().findById(cacheId);
+        visite.setCache(cache);
+
+        visite.setStatut(statut.toUpperCase());
+
+        datastore.save(visite);
     }
 
     @Override
     public void update(HashMap<String, Object> data)
     {
-
-    }
-
-    public void updateVisite(String id, String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
-    {
+        String id = (String) data.get("id");
+        String utilisateurId = (String) data.get("utilisateurId");
+        String dateVisite = (String) data.get("dateVisite");
+        String commentaire = (String) data.get("commentaire");
+        String cacheId = (String) data.get("cacheId");
+        String statut = (String) data.get("statut");
 
         Query query = datastore.createQuery(entityClass).field("_id").equal(new ObjectId(id));
         UpdateOperations<VisiteEntity> operation = datastore.createUpdateOperations(entityClass);
@@ -91,33 +120,6 @@ public class VisiteRepository extends MONGODBRepository
         datastore.update(query, operation);
     }
 
-    public void createVisite(String dateVisite, String utilisateurId, String cacheId, String commentaire, String statut)
-    {
-
-        VisiteEntity visite = new VisiteEntity();
-        if (!"".equals(utilisateurId))
-        {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            visite.setDateVisite(timestamp);
-        } else
-        {
-            visite.setDateVisite(Timestamp.valueOf(dateVisite));
-        }
-
-        if (!"".equals(commentaire))
-        {
-            visite.setCommentaire(commentaire);
-        }
-        UtilisateurEntity utilisateur = new UtilisateurRepository().findById(utilisateurId);
-        visite.setUtilisateur(utilisateur);
-
-        CacheEntity cache = new CacheRepository().findById(cacheId);
-        visite.setCache(cache);
-
-        visite.setStatut(statut.toUpperCase());
-
-        datastore.save(visite);
-    }
 
     public void validerVisite(String idVisite, String commentaire)
     {

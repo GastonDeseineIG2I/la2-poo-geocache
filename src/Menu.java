@@ -677,8 +677,14 @@ public class Menu
             //DateTimeFormatter formatter= DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS");
             //LocalDateTime dateHeureVisite = LocalDateTime.parse(dateVisite, formatter);
 
-            repository.get("visite").update(null);
-            //TODO ((VisiteRepository)repository).updateVisite(idVisite, dateVisite, utilisateurId, cacheId, commentaire, statut);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("id", idVisite);
+            data.put("dateVisite", dateVisite);
+            data.put("utilisateurId", utilisateurId);
+            data.put("cacheId", cacheId);
+            data.put("commentaire", commentaire);
+            data.put("statut", statut);
+            repository.get("visite").update(data);
         }
 
     }
@@ -734,8 +740,13 @@ public class Menu
             // }while(("EN COURS".equals(statut.toUpperCase())) ||  ("TERMINEE".equals(statut.toUpperCase()) ));
         } while (!"EN COURS".equals(statut.toUpperCase()) && (!"TERMINEE".equals(statut.toUpperCase())));
 
-        repository.get("visite").create(null);
-        //TODO ((VisiteRepository)repository).createVisite(dateVisite, utilisateurId, cacheId, commentaire, statut);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("dateVisite", dateVisite);
+        data.put("utilisateurId", utilisateurId);
+        data.put("cacheId", cacheId);
+        data.put("commentaire", commentaire);
+        data.put("statut", statut);
+        repository.get("visite").create(data);
     }
 
     private static void createLieu() throws IOException

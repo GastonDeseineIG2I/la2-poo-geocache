@@ -8,7 +8,15 @@ public class Main
 
     public static void main(final String[] args) throws Exception
     {
-        Menu.menu();
+        try{
+            Menu.menu();
+        }catch (Exception e){
+            System.out.println("------------------------------------------------------------");
+            System.out.println("Erreur");
+            System.out.println(e.getMessage());
+            System.out.println("------------------------------------------------------------");
+        }
+
     }
 
     public static boolean initSession(String type)

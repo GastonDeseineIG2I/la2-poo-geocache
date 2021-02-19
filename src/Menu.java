@@ -39,23 +39,23 @@ public class Menu
             repository.put("visite", new repository.MONGODB.VisiteRepository());
         }
 
+        System.out.println("Selectionnez en entrant le numéro du menu");
+        System.out.println("-----------------------------------------");
         boolean terminate = false;
         while (!terminate)
         {
-            System.out.println("Selectionnez en entrant le numéro du menu");
-            System.out.println("-----------------------------------------");
             System.out.println("1 - Gestion des caches");
             System.out.println("2 - Gestion des utilisateurs");
             System.out.println("3 - Gestion des lieux");
             System.out.println("4 - Gestion des visites");
-            System.out.println("5 - Quitter");
+            System.out.println("0 - Quitter");
             String res;
             int choice;
             do
             {
                 res = reader.readLine();
                 choice = Main.isNumeric(res);
-            } while (choice > 5 || choice < 0);
+            } while (choice > 4 || choice < 0);
 
             System.out.println("-----------------------------------------");
 
@@ -73,7 +73,7 @@ public class Menu
                 case 4:
                     menu("visite");
                     break;
-                case 5:
+                case 0:
                     terminate = true;
                     break;
             }
@@ -103,96 +103,98 @@ public class Menu
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
         }
-
-        System.out.println("-----------------------------------------");
-        System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ? "x" : "s"));
-        System.out.println("2 - Ajouter " + menuString);
-        System.out.println("3 - Modifier " + menuString);
-        System.out.println("4 - Supprimer " + menuString);
-        System.out.println("5 - Rechercher " + menuString);
-
-        menuSpecifique(typeMenu, menuString);
-
-
-        System.out.println("99 - Retour au menu précédent");
-        String res;
-        int choice;
-        do
+        boolean terminate = false;
+        while (!terminate)
         {
-            res = reader.readLine();
+            System.out.println("-----------------------------------------");
+            System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ? "x" : "s"));
+            System.out.println("2 - Ajouter " + menuString);
+            System.out.println("3 - Modifier " + menuString);
+            System.out.println("4 - Supprimer " + menuString);
+            System.out.println("5 - Rechercher " + menuString);
 
-            choice = Main.isNumeric(res);
-        } while (choice > 99 || choice < 0);
+            menuSpecifique(typeMenu, menuString);
 
 
-        System.out.println("-----------------------------------------");
-        String id;
-        Object object;
-        switch (Integer.parseInt(res))
-        {
-            case 1:
-                for (Object objectfromlist : repository.get(typeMenu).getAll())
-                {
-                    System.out.println(objectfromlist != null ? objectfromlist : "");
-                }
-                break;
-            case 2:
-                switch (typeMenu)
-                {
-                    case "cache":
-                        createCache();
-                        break;
-                    case "lieu":
-                        createLieu();
-                        break;
-                    case "utilisateur":
-                        createUtilisateur();
-                        break;
-                    case "visite":
-                        createVisite();
-                        break;
-                }
-                break;
-            case 3:
-                switch (typeMenu)
-                {
-                    case "cache":
-                        updateCache();
-                        break;
-                    case "lieu":
-                        updateLieu();
-                        break;
-                    case "utilisateur":
-                        updateUtilisateur();
-                        break;
-                    case "visite":
-                        updateVisite();
-                        break;
-                }
-                break;
-            case 4:
-                delete(typeMenu);
-                break;
-            case 5:
+            System.out.println("0 - Retour au menu précédent");
+            String res;
+            int choice;
+            do
+            {
+                res = reader.readLine();
 
-                for (Object objectfromlist : repository.get(typeMenu).getAll())
-                {
-                    System.out.println(objectfromlist != null ? objectfromlist : "");
-                }
-                System.out.println("Entrez l'identifiant rechercher : ");
-                id = reader.readLine();
-                object = repository.get(typeMenu).findById(id);
-                System.out.println(object != null ? object : "Resultat non trouvé.");
-                break;
-            case 99:
-                return;
-            default:
-                casSpecifique(typeMenu, Integer.parseInt(res));
-                break;
+                choice = Main.isNumeric(res);
+            } while (choice > 99 || choice < 0);
+
+
+            System.out.println("-----------------------------------------");
+            String id;
+            Object object;
+            switch (Integer.parseInt(res))
+            {
+                case 1:
+                    for (Object objectfromlist : repository.get(typeMenu).getAll())
+                    {
+                        System.out.println(objectfromlist != null ? objectfromlist : "");
+                    }
+                    break;
+                case 2:
+                    switch (typeMenu)
+                    {
+                        case "cache":
+                            createCache();
+                            break;
+                        case "lieu":
+                            createLieu();
+                            break;
+                        case "utilisateur":
+                            createUtilisateur();
+                            break;
+                        case "visite":
+                            createVisite();
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (typeMenu)
+                    {
+                        case "cache":
+                            updateCache();
+                            break;
+                        case "lieu":
+                            updateLieu();
+                            break;
+                        case "utilisateur":
+                            updateUtilisateur();
+                            break;
+                        case "visite":
+                            updateVisite();
+                            break;
+                    }
+                    break;
+                case 4:
+                    delete(typeMenu);
+                    break;
+                case 5:
+
+                    for (Object objectfromlist : repository.get(typeMenu).getAll())
+                    {
+                        System.out.println(objectfromlist != null ? objectfromlist : "");
+                    }
+                    System.out.println("Entrez l'identifiant rechercher : ");
+                    id = reader.readLine();
+                    object = repository.get(typeMenu).findById(id);
+                    System.out.println(object != null ? object : "Resultat non trouvé.");
+                    break;
+                case 0:
+                    return;
+                default:
+                    casSpecifique(typeMenu, Integer.parseInt(res));
+                    break;
+            }
+            System.out.println("Appuyer sur ENTER pour continuer.");
+            reader.readLine();
         }
-        System.out.println("Appuyer sur ENTER pour continuer.");
-        reader.readLine();
-
     }
 
 
@@ -264,7 +266,7 @@ public class Menu
                             boolean compareCode = false;
                             do
                             {
-                                System.out.println(" Obligatoire : Code secret de la cache");
+                                System.out.println("Obligatoire : Code secret de la cache");
                                 code = reader.readLine();
                                 if (choixBDD.equals("MYSQL"))
                                 {
@@ -277,7 +279,7 @@ public class Menu
                             } while (compareCode);
 
                             String commentaire;
-                            System.out.println(" Optionnel : Entrez un commentaire");
+                            System.out.println("Optionnel : Entrez un commentaire");
                             commentaire = reader.readLine();
                             if (choixBDD.equals("MYSQL"))
                             {
@@ -298,8 +300,6 @@ public class Menu
                         listeVisiteParDate();
                 }
                 break;
-            default:
-                return;
         }
     }
 
@@ -354,7 +354,6 @@ public class Menu
         System.out.println("Entrez la date de visite :");
         System.out.println("Format YYYY-MM-dd:");
         String dateVisite;
-        Object object;
         dateVisite = reader.readLine();
 
         List<VisiteEntity> visites;
@@ -665,7 +664,7 @@ public class Menu
             commentaire = reader.readLine();
 
             String statut;
-            System.out.println("Entrez un statut : En cours / Terminee'");
+            System.out.println("Entrez un statut : EN COURS / TERMINEE'");
 
             do
             {
@@ -693,7 +692,7 @@ public class Menu
     {
 
         System.out.println("Si une valeur est inchangée tapez sur entree");
-        System.out.println(" Optionnel : Entrez la nouvelle date et heure de visite");
+        System.out.println("Optionnel : Entrez la nouvelle date et heure de visite");
         System.out.println("Format : YYYY-MM-DD hh:mm:ss");
         // A faire : Controle de la date
         String dateVisite;
@@ -719,7 +718,7 @@ public class Menu
         {
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
-        System.out.println(" Obligatoire : Entrez l'id de la cache");
+        System.out.println("Obligatoire : Entrez l'id de la cache");
         String cacheId;
         do
         {
@@ -730,10 +729,10 @@ public class Menu
         } while (object == null);
 
         String commentaire;
-        System.out.println(" Optionnel : Entrez un commentaire");
+        System.out.println("Optionnel : Entrez un commentaire");
         commentaire = reader.readLine();
         String statut;
-        System.out.println(" Obligatoire : Entrez un statut : En cours / Terminee");
+        System.out.println("Obligatoire : Entrez un statut : En cours / Terminee");
         do
         {
             statut = reader.readLine();
@@ -782,7 +781,7 @@ public class Menu
             //TODO tester si le pseudo est unique
         while (pseudo.length() > 50);
 
-        System.out.println(" Optionnel : Entrez la description ");
+        System.out.println("Optionnel : Entrez la description ");
         String descripton = reader.readLine();
 
         String avatar;

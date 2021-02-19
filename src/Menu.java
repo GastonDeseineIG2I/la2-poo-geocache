@@ -15,13 +15,24 @@ public class Menu
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static HashMap<String, RepositoryInterface> repository = new HashMap<>();
 
-    public static void menu() throws IOException
+    public static boolean menu() throws IOException
     {
-        System.out.println("Selectionnez la base souhaité MYSQL ou MONGODB");
+        System.out.println("Selectionnez la base souhaitée :");
+        System.out.println("1 - MYSQL");
+        System.out.println("2 - MONGODB");
+        String res;
+        int choice;
         do
         {
-            choixBDD = reader.readLine();
-        } while (!"MYSQL".equals(choixBDD.toUpperCase()) && (!"MONGODB".equals(choixBDD.toUpperCase())));
+            res = reader.readLine();
+            choice = Main.isNumeric(res);
+        } while (choice > 2 || choice < 1);
+
+        if(choice == 1){
+            choixBDD = "MYSQL";
+        }else{
+            choixBDD = "MONGDDB";
+        }
 
         Main.initSession(choixBDD);
 
@@ -49,8 +60,7 @@ public class Menu
             System.out.println("3 - Gestion des lieux");
             System.out.println("4 - Gestion des visites");
             System.out.println("0 - Quitter");
-            String res;
-            int choice;
+
             do
             {
                 res = reader.readLine();
@@ -79,6 +89,7 @@ public class Menu
             }
         }
         System.out.println("Fin du programme");
+        return true;
     }
 
 
@@ -106,7 +117,7 @@ public class Menu
         boolean terminate = false;
         while (!terminate)
         {
-            System.out.println("-----------------------------------------");
+            System.out.println("-------------------- GESTION DES " + typeMenu.toUpperCase() + (typeMenu.equals("lieu") ? "X" : "S") + " --------------------");
             System.out.println("1 - Afficher tous les " + typeMenu + (typeMenu.equals("lieu") ? "x" : "s"));
             System.out.println("2 - Ajouter " + menuString);
             System.out.println("3 - Modifier " + menuString);
@@ -181,10 +192,10 @@ public class Menu
                     {
                         System.out.println(objectfromlist != null ? objectfromlist : "");
                     }
-                    System.out.println("Entrez l'identifiant rechercher : ");
+                    System.out.println("Entrez l'identifiant recherché : ");
                     id = reader.readLine();
                     object = repository.get(typeMenu).findById(id);
-                    System.out.println(object != null ? object : "Resultat non trouvé.");
+                    System.out.println(object != null ? object : "Résultat non trouvé.");
                     break;
                 case 0:
                     return;
@@ -204,9 +215,9 @@ public class Menu
         {
             case "cache":
                 System.out.println("6 - Activer " + menuString);
-                System.out.println("7 - Desactiver " + menuString);
-                System.out.println("8 - Liste les caches d'un utilisateur ");
-                System.out.println("9 - Liste les caches d'un lieu ");
+                System.out.println("7 - Désactiver " + menuString);
+                System.out.println("8 - Lister les caches d'un utilisateur ");
+                System.out.println("9 - Lister les caches d'un lieu ");
                 break;
             case "utilisateur":
                 break;
@@ -214,7 +225,7 @@ public class Menu
                 break;
             case "visite":
                 System.out.println("6 - Valider " + menuString);
-                System.out.println("7 - Recherche de visite en fonction d'une date");
+                System.out.println("7 - Recherche de visites en fonction d'une date");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + typeMenu);
@@ -338,7 +349,7 @@ public class Menu
                 }
 
                 System.out.println(object);
-                System.out.println("La cache a été desactivée.");
+                System.out.println("La cache a été désactivée.");
             }
 
 
@@ -379,7 +390,7 @@ public class Menu
         {
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
-        System.out.println("Entre l'identifiant du lieu pour afficher ses caches");
+        System.out.println("Entrez l'identifiant du lieu pour afficher ses caches");
         String id;
         Object object;
         do
@@ -412,7 +423,7 @@ public class Menu
         {
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
-        System.out.println("Entre l'identifiant de l'utilisateur pour afficher ses caches");
+        System.out.println("Entrez l'identifiant de l'utilisateur pour afficher ses caches");
         String id;
         Object object;
         do
@@ -448,7 +459,7 @@ public class Menu
         System.out.println("Entrez l'identifiant de l'utilisateur à modifier : ");
         String id = reader.readLine();
         Object object = repository.get("utilisateur").findById(id);
-        System.out.println(object != null ? object : "Resultat non trouvé.");
+        System.out.println(object != null ? object : "Rzsultat non trouvé.");
         if (object != null)
         {
             System.out.println("Si une valeur est inchangée tapez sur entree");
@@ -462,7 +473,7 @@ public class Menu
 
             String avatar;
             System.out.println("Entrez le nouveau nom de l'image ");
-            System.out.println("Ne pas oublier .png a la fin");
+            System.out.println("Ne pas oublier .png à la fin");
             do
                 avatar = reader.readLine();
             while (avatar.length() > 255);
@@ -485,7 +496,7 @@ public class Menu
         System.out.println("Entrez l'identifiant de la cache à modifier : ");
         String idCache = reader.readLine();
         Object object = repository.get("cache").findById(idCache);
-        System.out.println(object != null ? object : "Resultat non trouvé.");
+        System.out.println(object != null ? object : "Résultat non trouvé.");
 
         if (object != null)
         {
@@ -535,7 +546,7 @@ public class Menu
             {
                 System.out.println(objectfromlist != null ? objectfromlist : "");
             }
-            System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
+            System.out.println("Obligatoire : Entrez l'id du propriétaire de la cache  ");
             String proprietaireId;
             do
             {
@@ -584,15 +595,15 @@ public class Menu
         }
         // On récupere l'identifiant de lieux pour afficher les informations au testeur
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Entrez l'identifiant du lieux à modifier : ");
+        System.out.println("Entrez l'identifiant du lieu à modifier : ");
         String id = reader.readLine();
         Object object = repository.get("lieu").findById(id);
-        System.out.println(object != null ? object : "Resultat non trouvé.");
+        System.out.println(object != null ? object : "Résultat non trouvé.");
         if (object != null)
         {
             // On declare un libellé que nous recupérons sur la ligne de commande
             String libelle = "";
-            System.out.println("Entrez le nouveau libellé de lieux");
+            System.out.println("Entrez le nouveau libellé du lieu");
 
             //On vérifie que l'entrée n'est pas vide
             do
@@ -619,11 +630,11 @@ public class Menu
         // A FAIRE : redemander si l'identifiant de visite n'est pas bon
         String idVisite = reader.readLine();
         Object object = repository.get("visite").findById(idVisite);
-        System.out.println(object != null ? object : "Resultat non trouvé.");
+        System.out.println(object != null ? object : "Résultat non trouvé.");
 
         if (object != null)
         {
-            System.out.println("Si une valeur est inchangée tapez sur entree");
+            System.out.println("Si une valeur est inchangée tapez sur entrée");
             System.out.println("Entrez la nouvelle date et heure de visite");
             System.out.println("Format : YYYY-MM-DD hh:mm:ss");
             // A faire : Controle de la date
@@ -634,7 +645,7 @@ public class Menu
             {
                 System.out.println(objectfromlist != null ? objectfromlist : "");
             }
-            System.out.println("Entrez l'id de l'utilisateur que a fait la visite  ");
+            System.out.println("Entrez l'identifiant de l'utilisateur qui a réalisé la visite  ");
             String utilisateurId;
             do
             {
@@ -648,7 +659,7 @@ public class Menu
             {
                 System.out.println(objectfromlist != null ? objectfromlist : "");
             }
-            System.out.println("Entrez l'id de la cache");
+            System.out.println("Entrez l'identifiant de la cache");
             String cacheId;
             do
             {
@@ -691,7 +702,7 @@ public class Menu
     private static void createVisite() throws IOException
     {
 
-        System.out.println("Si une valeur est inchangée tapez sur entree");
+        System.out.println("Si une valeur est inchangée tapez sur entrée");
         System.out.println("Optionnel : Entrez la nouvelle date et heure de visite");
         System.out.println("Format : YYYY-MM-DD hh:mm:ss");
         // A faire : Controle de la date
@@ -702,7 +713,7 @@ public class Menu
         {
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
-        System.out.println("Obligatoire : Entrez l'id de l'utilisateur quI a fait la visite  ");
+        System.out.println("Obligatoire : Entrez l'identifiant de l'utilisateur qui a fait la visite");
         String utilisateurId;
         Object object;
         do
@@ -718,7 +729,7 @@ public class Menu
         {
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
-        System.out.println("Obligatoire : Entrez l'id de la cache");
+        System.out.println("Obligatoire : Entrez l'identifiant de la cache");
         String cacheId;
         do
         {
@@ -732,7 +743,7 @@ public class Menu
         System.out.println("Optionnel : Entrez un commentaire");
         commentaire = reader.readLine();
         String statut;
-        System.out.println("Obligatoire : Entrez un statut : En cours / Terminee");
+        System.out.println("Obligatoire : Entrez un statut : EN COURS / TERMINEE");
         do
         {
             statut = reader.readLine();
@@ -786,7 +797,7 @@ public class Menu
 
         String avatar;
         System.out.println("Optionnel : Entrez le nom de l'image ");
-        System.out.println("Ne pas oublier .png a la fin");
+        System.out.println("Ne pas oublier .png à la fin");
         do
             avatar = reader.readLine();
         while (avatar.length() > 255);
@@ -843,7 +854,7 @@ public class Menu
             System.out.println(objectfromlist != null ? objectfromlist : "");
         }
 
-        System.out.println("Obligatoire : Entrez l'id du proprietaire de la cache  ");
+        System.out.println("Obligatoire : Entrez l'identifiant du propriétaire de la cache  ");
         String proprietaireId;
         Object object;
         do

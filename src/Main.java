@@ -8,14 +8,20 @@ public class Main
 
     public static void main(final String[] args) throws Exception
     {
-        try{
-            Menu.menu();
-        }catch (Exception e){
-            System.out.println("------------------------------------------------------------");
-            System.out.println("Erreur");
-            System.out.println(e.getMessage());
-            System.out.println("------------------------------------------------------------");
+
+        boolean terminated = false;
+        while(!terminated){
+            try{
+                terminated = Menu.menu();
+            }catch (Exception e){
+                System.out.println("/!\\------------------------------------------------------/!\\");
+                System.out.println("Erreur: action non réalisée!");
+                System.out.println(e.getMessage());
+                System.out.println("------------------------------------------------------------");
+                System.out.println("Redémarrage de l'application");
+            }
         }
+
 
     }
 
